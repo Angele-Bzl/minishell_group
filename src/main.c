@@ -16,29 +16,29 @@
 # include <curses.h> //tgetent, tgetflag, tgetnum,tgetstr, tgoto, tputs
 # include <term.h> //getent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 
-# include "../libft/libft.h" 
+# include "../libft/libft.h"
 
 int main(int ac, char **av, char **env)
 {
-    t_data  *data;
+	t_data	*data;
 
-    while (1)
-    {
-        data->prompt_line = readline("minishell > ");
-        if (data->prompt_line)
+	while (1)
+	{
+		data->prompt_line = readline("minishell > ");
+		if (data->prompt_line)
 		{
 			add_history(data->prompt_line);
 			if (!parsing(data))
-            {
-                free();
-                return (1);
-            }
-            if (!executiom(data))
-            {
-                free();
-                return (1);
-            }
+			{
+				free();
+				return (1);
+			}
+			if (!execution(data))
+			{
+				free();
+				return (1);
+			}
 		}
-    }
-    return (0)
+	}
+	return (0)
 }

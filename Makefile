@@ -30,16 +30,9 @@ LFLAGS		=	-lreadline -lncurses
 #####################################################
 FILES_EXEC  =   execution.c
 FILES_PARS  =   parsing.c\
-                manage_dollar.c\
-                manage_pipe.c\
-                manage_quotes.c\
-                manage_rafters.c\
-                save_word.c
-FILES_UTILS =   ft_isspace.c\
-                utils00.c
+FILES_UTILS =   
 				
 FILES		=	main.c\
-                init.c\
                 $(addprefix $(DIR_PARS)/,$(FILES_PARS))\
                 $(addprefix $(DIR_UTILS)/, $(FILES_UTILS))
                 # $(DIR_EXEC)/$(FILES_EXEC)
