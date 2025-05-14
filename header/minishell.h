@@ -55,8 +55,8 @@ typedef struct	s_token
 {
 	t_token	*next;
 	char	**cmd;
-	int		**redirection[2];
-	char	**io[2];
+	int		*redirection[2];
+	char	*io[2];
 } t_token;
 
 typedef struct	s_data
