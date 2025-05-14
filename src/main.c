@@ -2,6 +2,8 @@
 
 int main(int ac, char **av, char **env)
 {
+    (void)ac;
+    (void)av;
     t_data      *data;
     t_parsing   *parsing;
 
@@ -10,7 +12,7 @@ int main(int ac, char **av, char **env)
     if (!data || !parsing)
         return(ALL_OK);
     if (!struct_init(data, parsing, env))
-        return(free_all(data, parsing));
+        // return(free_all(data, parsing));
     while (1)
     {
         parsing->prompt = readline("minishell > ");
@@ -19,14 +21,14 @@ int main(int ac, char **av, char **env)
 			add_history(parsing->prompt);
 			if (!parser(data, parsing))
             {
-                free_all(data, parsing);
-                return (1);
+                // free_all(data, parsing);
+                // return (1);
             }
-            if (!execution(data))
-            {
-                free_data(data);
-                return (1);
-            }
+            // if (!execution(data))
+            // {
+                // free_data(data);
+                // return (1);
+            // }
 		}
     }
     return (0);

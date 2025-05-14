@@ -47,16 +47,16 @@ typedef enum	e_rafter
 
 typedef struct	s_env
 {
-	t_env	*next;
-	char	*line;
+	struct s_env	*next;
+	char			*line;
 } t_env;
 
 typedef struct	s_token
 {
-	t_token	*next;
-	char	**cmd;
-	int		*redirection[2];
-	char	*io[2];
+	struct s_token	*next;
+	char			**cmd;
+	int				*redirection[2];
+	char			*io[2];
 } t_token;
 
 typedef struct	s_data
@@ -74,6 +74,7 @@ typedef struct	s_parsing
 	int		word_length;
 	char	skip;
 	char	*prompt;
+	char	**prompt_tab;
 	bool	dollar;
 	bool	simple_quote;
 	bool	double_quote;
@@ -84,6 +85,8 @@ typedef struct	s_parsing
 
 int		struct_init(t_data *data, t_parsing *parsing, char **env);
 char	*ft_cutstr(char const *s, unsigned int start);
-int		special_cases(t_data *data, t_parsing *parsing);
+char	**split_pipe_smart(char const *s, char c);
+int		skip_under_quote(char *str, int i);
+int		parser(t_data *data, t_parsing *parsing);
 
 #endif
