@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # include <stdio.h> //printf, readline, perror
 # include <readline/readline.h> //readline, rl_*
 # include <readline/history.h> //readline, rl_*
@@ -41,4 +42,38 @@ int main(int ac, char **av, char **env)
 		}
 	}
 	return (0)
+=======
+# include "../header/minishell.h"
+
+int main(int ac, char **av, char **env)
+{
+    t_data      *data;
+    t_parsing   *parsing;
+
+    data = malloc(sizeof(t_data));
+    parsing = malloc(sizeof(t_parsing));
+    if (!data || !parsing)
+        return(ALL_OK);
+    if (!struct_init(data, parsing, env))
+        return(free_all(data, parsing));
+    while (1)
+    {
+        parsing->prompt = readline("minishell > ");
+        if (parsing->prompt)
+		{
+			add_history(parsing->prompt);
+			if (!parser(data, parsing))
+            {
+                free_all(data, parsing);
+                return (1);
+            }
+            if (!execution(data))
+            {
+                free_data(data);
+                return (1);
+            }
+		}
+    }
+    return (0);
+>>>>>>> ea3aff8c72e20c53410e20185f42908e47c4cb08
 }
