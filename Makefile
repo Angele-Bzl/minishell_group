@@ -32,15 +32,18 @@ FILES_EXEC  =   execution.c\
 				command.c\
 				utils_exec.c
 FILES_PARS  =   parsing.c\
-FILES_UTILS =
-
-FILES		=	main.c\
-                $(addprefix $(DIR_PARS)/,$(FILES_PARS))\
+                manage_quotes.c
+FILES_UTILS =   cutstr.c\
+				skip_under_quote.c\
+				split_pipe_smart.c
+FILES		=	struct_init.c\
+				main.c\
+				$(addprefix $(DIR_PARS)/,$(FILES_PARS))\
                 $(addprefix $(DIR_UTILS)/, $(FILES_UTILS))
                 # $(DIR_EXEC)/$(FILES_EXEC)
 
 FILE_HEADER	=	minishell.h
-SRC			=	$(DIR_SRC)/$(FILES)
+SRC			=	$(DIR_SRC)/$(FILES) $(DIR_SRC)/$(FILES_UTILS)
 HEADERS		=	$(DIR_HEADER)/$(FILE_HEADER)
 OBJ			=	$(FILES:%.c=$(DIR_OBJ)/%.o)
 
