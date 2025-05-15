@@ -57,6 +57,9 @@ char	*find_cmd(t_env **env, char *cmd)
 	char	**hypothetical_path_cmd;
 	char	*path_cmd;
 
+	/*if builtin*/
+	if (cmd_is_builtin(cmd))
+		return (cmd);
 	/*A FAIRE if option chemin absolu*/
 	env_path = ft_split(t_env[find_path_in_env(t_env)], ':');
 	if (!env_path)

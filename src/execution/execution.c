@@ -87,6 +87,8 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 			ft_putendl("Error: No path to the command.");
 			return (0);
 		}
+		if (cmd_is_builtin(path_cmd))
+			exec_homemade_builtin(data, io_fd, path_cmd, previous_output);//
 		if (!redirect_and_exec(data, io_fd, path_cmd, previous_output))//
 		{
 			free(path_cmd);
