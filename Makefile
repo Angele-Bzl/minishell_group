@@ -28,10 +28,12 @@ LFLAGS		=	-lreadline -lncurses
 #####################################################
 #					FILES							#
 #####################################################
-FILES_EXEC  =   execution.c
+FILES_EXEC  =   execution.c\
+				command.c\
+				utils_exec.c
 FILES_PARS  =   parsing.c\
-FILES_UTILS =   
-				
+FILES_UTILS =
+
 FILES		=	main.c\
                 $(addprefix $(DIR_PARS)/,$(FILES_PARS))\
                 $(addprefix $(DIR_UTILS)/, $(FILES_UTILS))

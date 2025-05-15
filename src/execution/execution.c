@@ -32,6 +32,7 @@ static int	check_input_output(char *io, int *io_fd)
 
 static int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, int previous_output)
 {
+	/*comment differencier < de <<, et > de >> ???*/
 	if (dup2(previous_output, STDIN_FILENO) == -1)
 	{
 		perror("dup2");
