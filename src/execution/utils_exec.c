@@ -1,3 +1,5 @@
+# include "minishell.h"
+
 char	*ft_strtrim_improved(char *s1, char const *set)
 {
 	int		start;
@@ -26,36 +28,36 @@ char	*ft_strtrim_improved(char *s1, char const *set)
 	return (result);
 }
 
-char	*free_tab(char **tab)
+char	*free_tab(char **table)
 {
 	int	i;
 
 	i = 0;
-	if (tab && tab[i])
+	if (table && table[i])
 	{
-		free(tab[i]);
-		tab[i] = NULL;
+		free(table[i]);
+		table[i] = NULL;
 	}
 	i++;
-	while (tab && tab[i])
+	while (table && table[i])
 	{
-		free(tab[i]);
-		tab[i] = NULL;
+		free(table[i]);
+		table[i] = NULL;
 		i++;
 	}
-	if (tab)
+	if (table)
 	{
-		free(tab);
-		tab = NULL;
+		free(table);
+		table = NULL;
 	}
 	return (NULL);
 }
-int	tablen(char **tab)
+int	tablen(char **table)
 {
 	int	i;
 
 	i = 0;
-	while (tab[i])
+	while (table[i])
 		i++;
 	return (i);
 }

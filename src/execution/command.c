@@ -1,3 +1,5 @@
+# include "minishell.h"
+
 static int	find_path_in_env(char **env)
 {
 	int	i;
@@ -12,14 +14,14 @@ static int	find_path_in_env(char **env)
 	return (-1);
 }
 
-static void	fill_tab_null(char **tab, int len)
+static void	fill_tab_null(char **table, int len)
 {
 	int	i;
 
 	i = 0;
 	while (i < len)
 	{
-		tab[i] = NULL;
+		table[i] = NULL;
 		i++;
 	}
 }
@@ -51,7 +53,7 @@ static int	init_hyp_path(char **hyp_path, char *cmd, char **env_path)
 	return (1);
 }
 
-char	*find_cmd(t_env **env, char *cmd)
+char	*find_cmd(char **env, char *cmd)
 {
 	char	**env_path;
 	char	**hypothetical_path_cmd;
@@ -61,7 +63,7 @@ char	*find_cmd(t_env **env, char *cmd)
 	if (cmd_is_builtin(cmd))
 		return (cmd);
 	/*A FAIRE if option chemin absolu*/
-	env_path = ft_split(t_env[find_path_in_env(t_env)], ':');
+	env_path = ft_split(env[find_path_in_env(env)], ':');
 	if (!env_path)
 		return (NULL);
 	env_path[0] = ft_strtrim_improved(env_path[0], "PATH=");

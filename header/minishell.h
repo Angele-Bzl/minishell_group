@@ -19,7 +19,7 @@
 # include <curses.h> //tgetent, tgetflag, tgetnum,tgetstr, tgoto, tputs
 # include <term.h> //getent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 
-# include "../libft/libft.h" 
+# include "../libft/libft.h"
 
 /////////////////////////////////////////// enum ////////////////////////////////////////
 
@@ -88,5 +88,15 @@ char	*ft_cutstr(char const *s, unsigned int start);
 char	**split_pipe_smart(char const *s, char c);
 int		skip_under_quote(const char *str, size_t i);
 int		parser(t_data *data, t_parsing *parsing);
+
+/*EXEC*/
+/*execution.c*/
+int		execution(t_data *data);
+/*command.c*/
+char	*find_cmd(char **env, char *cmd);
+/*utils_exec.c*/
+char	*free_tab(char **table);
+char	*ft_strtrim_improved(char *s1, char const *set);
+int		tablen(char **table);
 
 #endif

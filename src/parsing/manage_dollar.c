@@ -1,4 +1,4 @@
-#include "../../header/minishell.h"
+# include "minishell.h"
 
 int	find_var_end(t_parsing *parsing)
 {

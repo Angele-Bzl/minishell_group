@@ -1,4 +1,4 @@
-#include "../../header/minishell.h"
+# include "minishell.h"
 
 static int		ft_mark(const char *s, char c, size_t *start, size_t *end);
 static size_t	ft_countword(char const *s, char c);

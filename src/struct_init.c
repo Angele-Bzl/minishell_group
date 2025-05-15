@@ -1,9 +1,9 @@
-#include "../header/minishell.h"
+# include "minishell.h"
 
 static int  env_init(t_env **ls_env, char **env)
 {
 	unsigned int	i;
-	t_env			*new_node;	
+	t_env			*new_node;
 
 	i = 0;
 	while (env[i])
@@ -20,7 +20,7 @@ static int  env_init(t_env **ls_env, char **env)
 		i++;
 	}
 	return (1);
-} 
+}
 
 int	struct_init(t_data *data, t_parsing *parsing, char **env)
 {

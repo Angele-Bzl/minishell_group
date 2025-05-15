@@ -1,4 +1,4 @@
-#include "../../header/minishell.h"
+# include "minishell.h"
 
 int	skip_under_quote(const char *str, size_t i)
 {

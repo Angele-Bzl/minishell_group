@@ -1,4 +1,4 @@
-#include "../../header/minishell.h"
+# include "minishell.h"
 
 int	save_input(t_data *data, t_parsing *parsing)
 {

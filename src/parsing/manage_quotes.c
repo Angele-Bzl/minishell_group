@@ -1,4 +1,4 @@
-#include "../../header/minishell.h"
+# include "minishell.h"
 
 int		manage_quotes(char c, t_parsing *parsing)
 {

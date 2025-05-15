@@ -1,9 +1,9 @@
-#include "../../header/minishell.h"
+# include "minishell.h"
 
 // int	create_prompt_tab(t_data *data, t_parsing *parsing)
 // {
 // 	int	i;
-	
+
 // 	handle_eardoc(data, parsing);
 // 	i = 0;
 // 	while(parsing->prompt[i])
@@ -21,12 +21,12 @@
 // 	{
 // 		if (parsing->prompt[parsing->p_index] == '\'')
 // 			manage_simple_quote();
-// 			// boolen = true ou false 
+// 			// boolen = true ou false
 // 		else if (parsing->prompt[parsing->p_index] == '\"')
 // 			manage_double_quote(prompt_line, &i, &booleans, data, &word_length);
 // 			// boolen = true ou false
-// 		else if (parsing->prompt[parsing->p_index] == '|') 
-// 			manage_pipe(prompt_line, &i, &booleans, data, &word_length); 
+// 		else if (parsing->prompt[parsing->p_index] == '|')
+// 			manage_pipe(prompt_line, &i, &booleans, data, &word_length);
 // 			//termine le node actuel, crée un nouveau node, met a jour le input et le output suivant (pipe)
 // 		else if (parsing->prompt[parsing->p_index] == '>')
 // 			manage_right_rafter(prompt_line, &i, &booleans, data, &word_length);
@@ -35,7 +35,7 @@
 // 			manage_left_rafter(prompt_line, &i, &booleans, data, &word_length);
 // 			//bool pour savoir si c'est > ou >> SINON error syntax. chercher ' ' ou ' " ' suivant pour delimiter le fd infile
 // 		else if (parsing->prompt[parsing->p_index] == '$')
-// 			manage_dollar(prompt_line, &booleans, data, &i, &word_length); 
+// 			manage_dollar(prompt_line, &booleans, data, &i, &word_length);
 // 			//si simple quote : RIEN, sinon chercher ' ' ou ' " ' suivant pour delimiter la $VAR
 // 		else if (ft_isspace(prompt_line[i]) && !booleans.simple_quote && !booleans.double_quote)
 // 		{

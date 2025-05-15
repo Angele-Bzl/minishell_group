@@ -1,4 +1,4 @@
-#include "../../header/minishell.h"
+# include "minishell.h"
 
 //enregistrer le mot qu'on vient de lire et passer au mot suivant dans le char **cmds
 // on lui envoie l'index et la taille du mot
@@ -62,7 +62,7 @@ int save_word_in_tab(char *new_word, t_data *data, t_is_active *booleans)
 	if (data->ls_io->rafters[0] == NO_RAFTERS && data->ls_io->rafters[1] == NO_RAFTERS)
 	{
 		printf("(save word)hello\n");
-		new_token_cmd->token_cmd = new_word; 
+		new_token_cmd->token_cmd = new_word;
 		new_token_cmd->next = NULL;
 		data->ls_cmds = (t_cmds*)ft_lstlast((t_list*)data->ls_cmds); //
 		ft_lstadd_back((t_list**)&data->ls_cmds->s_token_cmds, (t_list*)new_token_cmd);

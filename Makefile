@@ -22,7 +22,7 @@ DIR_LIBFT		=	libft
 #####################################################
 #					FLAGS							#
 #####################################################
-CFLAGS		=	-Wall -Wextra -Werror -g3 -g
+CFLAGS		=	-Wall -Wextra -Werror -MMD -MP -I$(DIR_HEADER) -g3 -g
 LFLAGS		=	-lreadline -lncurses
 
 #####################################################
@@ -39,13 +39,14 @@ FILES_UTILS =   cutstr.c\
 FILES		=	struct_init.c\
 				main.c\
 				$(addprefix $(DIR_PARS)/,$(FILES_PARS))\
-                $(addprefix $(DIR_UTILS)/, $(FILES_UTILS))
-                # $(DIR_EXEC)/$(FILES_EXEC)
+                $(addprefix $(DIR_UTILS)/, $(FILES_UTILS))\
+                $(addprefix $(DIR_EXEC)/, $(FILES_EXEC))
 
 FILE_HEADER	=	minishell.h
 SRC			=	$(DIR_SRC)/$(FILES) $(DIR_SRC)/$(FILES_UTILS)
 HEADERS		=	$(DIR_HEADER)/$(FILE_HEADER)
 OBJ			=	$(FILES:%.c=$(DIR_OBJ)/%.o)
+DEP			=	$(OBJ:%.o=%.d)
 
 
 #####################################################
@@ -59,10 +60,12 @@ all :
 	$(MAKE) -C $(DIR_LIBFT)/
 	$(MAKE) $(NAME)
 
+-include $(DEP)
+
 $(NAME) : $(OBJ) $(LIBFT)
 	$(CC) $(CFLAGS) $(LFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
 
-$(DIR_OBJ)/%.o : $(DIR_SRC)/%.c $(HEADERS) Makefile | $(DIR_OBJ)
+$(DIR_OBJ)/%.o : $(DIR_SRC)/%.c Makefile | $(DIR_OBJ)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(DIR_OBJ):
