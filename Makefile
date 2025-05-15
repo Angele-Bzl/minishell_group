@@ -30,22 +30,18 @@ LFLAGS		=	-lreadline -lncurses
 #####################################################
 FILES_EXEC  =   execution.c
 FILES_PARS  =   parsing.c\
-                manage_dollar.c\
-                manage_pipe.c\
-                manage_quotes.c\
-                manage_rafters.c\
-                save_word.c
-FILES_UTILS =   ft_isspace.c\
-                utils00.c
-				
-FILES		=	main.c\
-                init.c\
-                $(addprefix $(DIR_PARS)/,$(FILES_PARS))\
+                manage_quotes.c   
+FILES_UTILS =   cutstr.c\
+				skip_under_quote.c\
+				split_pipe_smart.c
+FILES		=	struct_init.c\
+				main.c\
+				$(addprefix $(DIR_PARS)/,$(FILES_PARS))\
                 $(addprefix $(DIR_UTILS)/, $(FILES_UTILS))
                 # $(DIR_EXEC)/$(FILES_EXEC)
 
 FILE_HEADER	=	minishell.h
-SRC			=	$(DIR_SRC)/$(FILES)
+SRC			=	$(DIR_SRC)/$(FILES) $(DIR_SRC)/$(FILES_UTILS)
 HEADERS		=	$(DIR_HEADER)/$(FILE_HEADER)
 OBJ			=	$(FILES:%.c=$(DIR_OBJ)/%.o)
 

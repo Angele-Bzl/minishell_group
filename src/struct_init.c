@@ -41,8 +41,9 @@ int	struct_init(t_data *data, t_parsing *parsing, char **env)
 	parsing->dollar = false;
 	parsing->double_quote = false;
 	parsing->simple_quote = false;
-	parsing->skip = NULL;
+	parsing->skip = 0;
 	parsing->prompt = NULL;
+	parsing->prompt_tab = NULL;
 	parsing->p_index = 0;
 	parsing->word_length = 0;
 	return(1);
