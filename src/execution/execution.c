@@ -6,7 +6,7 @@ Check the output access
 Check the cmd
 */
 
-static int	check_input_output(char **io, int *redirection, int *io_fd)
+static int	check_input_output(char *io[2], int redirection[2], int *io_fd)
 {
 	io_fd[0] = 0;
 	io_fd[1] = 1;
@@ -65,12 +65,7 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 	char	*path_cmd;
 	char	**env;
 
-	env = get_env(data->env_head);//
-	if (!env)
-	{
-		ft_putendl_fd("Error: malloc", STDERR_FILENO);
-		return (0);
-	}
+
 	if (i > 0)
 		previous_output = pipe_fd[0];
 	if (pipe(pipe_fd) == -1)
@@ -92,9 +87,17 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 			close(pipe_fd[1]);
 			return (0);
 		}
+		env = get_env_in_tab(data->ls_env);
+		data->ls_env = data->env_head;
+		if (!env)
+		{
+			ft_putendl_fd("Error: malloc", STDERR_FILENO);
+			return (0);
+		}
 		path_cmd = find_cmd(env, data->ls_token->cmd[0]);
 		if (!path_cmd)
 		{
+			free(env);
 			close(pipe_fd[0]);
 			close(pipe_fd[1]);
 			close(io_fd[0]);
@@ -106,6 +109,7 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 			exec_homemade_builtin(data, io_fd, path_cmd, previous_output);//
 		if (!redirect_and_exec(data, io_fd, path_cmd, previous_output, env))//
 		{
+			free(env);
 			free(path_cmd);
 			close(pipe_fd[0]);
 			close(pipe_fd[1]);
@@ -114,10 +118,12 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 			return (0);
 		}
 	}
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
 	return (1);
 }
 
-static int	count_cmds(t_token *token)
+int	count_cmds(t_token *token)
 {
 	int	i;
 
@@ -136,17 +142,18 @@ int	execution(t_data *data)
 	int		pipe_fd[2];
 	int		i;
 
-	pids = malloc(sizeof(pid_t) * count_cmds(data->token_head));
+	pids = malloc(sizeof(pid_t) * count_cmds(data->ls_token));
 	if (!pids)
 	{
 		ft_putendl_fd("Error: pids malloc", STDERR_FILENO);
 		return (0);
 	}
-	if (!data->ls_token->next)
-	{
-		exec_single_cmd();//
-		return (1);
-	}
+	data->ls_token = data->token_head;
+	// if (!data->ls_token->next)
+	// {
+	// 	exec_single_cmd();//
+	// 	return (1);
+	// }
 	i = 0;
 	while (data->ls_token)
 	{
@@ -157,6 +164,8 @@ int	execution(t_data *data)
 		data->ls_token = data->ls_token->next;
 		i++;
 	}
-	wait_for_pid(data, pids);//
+	data->ls_token = data->token_head;
+	wait_for_pid(data->ls_token, pids);
+	data->ls_token = data->token_head;
 	return (1);
 }

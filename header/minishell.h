@@ -55,7 +55,7 @@ typedef struct	s_token
 {
 	struct s_token	*next;
 	char			**cmd;
-	int				*redirection[2];
+	int				redirection[2];
 	char			*io[2];
 } t_token;
 
@@ -98,5 +98,10 @@ char	*find_cmd(char **env, char *cmd);
 char	*free_tab(char **table);
 char	*ft_strtrim_improved(char *s1, char const *set);
 int		tablen(char **table);
+int		wait_for_pid(t_token *token, pid_t *pid);
+char	**get_env_in_tab(t_env *node_env);
+/*BUILTINS*/
+int		cmd_is_builtin(char *path_cmd);
+void	exec_homemade_builtin(t_data *data, int io_fd[2], char *path_cmd, int previous_output);
 
 #endif

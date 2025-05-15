@@ -53,6 +53,30 @@ static int	init_hyp_path(char **hyp_path, char *cmd, char **env_path)
 	return (1);
 }
 
+static char	*check_if_cmd_exists(char **hypothetical_path_cmd, char **path)
+{
+	int		i;
+	char	*real_path;
+	bool	found;
+
+	i = 0;
+	found = 0;
+	real_path = NULL;
+	while (path[i])
+	{
+		if (!access(hypothetical_path_cmd[i], X_OK) && !found)
+		{
+			real_path = ft_strdup(hypothetical_path_cmd[i]);
+			found = 1;
+		}
+		free(hypothetical_path_cmd[i]);
+		i++;
+	}
+	free(hypothetical_path_cmd);
+	hypothetical_path_cmd = NULL;
+	return (real_path);
+}
+
 char	*find_cmd(char **env, char *cmd)
 {
 	char	**env_path;

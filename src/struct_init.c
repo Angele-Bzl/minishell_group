@@ -31,8 +31,8 @@ int	struct_init(t_data *data, t_parsing *parsing, char **env)
 	data->ls_token->cmd = NULL;
 	data->ls_token->io[0] = NULL;
 	data->ls_token->io[1] = NULL;
-	data->ls_token->redirection[0] = NULL;
-	data->ls_token->redirection[1] = NULL;
+	data->ls_token->redirection[0] = 0;
+	data->ls_token->redirection[1] = 0;
 	data->ls_env = NULL;
 	data->pipe_nbr = 0;
 	if (env_init(&data->ls_env, env) == 0)
