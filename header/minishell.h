@@ -86,7 +86,7 @@ typedef struct	s_parsing
 int		struct_init(t_data *data, t_parsing *parsing, char **env);
 char	*ft_cutstr(char const *s, unsigned int start);
 char	**split_pipe_smart(char const *s, char c);
-int		skip_under_quote(char *str, int i);
+int		skip_under_quote(const char *str, size_t i);
 int		parser(t_data *data, t_parsing *parsing);
 
 #endif

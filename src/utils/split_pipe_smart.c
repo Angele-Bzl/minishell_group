@@ -54,7 +54,7 @@ static int	ft_mark(const char *s, char c, size_t *start, size_t *end)
 	*start = *end;
 	while (s[*start] == c || s[*start] == ' ')
 	{
-		*start++;
+		*start = *start + 1;
 		pipe_count++;
 		if (pipe_count > 1) // s'il y a plusieurs pipe sans rien entre les 2
 		{
@@ -66,8 +66,8 @@ static int	ft_mark(const char *s, char c, size_t *start, size_t *end)
 	*end = *start;
 	while (s[*end] != c && s[*end] != '\0')
 	{
-		*end = skip_under_quote(s, end); // si s[i] = quote, on continue jusqu'a la prochaine
-		*end++;
+		*end = skip_under_quote(s, *end); // si s[i] = quote, on continue jusqu'a la prochaine
+		*end = *end + 1;
 	}
 	return (0);
 }
