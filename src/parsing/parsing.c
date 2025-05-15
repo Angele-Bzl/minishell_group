@@ -50,22 +50,13 @@
 // 	save_word(&word_length, prompt_line, &i, data, &booleans); //save le dernier mot
 // }
 
-void	print_prompt_tab(char **p_tab)
-{
-	int	i;
-
-	i = 0;
-	while (p_tab[i])
-		printf("%s", p_tab[i]);
-}
-
-int	parser(t_data *data, t_parsing *parsing)
+int	ft_parsing(t_data *data, t_parsing *parsing)
 {
 	(void)data;
 	int	i;
 
 	i = 0;
-	parsing->prompt_tab = split_pipe_smart(parsing->prompt, '|'); // créer le prompt_tab et résoudre les heredoc.
+	parsing->prompt_tab = split_pipe_smart(parsing->prompt, '|'); // créer le prompt_tab
 	print_prompt_tab(parsing->prompt_tab);
 	// while (parsing->prompt_tab[i])
 	// {

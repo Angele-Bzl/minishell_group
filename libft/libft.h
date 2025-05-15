@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abarzila <abarzila@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maballet <maballet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:19:42 by abarzila          #+#    #+#             */
-/*   Updated: 2025/05/07 10:44:24 by abarzila         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:13:19 by maballet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 typedef struct s_list
 {
-	void			*content;
 	struct s_list	*next;
+	void			*content;
 }					t_list;
 
 size_t	ft_strlen(const char *str);

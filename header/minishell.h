@@ -31,7 +31,8 @@ typedef enum	e_error
 	ERR_EXEC,
 	ERR_PIPE,
 	ERR_RAFT,
-	ERR_MALLOC
+	ERR_MALLOC,
+	ERR_SYNTAXE
 } t_error;
 
 typedef enum	e_rafter
@@ -83,20 +84,38 @@ typedef struct	s_parsing
 
 //////////////////////////////////////// functions //////////////////////////////////////
 
-int		struct_init(t_data *data, t_parsing *parsing, char **env);
-char	*ft_cutstr(char const *s, unsigned int start);
-char	**split_pipe_smart(char const *s, char c);
-int		skip_under_quote(const char *str, size_t i);
-int		parser(t_data *data, t_parsing *parsing);
-
 /*EXEC*/
 /*execution.c*/
 int		execution(t_data *data);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd);
 /*utils_exec.c*/
-char	*free_tab(char **table);
 char	*ft_strtrim_improved(char *s1, char const *set);
 int		tablen(char **table);
+
+/*PARSING*/
+/*parsing.c*/
+int		ft_parsing(t_data *data, t_parsing *parsing);
+/*free_parsing.c*/
+void	free_all(t_data *data, t_parsing *parsing);
+
+/*UTILS*/
+/*cutstr.c*/
+char	*ft_cutstr(char const *s, unsigned int start);
+/*split_pipe_smart.c*/
+char	**split_pipe_smart(char const *s, char c);
+/*skip_under_quote.c*/
+int		skip_under_quote(const char *str, int i);
+/*free_tab.c*/
+char	*free_tab(char **table);
+/*print_err_message.c*/
+int	err_message(t_error error);
+/*debug_print.c*/
+void	print_env(t_env *env);
+void	print_prompt_tab(char **p_tab);
+
+/*MAIN*/
+/*struct_init.c*/
+int		struct_init(t_data *data, t_parsing *parsing, char **env);
 
 #endif

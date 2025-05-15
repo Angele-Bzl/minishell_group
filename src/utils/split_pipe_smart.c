@@ -1,7 +1,7 @@
 # include "minishell.h"
 
 static int		ft_mark(const char *s, char c, size_t *start, size_t *end);
-static size_t	ft_countword(char const *s, char c);
+static size_t	ft_countpipe(char const *s, char c);
 static int		ft_free(char **array, size_t limit);
 
 char	**split_pipe_smart(char const *s, char c)
@@ -9,12 +9,14 @@ char	**split_pipe_smart(char const *s, char c)
 	size_t	start;
 	size_t	end;
 	size_t	limit;
-	size_t	word;
+	int		word;
 	char	**array;
 
 	limit = 0;
 	end = 0;
-	word = ft_countword(s, c);
+	word = ft_countpipe(s, c);
+	if (word == -1)
+		return(NULL);
 	array = malloc(sizeof(char *) * (word + 1));
 	if (!array)
 		return (NULL);
@@ -72,10 +74,10 @@ static int	ft_mark(const char *s, char c, size_t *start, size_t *end)
 	return (0);
 }
 
-static size_t	ft_countword(char const *s, char c)
+static int		ft_countpipe(char const *s, char c)
 {
-	size_t	i;
-	size_t	count;
+	int		i;
+	int		count;
 
 	i = 0;
 	count = 0;
@@ -85,16 +87,20 @@ static size_t	ft_countword(char const *s, char c)
 		i++;
 	if (s[i] == '|') // si on croise direct un pipe, syntax error
 	{
-		// fail.
+		return (-1);
 	}
 	while (s[i])
 	{
 		i = skip_under_quote(s, i); // si s[i] = quote, on continue jusqu'a la prochaine
+		printf("(split_pipe_smart) i = %zu, p_count = %zu\n", i, count);
+		while (s[i] == ' ')
+			i++;
 		if (s[i] == '\0')
 			return (count);
 		while (s[i] != c && s[i] != '\0')
 			i++;
 		count++;
+		i++;
 	}
 	return (count);
 }

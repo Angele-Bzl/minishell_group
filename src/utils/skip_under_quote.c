@@ -1,7 +1,9 @@
 # include "minishell.h"
 
-int	skip_under_quote(const char *str, size_t i)
+int	skip_under_quote(const char *str, int i)
 {
+	if (str[i] != '\"' && str[i] != '\'')
+		return (i);
 	if (str[i] == '\"') // chercher le second double quote
 	{
 		while (str[i] != '\"')
@@ -20,7 +22,7 @@ int	skip_under_quote(const char *str, size_t i)
 		return (i);
 	else
 	{
-		// syntax error. on ne gere pas les unclosed quote
+		printf("syntaxe error : (quote not closed)\n");
 	}
 	return (0);
 }
