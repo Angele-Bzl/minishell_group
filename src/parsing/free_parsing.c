@@ -45,8 +45,10 @@ void	free_data(t_data *data)
 {
 	if (!data)
 		return;
-	free_env(data->env_head);
-	free_token(data->token_head);
+	if (data->ls_env)
+		free_env(data->env_head);
+	if (data->ls_token)
+		free_token(data->token_head);
 	data->env_head = NULL;
 	data->ls_env = NULL;
 	data->token_head = NULL;

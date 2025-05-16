@@ -2,8 +2,6 @@
 
 int	skip_under_quote(const char *str, int i)
 {
-	if (str[i] != '\"' && str[i] != '\'')
-		return (i);
 	if (str[i] == '\"') // chercher le second double quote
 	{
 		while (str[i] != '\"')

@@ -32,11 +32,13 @@ FILES_EXEC  =   execution.c\
 				command.c\
 				utils_exec.c
 FILES_PARS  =   parsing.c\
-                manage_quotes.c
+                manage_quotes.c\
+				free_parsing.c
 FILES_UTILS =   cutstr.c\
 				skip_under_quote.c\
-				split_pipe_smart.c\
-				debug_print.c
+				pipe_segmentation.c\
+				debug_print.c\
+				free_tab.c
 FILES		=	struct_init.c\
 				main.c\
 				$(addprefix $(DIR_PARS)/,$(FILES_PARS))\

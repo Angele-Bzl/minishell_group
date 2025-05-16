@@ -1,16 +1,17 @@
 # include "minishell.h"
 
-static int		ft_mark(const char *s, char c, size_t *start, size_t *end);
-static size_t	ft_countpipe(char const *s, char c);
+static int		next_pipe_segment(const char *s, char c, size_t *start, size_t *end);
+static int		ft_countpipe(char const *s, char c);
 static int		ft_free(char **array, size_t limit);
 
-char	**split_pipe_smart(char const *s, char c)
+char	**pipe_segmentation(char const *s, char c)
 {
 	size_t	start;
 	size_t	end;
-	size_t	limit;
+	int		limit;
 	int		word;
 	char	**array;
+	int		next_pipe_result;
 
 	limit = 0;
 	end = 0;
@@ -22,8 +23,11 @@ char	**split_pipe_smart(char const *s, char c)
 		return (NULL);
 	while (limit < word)
 	{
-		if (ft_mark(s, c, &start, &end))
+		next_pipe_result = next_pipe_segment(s, c, &start, &end);
+		if (next_pipe_result == 1)
 			return (array);
+		if (next_pipe_result == -1)
+			return (NULL);
 		array[limit] = ft_substr(s, start, (end - start));
 		if (ft_free(array, limit))
 			return (NULL);
@@ -48,7 +52,7 @@ static int	ft_free(char **array, size_t limit)
 	return (0);
 }
 
-static int	ft_mark(const char *s, char c, size_t *start, size_t *end)
+static int	next_pipe_segment(const char *s, char c, size_t *start, size_t *end)
 {
 	int	pipe_count;
 
@@ -56,11 +60,13 @@ static int	ft_mark(const char *s, char c, size_t *start, size_t *end)
 	*start = *end;
 	while (s[*start] == c || s[*start] == ' ')
 	{
+		if (s[*start] == c)
+			pipe_count++;
 		*start = *start + 1;
-		pipe_count++;
 		if (pipe_count > 1) // s'il y a plusieurs pipe sans rien entre les 2
 		{
-			// fail
+			printf("syntaxe error\n");
+			return (-1);
 		}
 	}
 	if (s[*start] == '\0' )
@@ -68,7 +74,8 @@ static int	ft_mark(const char *s, char c, size_t *start, size_t *end)
 	*end = *start;
 	while (s[*end] != c && s[*end] != '\0')
 	{
-		*end = skip_under_quote(s, *end); // si s[i] = quote, on continue jusqu'a la prochaine
+		if (s[*end] == '\"' || s[*end] == '\'')
+			*end = skip_under_quote(s, *end); // si s[i] = quote, on continue jusqu'a la prochaine
 		*end = *end + 1;
 	}
 	return (0);
@@ -87,20 +94,26 @@ static int		ft_countpipe(char const *s, char c)
 		i++;
 	if (s[i] == '|') // si on croise direct un pipe, syntax error
 	{
+		printf("syntaxe error\n");
 		return (-1);
 	}
 	while (s[i])
 	{
-		i = skip_under_quote(s, i); // si s[i] = quote, on continue jusqu'a la prochaine
-		printf("(split_pipe_smart) i = %zu, p_count = %zu\n", i, count);
+		if (s[i] == '\"' || s[i] == '\'')
+			i = skip_under_quote(s, i); // si s[i] = quote, on continue jusqu'a la prochaine
 		while (s[i] == ' ')
 			i++;
 		if (s[i] == '\0')
 			return (count);
 		while (s[i] != c && s[i] != '\0')
+		{
+			if (s[i] == '\"' || s[i] == '\'')
+				i = skip_under_quote(s, i); // si s[i] = quote, on continue jusqu'a la prochaine
 			i++;
+		}
 		count++;
-		i++;
+		if (s[i] != '\0')
+			i++;
 	}
 	return (count);
 }

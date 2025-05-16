@@ -98,12 +98,14 @@ int		tablen(char **table);
 int		ft_parsing(t_data *data, t_parsing *parsing);
 /*free_parsing.c*/
 void	free_all(t_data *data, t_parsing *parsing);
+/*expand_var.c*/
+int	expand_var(t_data *data, t_parsing *parsing);
 
 /*UTILS*/
 /*cutstr.c*/
 char	*ft_cutstr(char const *s, unsigned int start);
 /*split_pipe_smart.c*/
-char	**split_pipe_smart(char const *s, char c);
+char	**pipe_segmentation(char const *s, char c);
 /*skip_under_quote.c*/
 int		skip_under_quote(const char *str, int i);
 /*free_tab.c*/

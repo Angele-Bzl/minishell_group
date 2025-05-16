@@ -56,14 +56,14 @@ int	ft_parsing(t_data *data, t_parsing *parsing)
 	int	i;
 
 	i = 0;
-	parsing->prompt_tab = split_pipe_smart(parsing->prompt, '|'); // créer le prompt_tab
+	parsing->prompt_tab = pipe_segmentation(parsing->prompt, '|'); // créer le prompt_tab
+	if (!parsing->prompt_tab)
+	{
+		free_all(data, parsing);
+		return (1);
+	}
 	print_prompt_tab(parsing->prompt_tab);
-	// while (parsing->prompt_tab[i])
-	// {
-	// 	// 1 expand les var
-	// 	// 2 gerer la cmd ou le i/o
-	// 	i++;
-	// }
+	// expand_var(data, parsing);
+		// 2 gerer la cmd ou le i/o
 	return (0);
 }
-

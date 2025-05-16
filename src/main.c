@@ -11,23 +11,22 @@ int main(int ac, char **av, char **env)
     parsing = malloc(sizeof(t_parsing));
     if (!data || !parsing)
         return(ALL_OK);
-    struct_init(data, parsing, env);
-        // return(free_all(data, parsing));
-    print_env(data->ls_env);
+    if (!struct_init(data, parsing, env))
+        free_all(data, parsing);
     while (1)
     {
         parsing->prompt = readline("minishell > ");
         if (parsing->prompt)
 		{
 			add_history(parsing->prompt);
-			if (!ft_parsing(data, parsing))
+			if (ft_parsing(data, parsing) == 1)
             {
-                // free_all(data, parsing);
-                // return (1);
+                //  free_all(data, parsing);
+                return (1);
             }
             // if (!execution(data))
             // {
-                // free_data(data);
+                // free_all(data);
                 // return (1);
             // }
 		}
