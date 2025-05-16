@@ -18,8 +18,8 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, int previous_out
 		perror("dup2");
 		return (0);
 	}
-	if (cmd_is_builtin(path_cmd))
-			exec_homemade_builtin(data, path_cmd);//
+	if (cmd_is_builtin(data->ls_token->cmd[0]))
+			exec_homemade_builtin(data);//
 	if (execve(path_cmd, data->ls_token->cmd, env) == -1)
 	{
 		ft_putendl_fd("Error: execve failed", STDERR_FILENO);
