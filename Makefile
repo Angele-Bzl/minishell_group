@@ -32,10 +32,9 @@ LFLAGS		=	-lreadline -lncurses
 FILES_EXEC  =   execution.c\
 				command.c\
 				utils_exec.c\
-				utils_builtins.c #builtins
+				$(addprefix $(DIR_BUILTINS)/, $(FILES_BUILT))
 
-# $(addprefix $(DIR_BUILTINS)/, $(FILES_BUILT))
-# FILES_BUILT	=	utils_builtins.c\
+FILES_BUILT	=	utils_builtin.c\
 				echo.c
 FILES_PARS  =   parsing.c\
                 manage_quotes.c
@@ -77,7 +76,7 @@ $(DIR_OBJ)/%.o : $(DIR_SRC)/%.c Makefile | $(DIR_OBJ)
 $(DIR_OBJ):
 	mkdir -p $(DIR_OBJ)
 	mkdir -p $(DIR_OBJ)/$(DIR_EXEC)
-# mkdir -p $(DIR_OBJ)/$(DIR_EXEC)/$(DIR_BUILTINS)
+	mkdir -p $(DIR_OBJ)/$(DIR_EXEC)/$(DIR_BUILTINS)
 	mkdir -p $(DIR_OBJ)/$(DIR_PARS)
 	mkdir -p $(DIR_OBJ)/$(DIR_UTILS)
 
