@@ -83,7 +83,6 @@ char	*find_cmd(char **env, char *cmd)
 	char	**hypothetical_path_cmd;
 	char	*path_cmd;
 
-	/*if builtin*/
 	if (cmd_is_builtin(cmd))
 		return (cmd);
 	/*A FAIRE if option chemin absolu*/
