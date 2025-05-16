@@ -6,39 +6,7 @@ Check the output access
 Check the cmd
 */
 
-static int	check_input_output(char *io[2], int redirection[2], int *io_fd)
-{
-	io_fd[0] = 0;
-	io_fd[1] = 1;
-	if (io[0])
-	{
-		if (redirection[0] == SIMPLE_RIGHT)
-			io_fd[0] = open(io[0], O_RDONLY);
-		else if (redirection[1] == DOUBLE_RIGHT)
-			/*???*/
-		if (io_fd[0] == -1)
-		{
-			perror(io[0]);
-			return(0);
-		}
-	}
-	if (io[1])
-	{
-		if (redirection[1] == SIMPLE_RIGHT)
-			io_fd[1] = open(io[1], O_WRONLY | O_TRUNC, 0644);
-		else if (redirection[1] == DOUBLE_RIGHT)
-			io_fd[1] = open(io[1], O_WRONLY | O_APPEND, 0644);
-		if (io_fd[1] == -1)
-		{
-			close(io_fd[0]);
-			perror(io[1]);
-			return(0);
-		}
-	}
-	return (1);
-}
-
-static int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, int previous_output, char **env)
+int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, int previous_output, char **env)
 {
 	if (dup2(previous_output, STDIN_FILENO) == -1)
 	{
@@ -50,6 +18,8 @@ static int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, int previ
 		perror("dup2");
 		return (0);
 	}
+	if (cmd_is_builtin(path_cmd))
+			exec_homemade_builtin(data, path_cmd);//
 	if (execve(path_cmd, data->ls_token->cmd, env) == -1)
 	{
 		ft_putendl_fd("Error: execve failed", STDERR_FILENO);
@@ -105,9 +75,7 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 			ft_putendl_fd("Error: No path to the command.", STDERR_FILENO);
 			return (0);
 		}
-		if (cmd_is_builtin(path_cmd))
-			exec_homemade_builtin(data, io_fd, path_cmd, previous_output);//
-		if (!redirect_and_exec(data, io_fd, path_cmd, previous_output, env))//
+		else if (!redirect_and_exec(data, io_fd, path_cmd, previous_output, env))
 		{
 			free(env);
 			free(path_cmd);
@@ -142,6 +110,11 @@ int	execution(t_data *data)
 	int		pipe_fd[2];
 	int		i;
 
+	if (!data->ls_token->next)
+	{
+		exec_single_cmd(data);//
+		return (1);
+	}
 	pids = malloc(sizeof(pid_t) * count_cmds(data->ls_token));
 	if (!pids)
 	{
@@ -149,11 +122,6 @@ int	execution(t_data *data)
 		return (0);
 	}
 	data->ls_token = data->token_head;
-	// if (!data->ls_token->next)
-	// {
-	// 	exec_single_cmd();//
-	// 	return (1);
-	// }
 	i = 0;
 	while (data->ls_token)
 	{
