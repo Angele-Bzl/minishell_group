@@ -33,9 +33,10 @@ FILES_EXEC  =   execution.c\
 				utils_exec.c
 FILES_PARS  =   parsing.c\
                 manage_quotes.c\
+				prompt_check.c\
 				free_parsing.c
 FILES_UTILS =   cutstr.c\
-				skip_under_quote.c\
+				pipe_seg_utils.c\
 				pipe_segmentation.c\
 				debug_print.c\
 				free_tab.c

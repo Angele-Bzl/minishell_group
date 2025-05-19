@@ -63,8 +63,8 @@ typedef struct	s_token
 typedef struct	s_data
 {
 	t_env	*ls_env;
-	t_token	*ls_token;
 	t_env	*env_head;
+	t_token	*ls_token;
 	t_token	*token_head;
 	int		pipe_nbr;
 } t_data;
@@ -98,20 +98,21 @@ int		tablen(char **table);
 int		ft_parsing(t_data *data, t_parsing *parsing);
 /*free_parsing.c*/
 void	free_all(t_data *data, t_parsing *parsing);
+int		prompt_check(char *prompt);
 /*expand_var.c*/
-int	expand_var(t_data *data, t_parsing *parsing);
+int		expand_var(t_data *data, t_parsing *parsing);
 
 /*UTILS*/
 /*cutstr.c*/
 char	*ft_cutstr(char const *s, unsigned int start);
 /*split_pipe_smart.c*/
 char	**pipe_segmentation(char const *s, char c);
-/*skip_under_quote.c*/
-int		skip_under_quote(const char *str, int i);
+/*pipe_seg_utils.c*/
+int		skip_quote(const char *str, int *i);
 /*free_tab.c*/
 char	*free_tab(char **table);
 /*print_err_message.c*/
-int	err_message(t_error error);
+int		err_message(t_error error);
 /*debug_print.c*/
 void	print_env(t_env *env);
 void	print_prompt_tab(char **p_tab);

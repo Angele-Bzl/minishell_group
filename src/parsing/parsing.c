@@ -56,6 +56,12 @@ int	ft_parsing(t_data *data, t_parsing *parsing)
 	int	i;
 
 	i = 0;
+	if (prompt_check(parsing->prompt) == -1)
+		{
+			printf("syntax error : prompt didn't pass checks");
+			free_all(data, parsing);
+			return (1);
+		}
 	parsing->prompt_tab = pipe_segmentation(parsing->prompt, '|'); // créer le prompt_tab
 	if (!parsing->prompt_tab)
 	{

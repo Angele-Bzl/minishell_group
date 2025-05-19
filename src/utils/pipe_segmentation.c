@@ -1,50 +1,46 @@
 # include "minishell.h"
 
-static int		next_pipe_segment(const char *s, char c, size_t *start, size_t *end);
+static int		next_pipe_segment(const char *s, char c, int *start, int *end);
 static int		ft_countpipe(char const *s, char c);
-static int		ft_free(char **array, size_t limit);
+static int		ft_free(char **array, int i);
 
 char	**pipe_segmentation(char const *s, char c)
 {
-	size_t	start;
-	size_t	end;
-	int		limit;
-	int		word;
+	int		start;
+	int		end;
+	int		i;
+	int		words;
 	char	**array;
-	int		next_pipe_result;
 
-	limit = 0;
+	i = 0;
 	end = 0;
-	word = ft_countpipe(s, c);
-	if (word == -1)
+	words = ft_countpipe(s, c);
+	if (words == -1)
 		return(NULL);
-	array = malloc(sizeof(char *) * (word + 1));
+	array = malloc(sizeof(char *) * (words + 1));
 	if (!array)
 		return (NULL);
-	while (limit < word)
+	while (i <= words)
 	{
-		next_pipe_result = next_pipe_segment(s, c, &start, &end);
-		if (next_pipe_result == 1)
-			return (array);
-		if (next_pipe_result == -1)
+		if (next_pipe_segment(s, c, &start, &end) == -1)
 			return (NULL);
-		array[limit] = ft_substr(s, start, (end - start));
-		if (ft_free(array, limit))
+		array[i] = ft_substr(s, start, (end - start));
+		if (ft_free(array, i))
 			return (NULL);
-		limit++;
+		i++;
 	}
-	array[limit] = NULL;
+	array[i] = NULL;
 	return (array);
 }
 
-static int	ft_free(char **array, size_t limit)
+static int	ft_free(char **array, int i)
 {
-	if (!array[limit])
+	if (!array[i])
 	{
-		while (limit + 1 > 0)
+		while (i + 1 > 0)
 		{
-			free(array[limit]);
-			limit--;
+			free(array[i]);
+			i--;
 		}
 		free(array);
 		return (1);
@@ -52,7 +48,7 @@ static int	ft_free(char **array, size_t limit)
 	return (0);
 }
 
-static int	next_pipe_segment(const char *s, char c, size_t *start, size_t *end)
+static int	next_pipe_segment(const char *s, char c, int *start, int *end)
 {
 	int	pipe_count;
 
@@ -75,7 +71,7 @@ static int	next_pipe_segment(const char *s, char c, size_t *start, size_t *end)
 	while (s[*end] != c && s[*end] != '\0')
 	{
 		if (s[*end] == '\"' || s[*end] == '\'')
-			*end = skip_under_quote(s, *end); // si s[i] = quote, on continue jusqu'a la prochaine
+			skip_quote(s, end); // si s[i] = quote, on continue jusqu'a la prochaine
 		*end = *end + 1;
 	}
 	return (0);
@@ -99,21 +95,18 @@ static int		ft_countpipe(char const *s, char c)
 	}
 	while (s[i])
 	{
-		if (s[i] == '\"' || s[i] == '\'')
-			i = skip_under_quote(s, i); // si s[i] = quote, on continue jusqu'a la prochaine
 		while (s[i] == ' ')
 			i++;
-		if (s[i] == '\0')
-			return (count);
 		while (s[i] != c && s[i] != '\0')
 		{
 			if (s[i] == '\"' || s[i] == '\'')
-				i = skip_under_quote(s, i); // si s[i] = quote, on continue jusqu'a la prochaine
+				skip_quote(s, &i); // si s[i] = quote, on continue jusqu'a la prochaine
 			i++;
 		}
 		count++;
 		if (s[i] != '\0')
 			i++;
 	}
+	count--;
 	return (count);
 }
