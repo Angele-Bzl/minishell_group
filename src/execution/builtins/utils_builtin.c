@@ -19,10 +19,10 @@ int	cmd_is_builtin(char *path_cmd)
 	return (0);
 }
 
-void	exec_homemade_builtin(t_data *data)
+void	exec_homemade_builtin(t_data *data, char **env)
 {
 	if (!ft_strncmp(data->ls_token->cmd[0], "echo", 4))
-		exec_echo(data->ls_token->cmd);
+		exec_echo(data->ls_token->cmd, env);
 	if (!ft_strncmp(data->ls_token->cmd[0], "cd", 2))
 		//exec_cd();//
 	if (!ft_strncmp(data->ls_token->cmd[0], "pwd", 3))

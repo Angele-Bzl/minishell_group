@@ -1,34 +1,63 @@
-//# include "minishell.h"
+# include "minishell.h"
 
-#include "../../../header/minishell.h"
+// #include "../../../header/minishell.h"
 
-void	exec_echo(char **cmd)
+static void	manage_dash(bool *new_line, bool *dash, char **cmd, int i)
 {
-	int	i;
+	int	j;
 
+	j = 1;
+	while (cmd[i][j] == 'n')
+		j++;
+	if (cmd[i][j] == '\0' && *dash == false)
+		*new_line = false;
+	else
+	{
+		printf("%s", cmd[i]);
+		if (cmd[i + 1])
+			printf(" ");
+		*dash = true;
+	}
+}
+
+static void	print_arg(char **cmd, int i)
+{
+	printf("%s", cmd[i]);
+	if (cmd[i + 1])
+		printf(" ");
+}
+
+void	exec_echo(char **cmd, char **env)
+{
+	int		i;
+	bool	dash;
+	bool	new_line;
+
+	new_line = true;
+	dash = false;
 	if (!cmd[1])
 	{
 		printf("\n");
 		return ;
 	}
-	if (!strncmp(cmd[1], "-n", 2)) //put back the ft version !
-		i = 2;
-	else
-		i = 1;
+	i = 1;
 	while (cmd[i])
 	{
-		printf("%s", cmd[i]);
-		if (cmd[i + 1])
-			printf(" ");
+		if (cmd[i][0] == '-')
+			manage_dash(&new_line, &dash, cmd, i);
+		else
+			print_arg(cmd, i);
 		i++;
 	}
-	if (strncmp(cmd[1], "-n", 2)) //put back the ft version !
+	if (new_line == true)
 		printf("\n");
 }
 
-int main(void)
-{
-	char *cmd[4] = {"echo", "-n", "world", NULL};
+// int main(int ac, char **av, char **env)
+// {
+// 	(void)ac;
+// 	(void)av;
+// 	char *cmd[5] = {"echo", "-p", "-n", "WORLD", NULL};
 
-	exec_echo(cmd);
-}
+// 	exec_echo(cmd, env);
+// }

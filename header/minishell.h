@@ -106,6 +106,6 @@ char	**get_env_in_tab(t_env *node_env);
 int	check_input_output(char *io[2], int redirection[2], int *io_fd);
 int	exec_single_cmd(t_data *data);
 /*BUILTINS*/
-int		cmd_is_builtin(char *path_cmd);
-void	exec_homemade_builtin(t_data *data);
+int		cmd_is_builtin(char *path_cmd, char **env);
+void	exec_homemade_builtin(t_data *data, char **env);
 #endif
