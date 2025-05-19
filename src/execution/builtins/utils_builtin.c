@@ -1,6 +1,6 @@
 # include "minishell.h"
 
-int	cmd_is_builtin(char *path_cmd)
+int	cmd_is_builtin(char *path_cmd, char **env)
 {
 	if (!ft_strncmp(path_cmd, "echo", 4))
 		return (1);
@@ -24,7 +24,7 @@ void	exec_homemade_builtin(t_data *data, char **env)
 	if (!ft_strncmp(data->ls_token->cmd[0], "echo", 4))
 		exec_echo(data->ls_token->cmd, env);
 	if (!ft_strncmp(data->ls_token->cmd[0], "cd", 2))
-		//exec_cd();//
+		exec_cd(data->ls_token->cmd, env);//
 	if (!ft_strncmp(data->ls_token->cmd[0], "pwd", 3))
 		//exec_pwd();//
 	if (!ft_strncmp(data->ls_token->cmd[0], "export", 6))
