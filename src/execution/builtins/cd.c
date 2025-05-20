@@ -10,13 +10,13 @@ static int	update_pwd(t_env **list_env, char *variable, int var_length)
 	pwd_exists = false;
 	while (*list_env)
 	{
-		if (ft_strncmp((*list_env)->line, variable, var_length))
+		if (ft_strncmp((*list_env)->line, variable, var_length))//
 		{
 			free((*list_env)->line);
 			(*list_env)->line = ft_strjoin(variable, getcwd(NULL, 0));
 			if (!(*list_env)->line)
 			{
-				ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
+				// ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
 				return (0);
 			}
 			pwd_exists = true;
@@ -28,7 +28,7 @@ static int	update_pwd(t_env **list_env, char *variable, int var_length)
 	(*list_env)->line = ft_strjoin(variable, getcwd(NULL, 0));
 	if (!(*list_env)->line)
 	{
-		ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
+		// ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
 		return (0);
 	}
 	return (1);
@@ -42,14 +42,16 @@ int	exec_cd(char **cmd, t_env *list_env)
 		return (0);
 	}
 	/*mettre a jour env oldpwd si elle existe, sinon il faut la creer*/
-	update_pwd(&list_env, "OLDPWD=", 7);
+	if (!update_pwd(&list_env, "OLDPWD=", 7))
+		return (0);
 	if (chdir(cmd[1]) == -1)
 	{
-		perror("Error chdir:");
+		perror("Error chdir");
 		return (0);
 	}
 	/*mettre a jour env pwd si la variable existe, sinon il faut la creer*/
 	update_pwd(&list_env, "PWD=", 4);
+		return (0);
 	return (1);
 }
 static int  env_init_TEST(t_env **ls_env, char **env)//////////////////
@@ -86,8 +88,8 @@ static void print_env(t_env **ls_env)//////////
 }
 int main(int ac, char **av, char **env)
 {
-	t_env *ls_env;
-	char *cmds[2] = {"cd", "../.."};
+	t_env 	*ls_env;
+	char 	*cmds[2] = {"cd", "../.."};
 
 	ls_env = malloc(sizeof(t_env));
 	env_init_TEST(&ls_env, env);
