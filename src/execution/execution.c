@@ -18,7 +18,7 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, int previous_out
 		perror("dup2");
 		return (0);
 	}
-	if (cmd_is_builtin(data->ls_token->cmd[0]))
+	if (cmd_is_builtin(data->ls_token->cmd[0], env))
 			exec_homemade_builtin(data, env);
 	if (execve(path_cmd, data->ls_token->cmd, env) == -1)
 	{
@@ -112,7 +112,7 @@ int	execution(t_data *data)
 
 	if (!data->ls_token->next)
 	{
-		exec_single_cmd(data);//
+		exec_single_cmd(data);
 		return (1);
 	}
 	pids = malloc(sizeof(pid_t) * count_cmds(data->ls_token));

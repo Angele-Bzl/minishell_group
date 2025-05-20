@@ -27,7 +27,7 @@ static void	print_arg(char **cmd, int i)
 		printf(" ");
 }
 
-void	exec_echo(char **cmd, char **env)
+void	exec_echo(char **cmd)
 {
 	int		i;
 	bool	dash;

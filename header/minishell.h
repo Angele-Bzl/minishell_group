@@ -108,5 +108,5 @@ int	exec_single_cmd(t_data *data);
 /*BUILTINS*/
 int		cmd_is_builtin(char *path_cmd, char **env);
 void	exec_homemade_builtin(t_data *data, char **env);
-void	exec_echo(char **cmd, char **env);
+void	exec_echo(char **cmd);
 #endif
