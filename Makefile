@@ -36,7 +36,10 @@ FILES_EXEC  =   execution.c\
 				$(addprefix $(DIR_BUILTINS)/, $(FILES_BUILT))
 
 FILES_BUILT	=	utils_builtin.c\
-				echo.c
+				echo.c\
+				cd.c\
+				pwd.c\
+				export.c
 FILES_PARS  =   parsing.c\
                 manage_quotes.c
 FILES_UTILS =   cutstr.c\

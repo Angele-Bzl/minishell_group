@@ -24,21 +24,16 @@ int	exec_homemade_builtin(t_data *data, char **env)
 	if (!ft_strncmp(data->ls_token->cmd[0], "echo", 4))
 		exec_echo(data->ls_token->cmd);
 	if (!ft_strncmp(data->ls_token->cmd[0], "cd", 2))
-	{
-		if (!exec_cd(data->ls_token->cmd, data->ls_env))
-			return (0);
-	}
+		return (exec_cd(data->ls_token->cmd, data->ls_env));
 	if (!ft_strncmp(data->ls_token->cmd[0], "pwd", 3))
-		exec_pwd(env);//
+		exec_pwd(env);
 	if (!ft_strncmp(data->ls_token->cmd[0], "export", 6))
-		//exec_export();//
+		return (exec_export(data->ls_env), data->ls_token);
 	if (!ft_strncmp(data->ls_token->cmd[0], "unset", 5))
 		//exec_unset();//
 	if (!ft_strncmp(data->ls_token->cmd[0], "env", 3))
 		//exec_env();//
 	if (!ft_strncmp(data->ls_token->cmd[0], "exit", 4))
 		//exec_exit();//
-	data->ls_token = data->token_head;
-	data->ls_env = data->env_head;
 	return (1);
 }
