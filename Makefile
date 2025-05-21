@@ -34,7 +34,11 @@ FILES_EXEC  =   execution.c\
 FILES_PARS  =   parsing.c\
                 manage_quotes.c\
 				prompt_check.c\
-				free_parsing.c
+				free_parsing.c\
+				print_and_free.c\
+				expand_var.c\
+				manage_dollar.c\
+				manage_dollar_utils.c
 FILES_UTILS =   cutstr.c\
 				pipe_seg_utils.c\
 				pipe_segmentation.c\

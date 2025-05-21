@@ -19,11 +19,7 @@ int main(int ac, char **av, char **env)
         if (parsing->prompt)
 		{
 			add_history(parsing->prompt);
-			if (ft_parsing(data, parsing) == 1)
-            {
-                //  free_all(data, parsing);
-                return (1);
-            }
+			ft_parsing(data, parsing);
             // if (!execution(data))
             // {
                 // free_all(data);

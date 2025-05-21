@@ -56,20 +56,15 @@ int	ft_parsing(t_data *data, t_parsing *parsing)
 	int	i;
 
 	i = 0;
-	if (prompt_check(parsing->prompt) == -1)
-		{
-			printf("syntax error : prompt didn't pass checks");
-			free_all(data, parsing);
-			return (1);
-		}
-	parsing->prompt_tab = pipe_segmentation(parsing->prompt, '|'); // créer le prompt_tab
-	if (!parsing->prompt_tab)
-	{
-		free_all(data, parsing);
-		return (1);
-	}
+	if (prompt_check(parsing->prompt) == -1)	// check si le prompt a des quotes ouverte ou finit par un pipe. Ne pas gerer les cas de heredoc
+			print_and_free("sybrax error : heredoc not handled\n", data, parsing);
+	parsing->prompt_tab = pipe_segmentation(parsing->prompt, '|'); // créer le prompt_tab et print les erreurs
+	if (!parsing->prompt_tab)					// en cas de soucis, free sans print
+		print_and_free(NULL, data, parsing);
+	print_prompt_tab(parsing->prompt_tab); 
+	if (expand_var(data, parsing) == -1)		// si mauvais, expand et on free
+		print_and_free(NULL, data, parsing);
 	print_prompt_tab(parsing->prompt_tab);
-	// expand_var(data, parsing);
-		// 2 gerer la cmd ou le i/o
+												// gerer la cmd ou le i/o
 	return (0);
 }

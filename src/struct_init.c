@@ -48,6 +48,7 @@ int	struct_init(t_data *data, t_parsing *parsing, char **env)
 	parsing->skip = 0;
 	parsing->prompt = NULL;
 	parsing->prompt_tab = NULL;
+	parsing->pipe_seg = 0;
 	parsing->p_index = 0;
 	parsing->word_length = 0;
 	return(1);

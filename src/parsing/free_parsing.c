@@ -72,4 +72,5 @@ void	free_all(t_data *data, t_parsing *parsing)
 {
 	free_data(data);
 	free_parsing(parsing);
+	exit(1);
 }

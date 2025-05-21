@@ -71,6 +71,7 @@ typedef struct	s_data
 
 typedef struct	s_parsing
 {
+	int		pipe_seg;
 	int		p_index;
 	int		word_length;
 	char	skip;
@@ -98,9 +99,16 @@ int		tablen(char **table);
 int		ft_parsing(t_data *data, t_parsing *parsing);
 /*free_parsing.c*/
 void	free_all(t_data *data, t_parsing *parsing);
+/*prompt_check.c*/
 int		prompt_check(char *prompt);
 /*expand_var.c*/
 int		expand_var(t_data *data, t_parsing *parsing);
+/*print_and_free.c*/
+void	print_and_free(char *str, t_data *data, t_parsing *parsing);
+/*manage_dollar*/
+int		manage_dollar(t_data *data,t_parsing *parsing);
+/*manage_dollar_utils*/
+char	*find_var_name(t_parsing *parsing);
 
 /*UTILS*/
 /*cutstr.c*/
