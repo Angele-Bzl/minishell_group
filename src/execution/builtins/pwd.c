@@ -10,7 +10,7 @@ void	exec_pwd(char **env)
 	while (env[i])
 	{
 		if (!ft_strncmp(env[i], "PWD=", 4))
-			printf("%s\n", env[i]+4);
+			printf("%s\n", env[i] + 4);
 		i++;
 	}
 }
