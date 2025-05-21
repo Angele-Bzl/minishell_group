@@ -13,21 +13,15 @@ void	exec_unset(t_env *ls_env, char **cmds)
 	previous = NULL;
 	while (current)
 	{
-		// printf("loop current\n");
 		i = 1;
 		unset_done = false;
 		while (cmds[i])
 		{
-			// printf("loop cmds[i]\n");
-			printf("current line = %s\n", current->line);
-			printf("cmds[i] = %s\n", cmds[i]);
 			if (!ft_strncmp(current->line, cmds[i], ft_strlen(cmds[i])))
 			{//nonnnn parce que si je veux suppr $A je vais aussi suppr $Allo
-			//strjoin le '=' ?
+				//strjoin le '=' ?
 				//update ls_env si c'est le premier node qui se fait unset
 				previous->next = current->next;
-				printf("hello\n");
-				free(current->line);
 				free(current);
 				unset_done = true;
 				break ;
