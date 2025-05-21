@@ -1,6 +1,6 @@
-// # include "minishell.h"
+# include "minishell.h"
 
-#include "../../../header/minishell.h"
+// #include "../../../header/minishell.h"
 
 // static int	update_pwd(char *variable, int var_length, char *env_line, bool *pwd_exists)
 // {
@@ -82,7 +82,6 @@ int	exec_cd(char **cmd, t_env *list_env)
 // {
 // 	unsigned int	i;
 // 	t_env			*new_node;
-
 // 	i = 0;
 // 	while (env[i])
 // 	{
@@ -103,7 +102,6 @@ int	exec_cd(char **cmd, t_env *list_env)
 // static void print_env(t_env *ls_env)
 // {
 // 	t_env	*current;
-
 // 	current = ls_env;
 // 	while (current)
 // 	{
@@ -117,7 +115,6 @@ int	exec_cd(char **cmd, t_env *list_env)
 // {
 // 	t_env 	*ls_env;
 // 	char 	*cmds[3] = {"cd", "../..", NULL};
-
 // 	ls_env = NULL;
 // 	env_init_TEST(&ls_env, env);
 // 	printf("FIRST\n\n");
