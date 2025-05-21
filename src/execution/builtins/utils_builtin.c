@@ -19,14 +19,17 @@ int	cmd_is_builtin(char *path_cmd, char **env)
 	return (0);
 }
 
-void	exec_homemade_builtin(t_data *data, char **env)
-{
+int	exec_homemade_builtin(t_data *data, char **env)
+{//pas sure du strncmp si une fonction s'appelle echooo par exemple
 	if (!ft_strncmp(data->ls_token->cmd[0], "echo", 4))
 		exec_echo(data->ls_token->cmd);
 	if (!ft_strncmp(data->ls_token->cmd[0], "cd", 2))
-		exec_cd(data->ls_token->cmd, data->ls_env);//
+	{
+		if (!exec_cd(data->ls_token->cmd, data->ls_env))
+			return (0);
+	}
 	if (!ft_strncmp(data->ls_token->cmd[0], "pwd", 3))
-		//exec_pwd();//
+		exec_pwd(env);//
 	if (!ft_strncmp(data->ls_token->cmd[0], "export", 6))
 		//exec_export();//
 	if (!ft_strncmp(data->ls_token->cmd[0], "unset", 5))
@@ -37,5 +40,5 @@ void	exec_homemade_builtin(t_data *data, char **env)
 		//exec_exit();//
 	data->ls_token = data->token_head;
 	data->ls_env = data->env_head;
-	return ;
+	return (1);
 }
