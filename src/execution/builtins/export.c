@@ -7,7 +7,7 @@ int	exec_export(t_env *ls_env, char **cmds)
 	int		i;
 	t_env	*new;
 
-	i = 0;
+	i = 1;
 	while (cmds[i])
 	{
 		new = malloc(sizeof(t_env));
