@@ -29,6 +29,8 @@ int	prompt_check(char *prompt)
 
 static int	last_pipe_check(char *prompt, int i)
 {
+	if (prompt[i] != ' ' && prompt[i] != '|')
+		return (0);
 	if (prompt[i] == '|')
 		return (-1);
 	i--;

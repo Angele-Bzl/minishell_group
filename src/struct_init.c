@@ -32,10 +32,10 @@ int	struct_init(t_data *data, t_parsing *parsing, char **env)
 	data->token_head = data->ls_token;
 	data->ls_token->next = NULL;
 	data->ls_token->cmd = NULL;
-	data->ls_token->io[0] = NULL;
-	data->ls_token->io[1] = NULL;
-	data->ls_token->redirection[0] = NULL;
-	data->ls_token->redirection[1] = NULL;
+	data->ls_token->io_value[0] = NULL;
+	data->ls_token->io_value[1] = NULL;
+	data->ls_token->io_redir[0] = DEFAULT;
+	data->ls_token->io_redir[1] = DEFAULT;
 	data->ls_env = NULL;
 	data->env_head = NULL;
 	data->pipe_nbr = 0;
@@ -45,6 +45,7 @@ int	struct_init(t_data *data, t_parsing *parsing, char **env)
 	parsing->dollar = false;
 	parsing->double_quote = false;
 	parsing->simple_quote = false;
+	parsing->outfile_issue = false;
 	parsing->skip = 0;
 	parsing->prompt = NULL;
 	parsing->prompt_tab = NULL;

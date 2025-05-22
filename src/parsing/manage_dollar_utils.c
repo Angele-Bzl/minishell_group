@@ -11,7 +11,7 @@ char	*find_var_name(t_parsing *parsing)
 	start = parsing->p_index;
 	end = start;
 	while (parsing->prompt[end] != ' ' && parsing->prompt[end] != '\'' && parsing->prompt[end] != '\"'
-		&& parsing->prompt[end] != '$' && parsing->prompt[end] != '\0')
+		&& parsing->prompt[end] != '$' && parsing->prompt[end] != '\0')		// Tant qu'on est pas a la fin de notre variable
 		end++;
 	var_len = end - start;
 	var_name = malloc(sizeof(char) * (var_len + 1));

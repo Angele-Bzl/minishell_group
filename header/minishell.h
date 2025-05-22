@@ -37,11 +37,12 @@ typedef enum	e_error
 
 typedef enum	e_rafter
 {
-	NO_RAFTERS,
+	EMPTY_RAFTER,
 	SIMPLE_LEFT,
 	DOUBLE_LEFT,
 	SIMPLE_RIGHT,
-	DOUBLE_RIGHT
+	DOUBLE_RIGHT,
+	DEFAULT
 } t_rafter;
 
 /////////////////////////////////////// structures //////////////////////////////////////
@@ -56,8 +57,8 @@ typedef struct	s_token
 {
 	struct s_token	*next;
 	char			**cmd;
-	int				*redirection[2];
-	char			*io[2];
+	t_rafter		*io_redir[2];
+	char			*io_value[2];
 } t_token;
 
 typedef struct	s_data
@@ -80,6 +81,7 @@ typedef struct	s_parsing
 	bool	dollar;
 	bool	simple_quote;
 	bool	double_quote;
+	bool	outfile_issue;
 	t_data	*data;
 } t_parsing;
 
@@ -109,14 +111,18 @@ void	print_and_free(char *str, t_data *data, t_parsing *parsing);
 int		manage_dollar(t_data *data,t_parsing *parsing);
 /*manage_dollar_utils*/
 char	*find_var_name(t_parsing *parsing);
+/*pip_segmentation.c*/
+char	**pipe_segmentation(char const *s, char c);
+/*pipe_seg_utils.c*/
+int		skip_quote(const char *str, int *i);
+/*tokenisation.c*/
+int	tokenisation(t_data *data, t_parsing *parsing);
+/*manage_quotes.c*/
+int		manage_quotes(char c, t_parsing *parsing);
 
 /*UTILS*/
 /*cutstr.c*/
 char	*ft_cutstr(char const *s, unsigned int start);
-/*split_pipe_smart.c*/
-char	**pipe_segmentation(char const *s, char c);
-/*pipe_seg_utils.c*/
-int		skip_quote(const char *str, int *i);
 /*free_tab.c*/
 char	*free_tab(char **table);
 /*print_err_message.c*/

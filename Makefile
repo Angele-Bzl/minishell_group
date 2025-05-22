@@ -37,11 +37,12 @@ FILES_PARS  =   parsing.c\
 				free_parsing.c\
 				print_and_free.c\
 				expand_var.c\
+				pipe_seg_utils.c\
+				pipe_segmentation.c\
+				tokenisation.c\
 				manage_dollar.c\
 				manage_dollar_utils.c
 FILES_UTILS =   cutstr.c\
-				pipe_seg_utils.c\
-				pipe_segmentation.c\
 				debug_print.c\
 				free_tab.c
 FILES		=	struct_init.c\

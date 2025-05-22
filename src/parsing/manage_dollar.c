@@ -62,7 +62,7 @@ char	*prompt_with_content(char *content, int start, char *prompt, int p_index)
 	j = 0;
 	while(prompt[i])
 	{
-		if (prompt[i] == '$' && i = p_index)
+		if (prompt[i] == '$' && i == p_index)
 		{
 			while(content && content[j])
 				new_prompt[i++] = content[j++];
@@ -91,7 +91,7 @@ int manage_dollar(t_data *data,t_parsing *parsing)
 	{
 		content = malloc(1);
 		if (!content)
-			return (NULL); 											// fail malloc
+			return (-1); 											// fail malloc
 		content[0] = '\0';
 	}
 	old_prompt = parsing->prompt_tab[parsing->pipe_seg];

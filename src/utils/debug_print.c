@@ -22,3 +22,11 @@ void	print_env(t_env *env)
 		i++;
 	}
 }
+
+void	print_tokens(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	
+}
