@@ -1,6 +1,6 @@
-# include "minishell.h"
+// # include "minishell.h"
 
-// #include "../../../header/minishell.h"
+#include "../../../header/minishell.h"
 
 void	exec_pwd(char **env)
 {
@@ -15,7 +15,7 @@ void	exec_pwd(char **env)
 	}
 }
 
-// int main(int ac, char **av, char **env)
-// {
-// 	exec_pwd(env);
-// }
+int main(int ac, char **av, char **env)
+{
+	exec_pwd(env);
+}

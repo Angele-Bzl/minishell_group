@@ -2,42 +2,64 @@
 
 #include "../../../header/minishell.h"
 
-void	exec_unset(t_env *ls_env, char **cmds)
+// static void	check_and_update(char *cmd, t_env *current, t_env *previous, t_env **ls_env)
+// {
+// 		if (previous == NULL)
+// 		{
+// 			*ls_env = current->next;
+// 			free(current);
+// 			current = *ls_env;
+// 		}
+// 		else
+// 		{
+// 			previous->next = current->next;
+// 			free(current);
+// 		}
+// 		free(cmd);
+// }
+
+static void	update_ls_env_head(t_env **ls_env, t_env **current)
+{
+	*ls_env = (*current)->next;
+	free(*current);
+	*current = *ls_env;
+}
+int	exec_unset(t_env **ls_env, char **cmds)
 {
 	int		i;
 	t_env	*current;
 	t_env	*previous;
-	bool	unset_done;
+	char	*cmd;
 
-	current = ls_env;
+	current = *ls_env;
 	previous = NULL;
 	while (current)
 	{
 		i = 1;
-		unset_done = false;
 		while (cmds[i])
 		{
-			if (!ft_strncmp(current->line, cmds[i], ft_strlen(cmds[i])))
-			{//nonnnn parce que si je veux suppr $A je vais aussi suppr $Allo
-				//strjoin le '=' ?
-				//update ls_env si c'est le premier node qui se fait unset
-				previous->next = current->next;
-				free(current);
-				unset_done = true;
+			cmd = ft_strjoin(cmds[i], "=");
+			if (!cmd)
+				return (0);
+			if (!ft_strncmp(current->line, cmd, ft_strlen(cmd)))
+			{
+				if (previous == NULL)
+					update_ls_env_head(ls_env, &current);
+				else
+				{
+					previous->next = current->next;
+					free(current);
+				}
+				free(cmd);
 				break ;
 			}
 			i++;
+			free(cmd);
 		}
-		if (unset_done)
-			current = previous->next;
-		else
-		{
-			previous = current;
-			current = current->next;
-		}
+		current = current->next;
 	}
+	return (1);
 }
-
 
 static int  env_init_TEST(t_env **ls_env, char **env)
 {
@@ -66,13 +88,11 @@ static void print_env(t_env *ls_env)
 	current = ls_env;
 	while (current)
 	{
-		if (!ft_strncmp((current)->line, "A=a", 3) || !ft_strncmp((current)->line, "Z=z", 3))
+		// if (!ft_strncmp((current)->line, "A=a", 3) || !ft_strncmp((current)->line, "Z=z", 3))
 			printf("%s\n", (current)->line);
 		current = (current)->next;
 	}
 }
-
-
 
 
 int	exec_export(t_env *ls_env, char **cmds)
@@ -99,14 +119,17 @@ int	exec_export(t_env *ls_env, char **cmds)
 int main(int ac, char **av, char **env)
 {
 	t_env 	*ls_env;
-	char 	*cmds[4] = {"export", "A=a", "Z=z", NULL};
-	char	*cmds_unset[3]={"unset", "A", NULL};
+	// char 	*cmds[4] = {"export", "A=a", "Z=z", NULL};
+	char	*cmds_unset[3]={"unset", "SYSTEMD_EXEC_PID", NULL};
 	ls_env = NULL;
 	env_init_TEST(&ls_env, env);
-	printf("before export\n");
-	print_env(ls_env);
-	exec_export(ls_env, cmds);
-	printf("after export\n");
-	print_env(ls_env);
-	exec_unset(ls_env, cmds_unset);
+	// printf("before export----------------------------\n");
+	// print_env(ls_env);
+	// exec_export(ls_env, cmds);
+	// printf("after export--------------------------------\n");
+	// print_env(ls_env);
+	printf("before unset--------------------------------\n");
+	exec_unset(&ls_env, cmds_unset);
+	printf("after unset--------------------------------\n");
+	// print_env(ls_env);
 }
