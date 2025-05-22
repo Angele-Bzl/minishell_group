@@ -21,10 +21,10 @@ void	find_and_store_all_rafters(t_data *data, t_parsing *parsing, char *prompt)
 void	find_and_store_all_cmds(t_data *data, char *prompt)
 {
 	int		i;
-	int		all_cmds_len;
-	char	*all_cmds;
+	char	*clean_cmds;
 
-	all_cmds_len = find_all_cmds_len(prompt);
+	clean_cmds = extract_clean_cmd(prompt);
+	data->ls_token->cmd = split_whitespace_quotes();
 }
 
 int	tokenisation(t_data *data, t_parsing *parsing)
