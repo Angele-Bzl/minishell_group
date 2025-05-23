@@ -1,7 +1,7 @@
 # include "minishell.h"
 
 static int  env_init(t_env **ls_env, char **env)
-{
+{ /*gerer si on a pas d'env*/
 	unsigned int	i;
 	t_env			*new_node;
 
