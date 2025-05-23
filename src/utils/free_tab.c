@@ -4,6 +4,8 @@ char	*free_tab(char **table)
 {
 	int	i;
 
+	if (!table)
+		return (NULL);
 	i = 0;
 	if (table && table[i])
 	{
@@ -11,16 +13,12 @@ char	*free_tab(char **table)
 		table[i] = NULL;
 	}
 	i++;
-	while (table && table[i])
+	while (table[i])
 	{
 		free(table[i]);
 		table[i] = NULL;
 		i++;
 	}
-	if (table)
-	{
-		free(table);
-		table = NULL;
-	}
+	free(table);
 	return (NULL);
 }

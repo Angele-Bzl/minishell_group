@@ -113,12 +113,22 @@ int		manage_dollar(t_data *data,t_parsing *parsing);
 char	*find_var_name(t_parsing *parsing);
 /*pip_segmentation.c*/
 char	**pipe_segmentation(char const *s, char c);
-/*pipe_seg_utils.c*/
+/*skip_quote.c*/
 int		skip_quote(const char *str, int *i);
 /*tokenisation.c*/
-int	tokenisation(t_data *data, t_parsing *parsing);
+int		tokenisation(t_data *data, t_parsing *parsing);
 /*manage_quotes.c*/
 int		manage_quotes(char c, t_parsing *parsing);
+/*linked_list_token.c*/
+t_token	*token_lstnew(void);
+void	token_lstadd_back(t_token **lst, t_token *new);
+/*cmd_token_utils.c*/
+char	**split_whitespace_quotes(char const *s, char c);
+/*cmd_token.c*/
+char	*extract_clean_cmd(char *prompt);
+/*rafter_token.c*/
+void	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt);
+
 
 /*UTILS*/
 /*cutstr.c*/
@@ -130,6 +140,7 @@ int		err_message(t_error error);
 /*debug_print.c*/
 void	print_env(t_env *env);
 void	print_prompt_tab(char **p_tab);
+void	print_tokens(t_data *data);
 
 /*MAIN*/
 /*struct_init.c*/

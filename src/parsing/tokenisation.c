@@ -1,13 +1,13 @@
 # include "minishell.h"
 
-void	find_and_store_all_rafters(t_data *data, t_parsing *parsing, char *prompt)
+static void	find_and_store_all_rafters(t_data *data, t_parsing *parsing, char *prompt)
 {
 	int	i;
 
 	i = 0;
 	while(prompt[i])
 	{
-		while (prompt[i] != '<' || prompt[i] != '>')
+		while (prompt[i] && prompt[i] != '<' && prompt[i] != '>')
 			i++;
 		if (prompt[i] == '<' || prompt[i] == '>')
 		{
@@ -18,26 +18,31 @@ void	find_and_store_all_rafters(t_data *data, t_parsing *parsing, char *prompt)
 	}
 }
 
-void	find_and_store_all_cmds(t_data *data, char *prompt)
+static void	find_and_store_all_cmds(t_data *data, char *prompt)
 {
-	int		i;
 	char	*clean_cmds;
 
 	clean_cmds = extract_clean_cmd(prompt);
-	data->ls_token->cmd = split_whitespace_quotes();
+	data->ls_token->cmd = split_whitespace_quotes(clean_cmds, ' ');
 }
 
-int	tokenisation(t_data *data, t_parsing *parsing)
+int	tokenisation(t_data *data, t_parsing *parsing)						// remplir chacuns des noeuds de ls_token
 {
 	int	k;
+	t_token	*new_token_node;
 
 	data->ls_token = data->token_head;
 	k = 0;
 	while (parsing->prompt_tab[k])
 	{
+		new_token_node = token_lstnew();
+		if (!new_token_node)
+			return (1);
+		token_lstadd_back(&data->token_head, new_token_node);
+		data->ls_token = new_token_node;
 		find_and_store_all_rafters(data, parsing, parsing->prompt_tab[k]);
 		find_and_store_all_cmds(data, parsing->prompt_tab[k]);
 		k++;
-		data->ls_token = data->ls_token->next;
 	}
+	return (0);
 }

@@ -11,10 +11,10 @@ int main(int ac, char **av, char **env)
     parsing = malloc(sizeof(t_parsing));
     if (!data || !parsing)
         return(ALL_OK);
-    if (!struct_init(data, parsing, env))
-        free_all(data, parsing);
     while (1)
     {
+        if (!struct_init(data, parsing, env))
+            print_and_free(NULL, data, parsing);
         parsing->prompt = readline("minishell > ");
         if (parsing->prompt)
 		{
@@ -26,6 +26,9 @@ int main(int ac, char **av, char **env)
                 // return (1);
             // }
 		}
+        print_and_free(NULL, data, parsing);
     }
+    free(data);
+    free(parsing);
     return (0);
 }

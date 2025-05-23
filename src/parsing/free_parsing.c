@@ -28,14 +28,14 @@ void	free_token(t_token *token)
 				free(token->cmd[i++]);
 			free(token->cmd);
 		}
-		if (token->io[0])
-			free(token->io[0]);
-		if (token->io[1])
-			free(token->io[1]);
-		if (token->redirection[0])
-			free(token->redirection[0]);
-		if (token->redirection[1])
-			free(token->redirection[1]);
+		if (token->io_value[0])
+			free(token->io_value[0]);
+		if (token->io_value[1])
+			free(token->io_value[1]);
+		if (token->io_redir[0])
+			free(token->io_redir[0]);
+		if (token->io_redir[1])
+			free(token->io_redir[1]);
 		free(token);
 		token = tmp;
 	}

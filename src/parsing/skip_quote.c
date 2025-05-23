@@ -20,7 +20,5 @@ int	skip_quote(const char *str, int *i)
 		}
 		return (*i + 1);
 	}
-	if (str[*i] == '\0')
-		return (-1);
 	return (*i + 1);
 }

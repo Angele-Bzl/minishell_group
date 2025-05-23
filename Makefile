@@ -32,19 +32,23 @@ FILES_EXEC  =   execution.c\
 				command.c\
 				utils_exec.c
 FILES_PARS  =   parsing.c\
-                manage_quotes.c\
-				prompt_check.c\
 				free_parsing.c\
-				print_and_free.c\
+				prompt_check.c\
 				expand_var.c\
-				pipe_seg_utils.c\
-				pipe_segmentation.c\
-				tokenisation.c\
+				print_and_free.c\
 				manage_dollar.c\
-				manage_dollar_utils.c
+				manage_dollar_utils.c\
+				pipe_segmentation.c\
+				skip_quote.c\
+				tokenisation.c\
+                manage_quotes.c\
+				linked_list_token.c\
+				cmd_token_utils.c\
+				cmd_token.c\
+				rafter_token.c
 FILES_UTILS =   cutstr.c\
-				debug_print.c\
-				free_tab.c
+				free_tab.c\
+				debug_print.c
 FILES		=	struct_init.c\
 				main.c\
 				$(addprefix $(DIR_PARS)/,$(FILES_PARS))\

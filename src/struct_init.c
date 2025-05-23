@@ -24,7 +24,7 @@ static int  env_init(t_env **ls_env, char **env, t_data *data)
 	return (1);
 }
 
-int	struct_init(t_data *data, t_parsing *parsing, char **env)
+static int	data_init(t_data *data, char **env)
 {
 	data->ls_token = malloc(sizeof(t_token)); //data init
 	if (!data->ls_token)
@@ -34,12 +34,27 @@ int	struct_init(t_data *data, t_parsing *parsing, char **env)
 	data->ls_token->cmd = NULL;
 	data->ls_token->io_value[0] = NULL;
 	data->ls_token->io_value[1] = NULL;
-	data->ls_token->io_redir[0] = DEFAULT;
-	data->ls_token->io_redir[1] = DEFAULT;
+	data->ls_token->io_redir[0] = malloc(sizeof(t_rafter));
+	if (!data->ls_token->io_redir[0])
+		return (0);
+	*data->ls_token->io_redir[0] = DEFAULT;
+	data->ls_token->io_redir[1] = malloc(sizeof(t_rafter));
+	if (!data->ls_token->io_redir[1])
+		return (0);
+	*data->ls_token->io_redir[1] = DEFAULT;
 	data->ls_env = NULL;
 	data->env_head = NULL;
 	data->pipe_nbr = 0;
 	if (env_init(&data->ls_env, env, data) == 0)
+		return (0);
+	return (1);
+}
+
+
+
+int	struct_init(t_data *data, t_parsing *parsing, char **env)
+{
+	if (data_init(data, env) == 0)
 		return (0);
 	parsing->data = data; //parsing init
 	parsing->dollar = false;
