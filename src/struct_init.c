@@ -1,11 +1,38 @@
 # include "minishell.h"
 
+static int	manage_no_env(t_env **ls_env)
+{
+	t_env	*new_node;
+	char	*pwd;
+
+	new_node = malloc(sizeof(t_env));
+	if (!new_node)
+		return (0);
+	pwd = ft_strdup("PWD=");
+	if (!pwd)
+	{
+		free(new_node);
+		return (0);
+	}
+	new_node->line = ft_strjoin(pwd, getcwd(NULL, 0));
+	if (!new_node->line)
+	{
+		free(pwd);
+		free(new_node);
+		return (0);
+	}
+	new_node->next = NULL;
+	ft_lstadd_back((t_list**)ls_env, (t_list*)new_node);
+}
+
 static int  env_init(t_env **ls_env, char **env)
-{ /*gerer si on a pas d'env*/
+{ /*shlvl ? _ ?*/
 	unsigned int	i;
 	t_env			*new_node;
 
 	i = 0;
+	if (!env || !env[0])
+		return(manage_no_env(ls_env));
 	while (env[i])
 	{
 		new_node = malloc(sizeof(t_env));
