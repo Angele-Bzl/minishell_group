@@ -11,7 +11,7 @@ static char	*find_redir_file_name(char *prompt, int i)
 	while (prompt[i] == ' ' || prompt[i] == '\t')						// on saute les espaces
 		i++;
 	start = i;
-	while (prompt[i] != ' ' || prompt[i] != '\t' || prompt[i] != '\0')	// on va jusqu'à la fin du nom
+	while (prompt[i] != ' ' && prompt[i] != '\t' && prompt[i] != '\0')	// on va jusqu'à la fin du nom
 		i++;
 	end = i;
 	len = end - start;

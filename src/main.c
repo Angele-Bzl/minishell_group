@@ -26,8 +26,8 @@ int main(int ac, char **av, char **env)
                 // return (1);
             // }
 		}
-        print_and_free(NULL, data, parsing);
     }
+    print_and_free(NULL, data, parsing);
     free(data);
     free(parsing);
     return (0);

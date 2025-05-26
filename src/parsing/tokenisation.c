@@ -28,21 +28,21 @@ static void	find_and_store_all_cmds(t_data *data, char *prompt)
 
 int	tokenisation(t_data *data, t_parsing *parsing)						// remplir chacuns des noeuds de ls_token
 {
-	int	k;
+	int	i;
 	t_token	*new_token_node;
 
 	data->ls_token = data->token_head;
-	k = 0;
-	while (parsing->prompt_tab[k])
+	i = 0;
+	while (parsing->prompt_tab[i])
 	{
 		new_token_node = token_lstnew();
 		if (!new_token_node)
 			return (1);
+		find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]);
+		find_and_store_all_cmds(data, parsing->prompt_tab[i]);
 		token_lstadd_back(&data->token_head, new_token_node);
 		data->ls_token = new_token_node;
-		find_and_store_all_rafters(data, parsing, parsing->prompt_tab[k]);
-		find_and_store_all_cmds(data, parsing->prompt_tab[k]);
-		k++;
+		i++;
 	}
 	return (0);
 }

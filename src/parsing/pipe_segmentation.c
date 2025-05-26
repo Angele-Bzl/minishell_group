@@ -20,7 +20,7 @@ char	**pipe_segmentation(char const *s, char c)
 	array = malloc(sizeof(char *) * (words + 1));
 	if (!array)
 		return (NULL);
-	while (i <= words)
+	while (i < words)
 	{
 		if (next_pipe_segment(s, c, &start, &end) == -1)
 			return (NULL);

@@ -76,7 +76,7 @@ static char	*extract_current_cmd(char *prompt, int *i, int *j, char *clean_cmd)
 			if (prompt[*i] == quote)
 				clean_cmd[(*j)++] = prompt[(*i)++];			// quote fermante
 		}
-		else
+		else if (prompt[*i])
 			clean_cmd[(*j)++] = prompt[(*i)++];
 	}
 	return (clean_cmd);
