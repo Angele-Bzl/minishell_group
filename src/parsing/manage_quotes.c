@@ -1,6 +1,6 @@
 # include "minishell.h"
 
-int		manage_quotes(char c, t_parsing *parsing)
+int		manage_quotes(char c, t_parsing *parsing)  // Pour l'expand
 {
 	if (c == '\'')
 	{

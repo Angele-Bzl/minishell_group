@@ -15,23 +15,25 @@ int main(int ac, char **av, char **env)
 	{
         // return(free_all(data, parsing));
 	}
+        return(ALL_OK);
     while (1)
     {
+        if (!struct_init(data, parsing, env))
+            print_and_free(NULL, data, parsing);
         parsing->prompt = readline("minishell > ");
         if (parsing->prompt)
 		{
 			add_history(parsing->prompt);
-			if (!parser(data, parsing))
-            {
-                // free_all(data, parsing);
-                // return (1);
-            }
+			ft_parsing(data, parsing);
             // if (!execution(data))
             // {
-                // free_data(data);
+                // free_all(data);
                 // return (1);
             // }
 		}
     }
+    print_and_free(NULL, data, parsing);
+    free(data);
+    free(parsing);
     return (0);
 }

@@ -1,6 +1,6 @@
 # include "minishell.h"
 
-static int  env_init(t_env **ls_env, char **env)
+static int  env_init(t_env **ls_env, char **env, t_data *data)
 {
 	unsigned int	i;
 	t_env			*new_node;
@@ -17,33 +17,54 @@ static int  env_init(t_env **ls_env, char **env)
 		new_node->next = NULL;
 		ft_lstadd_back((t_list**)ls_env, (t_list*)new_node);
 		new_node = new_node->next;
+		if (data->env_head == NULL)
+			data->env_head = *ls_env;
 		i++;
 	}
 	return (1);
 }
 
-int	struct_init(t_data *data, t_parsing *parsing, char **env)
+static int	data_init(t_data *data, char **env)
 {
 	data->ls_token = malloc(sizeof(t_token)); //data init
 	if (!data->ls_token)
-	return (0);
+		return (0);
+	data->token_head = data->ls_token;
 	data->ls_token->next = NULL;
 	data->ls_token->cmd = NULL;
-	data->ls_token->io[0] = NULL;
-	data->ls_token->io[1] = NULL;
-	data->ls_token->redirection[0] = 0;
-	data->ls_token->redirection[1] = 0;
+	data->ls_token->io_value[0] = NULL;
+	data->ls_token->io_value[1] = NULL;
+	data->ls_token->io_redir[0] = malloc(sizeof(t_rafter));
+	if (!data->ls_token->io_redir[0])
+		return (0);
+	*data->ls_token->io_redir[0] = DEFAULT;
+	data->ls_token->io_redir[1] = malloc(sizeof(t_rafter));
+	if (!data->ls_token->io_redir[1])
+		return (0);
+	*data->ls_token->io_redir[1] = DEFAULT;
 	data->ls_env = NULL;
+	data->env_head = NULL;
 	data->pipe_nbr = 0;
-	if (env_init(&data->ls_env, env) == 0)
+	if (env_init(&data->ls_env, env, data) == 0)
+		return (0);
+	return (1);
+}
+
+
+
+int	struct_init(t_data *data, t_parsing *parsing, char **env)
+{
+	if (data_init(data, env) == 0)
 		return (0);
 	parsing->data = data; //parsing init
 	parsing->dollar = false;
 	parsing->double_quote = false;
 	parsing->simple_quote = false;
+	parsing->outfile_issue = false;
 	parsing->skip = 0;
 	parsing->prompt = NULL;
 	parsing->prompt_tab = NULL;
+	parsing->pipe_seg = 0;
 	parsing->p_index = 0;
 	parsing->word_length = 0;
 	return(1);
