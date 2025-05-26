@@ -47,6 +47,7 @@ static int	find_all_cmds_len(char *prompt)
 			i++;
 		if (prompt[i] == '<' || prompt[i] == '>')				// on croise un io.
 			i = skip_io(prompt, i);								// avancer jusqu'au prochain arg de de cmd.
+		len++;
 		while (prompt[i] && prompt[i] != ' ' && prompt[i] != '\t' && prompt[i] != '<' && prompt[i] != '>')
 		{
 			if (prompt[i] == '\'' || prompt[i] == '\"')
