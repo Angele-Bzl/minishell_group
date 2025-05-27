@@ -2,17 +2,19 @@
 
 // #include "../../../header/minishell.h"
 
-void	exec_pwd(char **env)
+int	exec_pwd(char **env)
 {
-	int	i;
+	char	*pwd;
 
-	i = 0;
-	while (env[i])
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
 	{
-		if (!ft_strncmp(env[i], "PWD=", 4))
-			printf("%s\n", env[i] + 4);
-		i++;
+		ft_putendl_fd("Error: pwd", STDERR_FILENO);
+		return (0);
 	}
+	printf("%s\n", pwd);
+	free(pwd);
+	return (1);
 }
 
 // int main(int ac, char **av, char **env)

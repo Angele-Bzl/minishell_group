@@ -28,11 +28,11 @@ int	exec_homemade_builtin(t_data *data, char **env)
 	if (!ft_strncmp(data->ls_token->cmd[0], "pwd", 3))
 		exec_pwd(env);
 	if (!ft_strncmp(data->ls_token->cmd[0], "export", 6))
-		return (exec_export(data->ls_env), data->ls_token);
+		return (exec_export(data->ls_env, data->ls_token));
 	if (!ft_strncmp(data->ls_token->cmd[0], "unset", 5))
-		//exec_unset();//
+		exec_unset(data->ls_env, data->ls_token);
 	if (!ft_strncmp(data->ls_token->cmd[0], "env", 3))
-		//exec_env();//
+		exec_env(data->ls_env);
 	if (!ft_strncmp(data->ls_token->cmd[0], "exit", 4))
 		//exec_exit();//
 	return (1);

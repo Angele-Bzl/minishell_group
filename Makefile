@@ -39,7 +39,8 @@ FILES_BUILT	=	utils_builtin.c\
 				echo.c\
 				cd.c\
 				pwd.c\
-				export.c
+				export.c\
+				unset.c
 FILES_PARS  =   parsing.c\
 				free_parsing.c\
 				prompt_check.c\
