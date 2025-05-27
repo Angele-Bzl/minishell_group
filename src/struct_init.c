@@ -25,7 +25,7 @@ static int	manage_no_env(t_env **ls_env)
 	ft_lstadd_back((t_list**)ls_env, (t_list*)new_node);
 }
 
-static int  env_init(t_env **ls_env, char **env)
+static int  env_init(t_env **ls_env, char **env, t_data *data)
 { /*shlvl ? _ ?*/
 	unsigned int	i;
 	t_env			*new_node;

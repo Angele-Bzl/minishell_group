@@ -51,7 +51,7 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 	}
 	if (pid == 0)
 	{
-		if (!check_input_output(data->ls_token->io, data->ls_token->redirection, io_fd)) //open io_fd[0] et io_fd[1]
+		if (!check_input_output(data->ls_token->io_value, data->ls_token->io_redir, io_fd)) //open io_fd[0] et io_fd[1]
 		{
 			close(pipe_fd[0]);
 			close(pipe_fd[1]);
