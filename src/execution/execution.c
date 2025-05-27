@@ -18,7 +18,7 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, int previous_out
 		perror("dup2");
 		return (0);
 	}
-	if (cmd_is_builtin(data->ls_token->cmd[0], env))
+	if (cmd_is_builtin(data->ls_token->cmd[0]))
 			exec_homemade_builtin(data, env);
 	if (execve(path_cmd, data->ls_token->cmd, env) == -1)
 	{
@@ -51,7 +51,7 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 	}
 	if (pid == 0)
 	{
-		if (!check_input_output(data->ls_token->io_value, data->ls_token->io_redir, io_fd)) //open io_fd[0] et io_fd[1]
+		if (!check_input_output(data->ls_token->io_value, *data->ls_token->io_redir, io_fd)) //open io_fd[0] et io_fd[1]
 		{
 			close(pipe_fd[0]);
 			close(pipe_fd[1]);

@@ -36,10 +36,12 @@ FILES_EXEC  =   execution.c\
 				$(addprefix $(DIR_BUILTINS)/, $(FILES_BUILT))
 
 FILES_BUILT	=	utils_builtin.c\
-				echo.c\
 				cd.c\
-				pwd.c\
+				echo.c\
+				env.c\
 				export.c\
+				exit.c\
+				pwd.c\
 				unset.c
 FILES_PARS  =   parsing.c\
 				free_parsing.c\
@@ -63,7 +65,7 @@ FILES		=	struct_init.c\
 				main.c\
 				$(addprefix $(DIR_PARS)/,$(FILES_PARS))\
                 $(addprefix $(DIR_UTILS)/, $(FILES_UTILS))\
-                # $(addprefix $(DIR_EXEC)/, $(FILES_EXEC)) #
+                $(addprefix $(DIR_EXEC)/, $(FILES_EXEC))
 
 FILE_HEADER	=	minishell.h
 SRC			=	$(DIR_SRC)/$(FILES) $(DIR_SRC)/$(FILES_UTILS)

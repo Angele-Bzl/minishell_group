@@ -26,7 +26,7 @@ static void	find_and_store_all_cmds(t_data *data, char *prompt)
 	data->ls_token->cmd = split_whitespace_quotes(clean_cmds, ' ');
 }
 
-int	tokenisation(t_data *data, t_parsing *parsing)						// remplir chacuns des noeuds de ls_token
+int	tokenisation(t_data *data, t_parsing *parsing)// remplir chacuns des noeuds de ls_token
 {
 	int	i;
 	t_token	*new_token_node;
@@ -42,7 +42,7 @@ int	tokenisation(t_data *data, t_parsing *parsing)						// remplir chacuns des n
 		find_and_store_all_cmds(data, parsing->prompt_tab[i]);
 		token_lstadd_back(&data->token_head, new_token_node);
 		data->ls_token = new_token_node;
-		printf()
+		// printf();
 		i++;
 	}
 	return (0);

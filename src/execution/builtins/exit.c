@@ -70,7 +70,7 @@ static long long check_valid_arg(char *arg)
 	}
 	minus = 1;
 	arg_ull = ft_atoull(arg, &minus);
-	if ((arg_ull > LLONG_MAX && minus == 1) || (arg_ull > LLONG_MAX + 1 && minus == -1))
+	if ((arg_ull > LLONG_MAX && minus == 1) || (arg_ull > 9223372036854775808ULL && minus == -1))//LLMAX+1
 	{
 		ft_putendl_fd("Error: exit: numeric argument required", STDERR_FILENO);
 		return (2);
@@ -79,7 +79,7 @@ static long long check_valid_arg(char *arg)
 	return (arg_ull * minus);
 }
 
-static long long	exit_arg(long long exit_code)
+static int	exit_arg(long long exit_code)
 {
 	int exit_255;
 
@@ -95,6 +95,7 @@ static long long	exit_arg(long long exit_code)
 }
 int	exec_exit(t_token *cmds, t_env *ls_env)
 {
+	(void)ls_env;
 	long long	exit_code;
 
 	if (cmds->cmd[0] && cmds->cmd[1] && cmds->cmd[2])

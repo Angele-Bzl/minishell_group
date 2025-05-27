@@ -1,6 +1,6 @@
 # include "minishell.h"
 
-int	check_input_output(char *io[2], int redirection[2], int *io_fd)
+int	check_input_output(char *io[2], t_rafter redirection[2], int *io_fd)
 {
 	io_fd[0] = STDIN_FILENO;
 	io_fd[1] = STDOUT_FILENO;
@@ -38,7 +38,7 @@ int	exec_single_cmd(t_data *data)
 	char	*path_cmd;
 	char	**env;
 
-	if (!check_input_output(data->ls_token->io_value, data->ls_token->io_redir, io_fd)) //open io_fd[0] et io_fd[1]
+	if (!check_input_output(data->ls_token->io_value, *data->ls_token->io_redir, io_fd)) //open io_fd[0] et io_fd[1]
 		return (0);
 	env = get_env_in_tab(data->ls_env);
 	data->ls_env = data->env_head;

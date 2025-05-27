@@ -4,6 +4,7 @@
 
 int	exec_pwd(char **env)
 {
+	(void)env;
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);

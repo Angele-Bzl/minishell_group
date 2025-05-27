@@ -10,12 +10,19 @@ int main(int ac, char **av, char **env)
     data = malloc(sizeof(t_data));
     parsing = malloc(sizeof(t_parsing));
     if (!data || !parsing)
-		return(ALL_OK);
-	if (!struct_init(data, parsing, env))
 	{
-        // return(free_all(data, parsing));
+		if (data)
+			free(data);
+		if (parsing)
+			free(parsing);
+		ft_putstr_fd("Error: malloc failed\n", 2);
+		return (2);
 	}
-        return(ALL_OK);
+	// if (!struct_init(data, parsing, env))
+	// {
+    //     // return(free_all(data, parsing));
+	// }
+        // return(ALL_OK);
     while (1)
     {
         if (!struct_init(data, parsing, env))
@@ -25,11 +32,11 @@ int main(int ac, char **av, char **env)
 		{
 			add_history(parsing->prompt);
 			ft_parsing(data, parsing);
-            // if (!execution(data))
-            // {
+            if (!execution(data))
+            {
                 // free_all(data);
-                // return (1);
-            // }
+                return (1);
+            }
 		}
     }
     print_and_free(NULL, data, parsing);

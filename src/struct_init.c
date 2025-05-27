@@ -23,6 +23,7 @@ static int	manage_no_env(t_env **ls_env)
 	}
 	new_node->next = NULL;
 	ft_lstadd_back((t_list**)ls_env, (t_list*)new_node);
+	return (0);
 }
 
 static int  env_init(t_env **ls_env, char **env, t_data *data)

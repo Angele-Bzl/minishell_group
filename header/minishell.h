@@ -59,7 +59,7 @@ typedef struct	s_token
 {
 	struct s_token	*next;
 	char			**cmd;
-	t_rafter		*io_redir[2];
+	t_rafter		*io_redir[2]; //* ?
 	char			*io_value[2];
 } t_token;
 
@@ -100,18 +100,18 @@ char	*ft_strtrim_improved(char *s1, char const *set);
 int		tablen(char **table);
 int		wait_for_pid(t_token *token, pid_t *pid);
 char	**get_env_in_tab(t_env *node_env);
-int		check_input_output(char *io[2], int redirection[2], int *io_fd);
+int		check_input_output(char *io[2], t_rafter redirection[2], int *io_fd);
 int		exec_single_cmd(t_data *data);
 /*BUILTINS*/
-int		cmd_is_builtin(char *path_cmd, char **env);
-void	exec_homemade_builtin(t_data *data, char **env);
+int		cmd_is_builtin(char *path_cmd);
+int	exec_homemade_builtin(t_data *data, char **env);
 void	exec_echo(char **cmd);
 int		exec_export(t_env *ls_env, char **cmds);
 int		exec_pwd(char **env);
 void 	exec_env(t_env *ls_env);
 int		exec_unset(t_env **ls_env, char **cmds);
-
-#endif
+int		exec_cd(char **cmd, t_env *list_env);
+int	exec_exit(t_token *cmds, t_env *ls_env);
 
 /*PARSING*/
 /*parsing.c*/
