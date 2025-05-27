@@ -28,30 +28,6 @@ char	*ft_strtrim_improved(char *s1, char const *set)
 	return (result);
 }
 
-char	*free_tab(char **table)
-{
-	int	i;
-
-	i = 0;
-	if (table && table[i])
-	{
-		free(table[i]);
-		table[i] = NULL;
-	}
-	i++;
-	while (table && table[i])
-	{
-		free(table[i]);
-		table[i] = NULL;
-		i++;
-	}
-	if (table)
-	{
-		free(table);
-		table = NULL;
-	}
-	return (NULL);
-}
 int	tablen(char **table)
 {
 	int	i;
