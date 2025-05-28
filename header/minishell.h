@@ -115,7 +115,7 @@ int	exec_exit(t_token *cmds, t_env *ls_env);
 
 /*PARSING*/
 /*parsing.c*/
-int		ft_parsing(t_data *data, t_parsing *parsing);
+int		ft_parsing(t_data **data, t_parsing *parsing);
 /*free_parsing.c*/
 void	free_all(t_data *data, t_parsing *parsing);
 /*prompt_check.c*/
@@ -133,7 +133,7 @@ char	**pipe_segmentation(char const *s, char c);
 /*skip_quote.c*/
 int		skip_quote(const char *str, int *i);
 /*tokenisation.c*/
-int		tokenisation(t_data *data, t_parsing *parsing);
+int		tokenisation(t_data **data, t_parsing *parsing);
 /*manage_quotes.c*/
 int		manage_quotes(char c, t_parsing *parsing);
 /*linked_list_token.c*/
