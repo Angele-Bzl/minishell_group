@@ -99,7 +99,7 @@ char	*find_cmd(char **env, char *cmd);
 char	*ft_strtrim_improved(char *s1, char const *set);
 int		tablen(char **table);
 int		wait_for_pid(t_token *token, pid_t *pid);
-char	**get_env_in_tab(t_env *node_env);
+char	**get_env_in_tab(t_env **node_env);
 int		check_input_output(char *io[2], t_rafter redirection[2], int *io_fd);
 int		exec_single_cmd(t_data *data);
 /*BUILTINS*/

@@ -2,6 +2,7 @@
 
 int	cmd_is_builtin(char *path_cmd)
 { //pas sure du strncmp si une fonction s'appelle echooo par exemple
+	printf("cmd is buitlin\n");
 	if (!ft_strncmp(path_cmd, "echo", 4))
 		return (1);
 	if (!ft_strncmp(path_cmd, "cd", 2))

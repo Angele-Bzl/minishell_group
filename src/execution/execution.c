@@ -57,7 +57,7 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 			close(pipe_fd[1]);
 			return (0);
 		}
-		env = get_env_in_tab(data->ls_env);
+		env = get_env_in_tab(&data->ls_env);
 		data->ls_env = data->env_head;
 		if (!env)
 		{
@@ -115,6 +115,7 @@ int	execution(t_data *data)
 		exec_single_cmd(data);
 		return (1);
 	}
+	printf("hello\n");
 	pids = malloc(sizeof(pid_t) * count_cmds(data->ls_token));
 	if (!pids)
 	{

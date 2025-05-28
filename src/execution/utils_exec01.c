@@ -40,13 +40,14 @@ int	exec_single_cmd(t_data *data)
 
 	if (!check_input_output(data->ls_token->io_value, *data->ls_token->io_redir, io_fd)) //open io_fd[0] et io_fd[1]
 		return (0);
-	env = get_env_in_tab(data->ls_env);
-	data->ls_env = data->env_head;
+	env = get_env_in_tab(&data->ls_env);
 	if (!env)
 	{
 		ft_putendl_fd("Error: malloc", STDERR_FILENO);
 		return (0);
 	}
+	printf("exec single\n");
+	printf("exec single data->ls_token->cmd[0] | %s\n", data->ls_token->cmd[0]);
 	path_cmd = find_cmd(env, data->ls_token->cmd[0]);
 	if (!path_cmd)
 	{
