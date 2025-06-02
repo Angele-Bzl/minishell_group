@@ -44,7 +44,7 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 	int	status;
 
 	i = 0;
-	while (token)
+	while (token->next)
 	{
 		if (waitpid(pid[i], &status, 0) == -1)
 		{

@@ -2,6 +2,8 @@
 
 int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, int previous_output, char **env)
 {
+	printf("redirect and exec: previous output = %d\n", previous_output);
+	printf("redirect and exec: iofd[1] = %d\n", io_fd[1]);
 	if (dup2(previous_output, STDIN_FILENO) == -1)
 	{
 		perror("dup2");
@@ -14,16 +16,6 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, int previous_out
 	}
 	if (cmd_is_builtin(data->ls_token->cmd[0]))
 			exec_homemade_builtin(data, env);
-	// printf("path cmd = %s\n", path_cmd);
-	// printf("token cmd[0] = %s\n", data->ls_token->cmd[0]);
-	// printf("token cmd[1] = %s\n", data->ls_token->cmd[1]);
-	// printf("token cmd[2] = %s\n", data->ls_token->cmd[2]);
-	// int i = 0;
-	// while (env[i])
-	// {
-	// 	printf("env[%d] = %s\n", i, env[i]);
-	// 	i++;
-	// }
 	if (execve(path_cmd, data->ls_token->cmd, env) == -1)
 	{
 		ft_putendl_fd("Error: execve failed", STDERR_FILENO);
@@ -39,7 +31,7 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 	char	*path_cmd;
 	char	**env;
 
-
+	previous_output = 0;
 	if (i > 0)
 		previous_output = pipe_fd[0];
 	if (pipe(pipe_fd) == -1)
@@ -68,6 +60,8 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 			ft_putendl_fd("Error: malloc", STDERR_FILENO);
 			return (0);
 		}
+		// printf("create child: env[0] = %s\n", env[0]);
+		// printf("create child: data->ls_token->cmd[0] = %s\n", data->ls_token->cmd[0]);
 		path_cmd = find_cmd(env, data->ls_token->cmd[0]);
 		if (!path_cmd)
 		{
@@ -128,7 +122,7 @@ int	execution(t_data *data)
 	}
 	data->ls_token = data->token_head;
 	i = 0;
-	while (data->ls_token)
+	while (data->ls_token->next)
 	{
 		if (!create_children(data, pipe_fd, pids[i], i))
 		{
