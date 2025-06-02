@@ -82,5 +82,6 @@ char	**get_env_in_tab(t_env **node_env)
 		*node_env = (*node_env)->next;
 		i++;
 	}
+	table_env[i] = NULL;
 	return (table_env);
 }

@@ -40,6 +40,7 @@ int main(int ac, char **av, char **env)
             }
 		}
     }
+	printf("HERE\n");
     print_and_free(NULL, data, parsing);
     free(data);
     free(parsing);

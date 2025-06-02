@@ -1,11 +1,5 @@
 # include "minishell.h"
 
-/*
-Check the input access
-Check the output access
-Check the cmd
-*/
-
 int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, int previous_output, char **env)
 {
 	if (dup2(previous_output, STDIN_FILENO) == -1)
@@ -20,6 +14,16 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, int previous_out
 	}
 	if (cmd_is_builtin(data->ls_token->cmd[0]))
 			exec_homemade_builtin(data, env);
+	// printf("path cmd = %s\n", path_cmd);
+	// printf("token cmd[0] = %s\n", data->ls_token->cmd[0]);
+	// printf("token cmd[1] = %s\n", data->ls_token->cmd[1]);
+	// printf("token cmd[2] = %s\n", data->ls_token->cmd[2]);
+	// int i = 0;
+	// while (env[i])
+	// {
+	// 	printf("env[%d] = %s\n", i, env[i]);
+	// 	i++;
+	// }
 	if (execve(path_cmd, data->ls_token->cmd, env) == -1)
 	{
 		ft_putendl_fd("Error: execve failed", STDERR_FILENO);
@@ -110,12 +114,12 @@ int	execution(t_data *data)
 	int		pipe_fd[2];
 	int		i;
 
-	if (!data->ls_token->next)
-	{
+	if (!data->ls_token->next && cmd_is_builtin(data->ls_token->cmd[0]))
+	{ //on ne rentre pas dans cette condition :(
 		exec_single_cmd(data);
 		return (1);
 	}
-	printf("hello\n");
+
 	pids = malloc(sizeof(pid_t) * count_cmds(data->ls_token));
 	if (!pids)
 	{

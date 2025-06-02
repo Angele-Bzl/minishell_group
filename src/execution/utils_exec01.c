@@ -46,8 +46,6 @@ int	exec_single_cmd(t_data *data)
 		ft_putendl_fd("Error: malloc", STDERR_FILENO);
 		return (0);
 	}
-	printf("exec single\n");
-	printf("exec single data->ls_token->cmd[0] | %s\n", data->ls_token->cmd[0]);
 	path_cmd = find_cmd(env, data->ls_token->cmd[0]);
 	if (!path_cmd)
 	{

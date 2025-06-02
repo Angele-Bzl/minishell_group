@@ -85,7 +85,6 @@ char	*find_cmd(char **env, char *cmd)
 
 	if (cmd_is_builtin(cmd))
 		return (cmd);
-	printf("find cmd\n");
 	/*A FAIRE if option chemin absolu*/
 	env_path = ft_split(env[find_path_in_env(env)], ':');
 	if (!env_path)

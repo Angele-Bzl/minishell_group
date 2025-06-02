@@ -2,21 +2,21 @@
 
 int	cmd_is_builtin(char *path_cmd)
 { //pas sure du strncmp si une fonction s'appelle echooo par exemple
-	printf("cmd is buitlin\n");
-	if (!ft_strncmp(path_cmd, "echo", 4))
-		return (1);
-	if (!ft_strncmp(path_cmd, "cd", 2))
-		return (1);
-	if (!ft_strncmp(path_cmd, "pwd", 3))
-		return (1);
-	if (!ft_strncmp(path_cmd, "export", 6))
-		return (1);
-	if (!ft_strncmp(path_cmd, "unset", 5))
-		return (1);
-	if (!ft_strncmp(path_cmd, "env", 3))
-		return (1);
-	if (!ft_strncmp(path_cmd, "exit", 4))
-		return (1);
+	// if (!ft_strncmp(path_cmd, "echo", 4))
+	// 	return (1);
+	// if (!ft_strncmp(path_cmd, "cd", 2))
+	// 	return (1);
+	// if (!ft_strncmp(path_cmd, "pwd", 3))
+	// 	return (1);
+	// if (!ft_strncmp(path_cmd, "export", 6))
+	// 	return (1);
+	// if (!ft_strncmp(path_cmd, "unset", 5))
+	// 	return (1);
+	// if (!ft_strncmp(path_cmd, "env", 3))
+	// 	return (1);
+	// if (!ft_strncmp(path_cmd, "exit", 4))
+	// 	return (1);
+	(void)path_cmd;
 	return (0);
 }
 

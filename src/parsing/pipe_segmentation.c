@@ -83,10 +83,10 @@ static int		ft_countpipe(char const *s, char c)
 	int		count;
 
 	i = 0;
-	count = 1; //on commence forcement avec un mot ?
+	count = 1; //on commence forcement avec un node ?
 	if (!s)
 		return (0);
-	while (s[i] == ' ') // on supprime les premiers espaces
+	while (s[i] == ' ') // on supprime les premiers espaces //changer en isspace
 		i++;
 	if (s[i] == '|') // si on croise direct un pipe, syntax error
 	{
