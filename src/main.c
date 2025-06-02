@@ -32,11 +32,12 @@ int main(int ac, char **av, char **env)
 		{
 			add_history(parsing->prompt);
 			ft_parsing(&data, parsing);
-            // if (!execution(data))
-            // {
-            //     // free_all(data);
-            //     return (1);
-            // }
+			data->ls_token = data->token_head;
+            if (!execution(data))
+            {
+                // free_all(data);
+                return (1);
+            }
 		}
     }
     print_and_free(NULL, data, parsing);

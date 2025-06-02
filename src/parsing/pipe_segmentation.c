@@ -20,7 +20,7 @@ char	**pipe_segmentation(char const *s, char c)
 	array = malloc(sizeof(char *) * (words + 1));
 	if (!array)
 		return (NULL);
-	while (i <= words) // 'i < words' changed to 'i <= words' instead because the last node wasnt ok
+	while (i < words)
 	{
 		if (next_pipe_segment(s, c, &start, &end) == -1)
 			return (NULL);
@@ -83,19 +83,19 @@ static int		ft_countpipe(char const *s, char c)
 	int		count;
 
 	i = 0;
-	count = 0;
+	count = 1; //on commence forcement avec un mot ?
 	if (!s)
 		return (0);
 	while (s[i] == ' ') // on supprime les premiers espaces
 		i++;
 	if (s[i] == '|') // si on croise direct un pipe, syntax error
 	{
-		printf("syntaxe error\n");
+		printf("syntax error\n");
 		return (-1);
 	}
 	while (s[i])
 	{
-		while (s[i] == ' ')
+		while (s[i] == ' ') //il faudra plutot mettre is space ici
 			i++;
 		while (s[i] != c && s[i] != '\0')
 		{

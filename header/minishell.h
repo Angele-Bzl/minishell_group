@@ -133,7 +133,7 @@ char	**pipe_segmentation(char const *s, char c);
 /*skip_quote.c*/
 int		skip_quote(const char *str, int *i);
 /*tokenisation.c*/
-int		tokenisation(t_data **data, t_parsing *parsing);
+int		tokenisation(t_data *data, t_parsing *parsing);
 /*manage_quotes.c*/
 int		manage_quotes(char c, t_parsing *parsing);
 /*linked_list_token.c*/
