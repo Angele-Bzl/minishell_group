@@ -55,13 +55,13 @@ int	exec_single_cmd(t_data *data)
 		ft_putendl_fd("Error: No path to the command.", STDERR_FILENO);
 		return (0);
 	}
-	else if (!redirect_and_exec(data, io_fd, path_cmd, STDIN_FILENO, env))
-	{
-		free(env);
-		free(path_cmd);
-		close(io_fd[0]);
-		close(io_fd[1]);
-		return (0);
-	}
+	// else if (!redirect_and_exec(data, io_fd, path_cmd, STDIN_FILENO, env))
+	// {
+	// 	free(env);
+	// 	free(path_cmd);
+	// 	close(io_fd[0]);
+	// 	close(io_fd[1]);
+	// 	return (0);
+	// }
 	return (1);
 }

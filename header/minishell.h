@@ -91,8 +91,8 @@ typedef struct	s_parsing
 
 /*EXEC*/
 /*execution.c*/
-int		redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, int previous_output, char **env);
 int		execution(t_data *data);
+int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd);
 /*utils_exec.c*/
@@ -104,14 +104,14 @@ int		check_input_output(char *io[2], t_rafter redirection[2], int *io_fd);
 int		exec_single_cmd(t_data *data);
 /*BUILTINS*/
 int		cmd_is_builtin(char *path_cmd);
-int	exec_homemade_builtin(t_data *data, char **env);
+int		exec_homemade_builtin(t_data *data, char **env);
 void	exec_echo(char **cmd);
 int		exec_export(t_env *ls_env, char **cmds);
 int		exec_pwd(char **env);
 void 	exec_env(t_env *ls_env);
 int		exec_unset(t_env **ls_env, char **cmds);
 int		exec_cd(char **cmd, t_env *list_env);
-int	exec_exit(t_token *cmds, t_env *ls_env);
+int		exec_exit(t_token *cmds, t_env *ls_env);
 
 /*PARSING*/
 /*parsing.c*/

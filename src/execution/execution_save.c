@@ -31,6 +31,7 @@ static int	get_input(char *io[2], t_rafter redirection[2], int previous_output)
 	int	input;
 
 	input = previous_output;
+
 	if (io[0])
 	{
 		if (redirection[0] == SIMPLE_RIGHT)
@@ -50,8 +51,8 @@ static int	get_output(char *io[2], t_rafter redirection[2], int pipe_output, int
 {
 	int	output;
 
-	if (count_cmd == 1)
-		output = STDOUT_FILENO;
+	if (count_cmd == 0)
+		output = STDIN_FILENO;
 	else
 		output = pipe_output;
 	if (io[1])
