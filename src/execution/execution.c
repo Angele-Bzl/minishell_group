@@ -4,8 +4,6 @@ int	count_cmds(t_token *token);
 
 int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 {
-	printf("redirect and exec: iofd[0] = %d\n", io_fd[0]);
-	printf("redirect and exec: iofd[1] = %d\n", io_fd[1]);
 	if (dup2(io_fd[0], STDIN_FILENO) == -1)
 	{
 		perror("dup2");
@@ -50,7 +48,7 @@ static int	get_output(char *io[2], t_rafter redirection[2], int pipe_output, int
 {
 	int	output;
 
-	if (count_cmd == 1)
+	if (count_cmd == 2)
 		output = STDOUT_FILENO;
 	else
 		output = pipe_output;
@@ -69,14 +67,14 @@ static int	get_output(char *io[2], t_rafter redirection[2], int pipe_output, int
 	return (output);
 }
 
-static int	manage_child(t_data *data, int previous_output, int i, int pipe_fd[2])
+static int	manage_child(t_data *data, int previous_output, int pipe_fd[2])
 {
 	char	**env;
 	char	*path_cmd;
 	int		io_fd[2];
 
 	io_fd[0] = get_input(data->ls_token->io_value, *data->ls_token->io_redir, previous_output);
-	io_fd[1] = get_output(data->ls_token->io_value, *data->ls_token->io_redir, pipe_fd[1], (count_cmds(data->ls_token) - i));
+	io_fd[1] = get_output(data->ls_token->io_value, *data->ls_token->io_redir, pipe_fd[1], count_cmds(data->ls_token));
 	env = get_env_in_tab(&data->ls_env);
 	data->ls_env = data->env_head;
 	if (!env)
@@ -127,7 +125,7 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 		return (0);
 	}
 	if (pid == 0)
-		manage_child(data, previous_output, i, pipe_fd);
+		manage_child(data, previous_output, pipe_fd);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	return (1);
