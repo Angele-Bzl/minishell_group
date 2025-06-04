@@ -2,9 +2,8 @@
 
 // #include "../../../header/minishell.h"
 
-int	exec_pwd(char **env)
+int	exec_pwd()
 {
-	(void)env;
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);

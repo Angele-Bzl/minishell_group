@@ -107,7 +107,7 @@ int		cmd_is_builtin(char *path_cmd);
 int		exec_homemade_builtin(t_data *data, char **env);
 void	exec_echo(char **cmd);
 int		exec_export(t_env *ls_env, char **cmds);
-int		exec_pwd(char **env);
+int		exec_pwd();
 void 	exec_env(t_env *ls_env);
 int		exec_unset(t_env **ls_env, char **cmds);
 int		exec_cd(char **cmd, t_env *list_env);

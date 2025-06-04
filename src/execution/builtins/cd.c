@@ -19,23 +19,31 @@
 // 	return (1);
 // }
 
-static int	create_var_pwd(char *env_line, char *variable)
+static t_env	*create_var_pwd(char *variable)
 {
-	char *pwd;
+	char 	*pwd;
+	t_env	*new_node;
 
-	pwd = getcwd(NULL, 0);
-	env_line = ft_strjoin(variable, pwd);
-	free(pwd);
-	if (!env_line)
+	new_node = malloc(sizeof(t_env));
+	if (!new_node)
 	{
 		ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
-		return (0);
+		return (NULL);
 	}
-	return (1);
+	pwd = getcwd(NULL, 0);
+	new_node->line = ft_strjoin(variable, pwd);
+	free(pwd);
+	if (!new_node->line)
+	{
+		free(new_node);
+		ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
+		return (NULL);
+	}
+	return (new_node);
 }
 
 static int	update_pwd(t_env *list_env, char *variable, int var_length)
-{
+{//a gerer : .., chemin absolu, verifier que le directory existe
 	bool	pwd_exists;
 	t_env	*current;
 	char	*pwd;
@@ -67,19 +75,17 @@ static int	update_pwd(t_env *list_env, char *variable, int var_length)
 		}
 		current = current->next;
 	}
-	if (pwd_exists == false)
-		return (create_var_pwd(current->line, variable));
+	// if (pwd_exists == false)
+	// 	return (create_var_pwd(current->line, variable));
 	return (1);
 }
 
 static int	update_oldpwd(t_env *ls_env)
 {
-	bool	pwd_exists;
 	t_env	*current;
 	char	*pwd;
 
 	current = ls_env;
-	pwd_exists = false;
 	pwd = NULL;
 	while (current)
 	{
@@ -108,17 +114,23 @@ static int	update_oldpwd(t_env *ls_env)
 				ft_putendl_fd("Error: update_oldpwd failed", STDERR_FILENO);
 				return (0);
 			}
-			pwd_exists = true;
+			break ;
 		}
 		current = current->next;
 	}
-	if (pwd_exists == false)
-		return (create_var_pwd(current->line, "OLDPWD="));
+	if (!current)
+	{
+		current = create_var_pwd("OLDPWD=");
+		if (!current)
+			return (0);
+	}
 	return (1);
 }
 
 int	exec_cd(char **cmd, t_env *list_env)
 {
+	printf("exec_cd\n");
+	// printf("env ls = %s\n", list_env->line);
 	if (cmd[2])
 	{
 		ft_putendl_fd("Error: too many arguments", STDERR_FILENO);

@@ -65,21 +65,23 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 char	**get_env_in_tab(t_env **node_env)
 {
 	char	**table_env;
+	t_env	*current;
 	int		i;
 
-	table_env = malloc(sizeof(char*) * ft_lstsize((t_list*)node_env));
+	current = *node_env;
+	table_env = malloc(sizeof(char*) * ft_lstsize((t_list*)current));
 	if (!table_env)
 		return (NULL);
 	i = 0;
-	while (*node_env)
+	while (current)
 	{
-		table_env[i] = ft_strdup((*node_env)->line);
+		table_env[i] = ft_strdup((current)->line);
 		if (!table_env[i])
 		{
 			free_tab(table_env);
 			return (NULL);
 		}
-		*node_env = (*node_env)->next;
+		current = (current)->next;
 		i++;
 	}
 	table_env[i] = NULL;
