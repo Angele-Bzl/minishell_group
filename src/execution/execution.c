@@ -1,6 +1,17 @@
 # include "minishell.h"
 
-int	count_cmds(t_token *token);
+int	count_cmds(t_token *token)
+{
+	int	i;
+
+	i = 0;
+	while (token)
+	{
+		token = token->next;
+		i++;
+	}
+	return (i);
+}
 
 int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 {
@@ -15,7 +26,10 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 		return (0);
 	}
 	if (cmd_is_builtin(data->ls_token->cmd[0]))
-			exec_homemade_builtin(data, env);
+	{
+		printf("kjhgfdsasdfghjhgfds\n");
+		exec_homemade_builtin(data, env);
+	}
 	if (execve(path_cmd, data->ls_token->cmd, env) == -1)
 	{
 		ft_putendl_fd("Error: execve failed", STDERR_FILENO);
@@ -31,9 +45,9 @@ static int	get_input(char *io[2], t_rafter redirection[2], int previous_output)
 	input = previous_output;
 	if (io[0])
 	{
-		if (redirection[0] == SIMPLE_RIGHT)
+		if (redirection[0] == SIMPLE_LEFT)
 			input = open(io[0], O_RDONLY);
-		else if (redirection[0] == DOUBLE_RIGHT)
+		else if (redirection[0] == DOUBLE_LEFT)
 			/*heredoc*/
 		if (input == -1)
 		{
@@ -129,19 +143,6 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	return (1);
-}
-
-int	count_cmds(t_token *token)
-{
-	int	i;
-
-	i = 0;
-	while (token)
-	{
-		token = token->next;
-		i++;
-	}
-	return (i);
 }
 
 int	execution(t_data *data)
