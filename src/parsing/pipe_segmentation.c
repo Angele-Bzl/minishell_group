@@ -54,7 +54,7 @@ static int	next_pipe_segment(const char *s, char c, int *start, int *end)
 
 	pipe_count = 0;
 	*start = *end;
-	while (s[*start] == c || s[*start] == ' ')
+	while (s[*start] == c || ft_isspace(s[*start]))
 	{
 		if (s[*start] == c)
 			pipe_count++;
@@ -86,7 +86,7 @@ static int		ft_countpipe(char const *s, char c)
 	count = 1; //on commence forcement avec un node ?
 	if (!s)
 		return (0);
-	while (s[i] == ' ') // on supprime les premiers espaces //changer en isspace
+	while (ft_isspace(s[i])) // on supprime les premiers espaces //changer en isspace
 		i++;
 	if (s[i] == '|') // si on croise direct un pipe, syntax error
 	{
@@ -95,7 +95,7 @@ static int		ft_countpipe(char const *s, char c)
 	}
 	while (s[i])
 	{
-		while (s[i] == ' ') //il faudra plutot mettre is space ici
+		while (ft_isspace(s[i])) //il faudra plutot mettre is space ici
 			i++;
 		while (s[i] != c && s[i] != '\0')
 		{
