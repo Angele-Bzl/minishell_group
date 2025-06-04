@@ -60,6 +60,7 @@ FILES_PARS  =   parsing.c\
 				rafter_token.c
 FILES_UTILS =   cutstr.c\
 				free_tab.c\
+				ft_isspace.c\
 				debug_print.c
 FILES		=	struct_init.c\
 				main.c\

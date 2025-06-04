@@ -158,6 +158,8 @@ int		err_message(t_error error);
 void	print_env(t_env *env);
 void	print_prompt_tab(char **p_tab);
 void	print_tokens(t_data *data);
+/*ft_isspace.c*/
+int	ft_isspace(char c);
 
 /*MAIN*/
 /*struct_init.c*/
