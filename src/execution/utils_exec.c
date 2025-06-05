@@ -44,7 +44,8 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 	int	status;
 
 	i = 0;
-	while (token->next)
+	status = 0;
+	while (token)
 	{
 		if (waitpid(pid[i], &status, 0) == -1)
 		{
@@ -57,7 +58,7 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
+	return (128 + WTERMSIG(status));
 	return (EXIT_SUCCESS);
 }
 
@@ -69,7 +70,7 @@ char	**get_env_in_tab(t_env **node_env)
 	int		i;
 
 	current = *node_env;
-	table_env = malloc(sizeof(char*) * ft_lstsize((t_list*)current));
+	table_env = malloc(sizeof(char*) * (ft_lstsize((t_list*)current) + 1));
 	if (!table_env)
 		return (NULL);
 	i = 0;
