@@ -164,7 +164,7 @@ int	execution(t_data *data)
 	}
 	data->ls_token = data->token_head;
 	i = 0;
-	while (data->ls_token->next)
+	while (data->ls_token)
 	{
 		if (!create_children(data, pipe_fd, pids[i], i))
 		{

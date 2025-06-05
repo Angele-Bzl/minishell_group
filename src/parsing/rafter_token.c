@@ -8,10 +8,10 @@ static char	*find_redir_file_name(char *prompt, int i)
 	int		end;
 	i++;
 
-	while (prompt[i] == ' ' || prompt[i] == '\t')						// on saute les espaces
+	while (ft_isspace(prompt[i]))										// on saute les espaces
 		i++;
 	start = i;
-	while (prompt[i] != ' ' && prompt[i] != '\t' && prompt[i] != '\0')	// on va jusqu'à la fin du nom
+	while (!ft_isspace(prompt[i]) && prompt[i] != '\0')					// on va jusqu'à la fin du nom
 		i++;
 	end = i;
 	len = end - start;
@@ -32,12 +32,12 @@ static void	manage_outfile(t_data *data, t_parsing *parsing, char *file_name)
 {
 	if (*data->ls_token->io_redir[1] == SIMPLE_RIGHT)
 	{
-		if (!open(file_name, O_RDONLY))
+		if (!open(file_name, O_CREAT))
 			parsing->outfile_issue = TRUE;
 	}
 	else if (*data->ls_token->io_redir[1] == DOUBLE_RIGHT)
 	{
-		if (!open(file_name, O_APPEND))
+		if (!open(file_name, O_APPEND | O_CREAT))
 			parsing->outfile_issue = TRUE;
 	}
 }
