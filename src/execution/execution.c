@@ -15,6 +15,8 @@ int	count_cmds(t_token *token)
 
 int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 {
+	printf("cmd = %s | input = %d\n", data->ls_token->cmd[0], io_fd[0]);
+	printf("cmd = %s | output = %d\n", data->ls_token->cmd[0], io_fd[1]);
 	if (dup2(io_fd[0], STDIN_FILENO) == -1)
 	{
 		perror("dup2");
@@ -25,8 +27,10 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 		perror("dup2");
 		return (0);
 	}
-	// close(io_fd[0]);
-	// close(io_fd[1]);
+	if (io_fd[0] != STDIN_FILENO)
+		close(io_fd[0]);
+	if (io_fd[1] != STDOUT_FILENO)
+		close(io_fd[1]);
 	if (cmd_is_builtin(data->ls_token->cmd[0]))
 	{
 		exec_homemade_builtin(data, env);
@@ -58,6 +62,7 @@ static int	get_input(char *io[2], t_rafter redirection[2], int previous_output)
 			return(-1);
 		}
 	}
+	// printf("get input : input = %d\n", input);
 	return (input);
 }
 
@@ -66,7 +71,10 @@ static int	get_output(char *io[2], t_rafter redirection[2], int pipe_output, int
 	int	output;
 
 	if (count_cmd == 1)
+	{
+		close(pipe_output);
 		output = STDOUT_FILENO;
+	}
 	else
 		output = pipe_output;
 	if (io[1])
@@ -82,6 +90,7 @@ static int	get_output(char *io[2], t_rafter redirection[2], int pipe_output, int
 			return(-1);
 		}
 	}
+	// printf("get output : ouptut = %d\n", output);
 	return (output);
 }
 
@@ -143,7 +152,11 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t pid, int i)
 		return (0);
 	}
 	if (pid == 0)
+	{
+		if (i == 0)
+			close(pipe_fd[0]);
 		manage_child(data, previous_output, pipe_fd);
+	}
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	return (1);
