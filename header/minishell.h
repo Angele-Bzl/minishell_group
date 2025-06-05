@@ -161,6 +161,7 @@ void	print_tokens(t_data *data);
 
 /*MAIN*/
 /*struct_init.c*/
-int		struct_init(t_data *data, t_parsing *parsing, char **env);
+int		struct_init(t_data *data, t_parsing *parsing);
+int  env_init(t_env **ls_env, char **env, t_data *data);
 
 #endif

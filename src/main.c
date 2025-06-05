@@ -24,9 +24,10 @@ int main(int ac, char **av, char **env)
 	// 	return (ERR);
 	// }
         // return(ALL_OK);
+	env_init(&data->ls_env, env, data);
     while (1)
     {
-        if (!struct_init(data, parsing, env))
+        if (!struct_init(data, parsing))
             print_and_free(NULL, data, parsing);
         parsing->prompt = readline("minishell > ");
         if (parsing->prompt)
