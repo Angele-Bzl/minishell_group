@@ -30,15 +30,23 @@ static char	*find_redir_file_name(char *prompt, int i)
 
 static void	manage_outfile(t_data *data, t_parsing *parsing, char *file_name)
 {
+	int	fd;
+
 	if (*data->ls_token->io_redir[1] == SIMPLE_RIGHT)
 	{
-		if (!open(file_name, O_CREAT))
+		fd = open(file_name, O_CREAT);
+		if (fd == -1)
 			parsing->outfile_issue = TRUE;
+		else
+			close(fd);
 	}
 	else if (*data->ls_token->io_redir[1] == DOUBLE_RIGHT)
 	{
-		if (!open(file_name, O_APPEND | O_CREAT))
+		fd = open(file_name, O_APPEND | O_CREAT);
+		if (fd == - 1)
 			parsing->outfile_issue = TRUE;
+		else
+			close(fd);
 	}
 }
 
