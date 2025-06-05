@@ -151,7 +151,7 @@ int	execution(t_data *data)
 	int		pipe_fd[2];
 	int		i;
 
-	if (!data->ls_token->next->next && cmd_is_builtin(data->ls_token->cmd[0]))
+	if (!data->ls_token->next && cmd_is_builtin(data->ls_token->cmd[0]))
 	{
 		exec_single_cmd(data);
 		return (1);
