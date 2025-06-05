@@ -8,9 +8,9 @@ char	*find_var_name(t_parsing *parsing)
 	int		var_len;
 	char	*var_name;
 
-	start = parsing->p_index;
+	start = parsing->p_index + 1;
 	end = start;
-	while (parsing->prompt[end] != ' ' && parsing->prompt[end] != '\'' && parsing->prompt[end] != '\"'
+	while (!isspace(parsing->prompt[end]) && parsing->prompt[end] != '\'' && parsing->prompt[end] != '\"'
 		&& parsing->prompt[end] != '$' && parsing->prompt[end] != '\0')		// Tant qu'on est pas a la fin de notre variable
 		end++;
 	var_len = end - start;

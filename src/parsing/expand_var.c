@@ -12,9 +12,9 @@ int	expand_var(t_data *data, t_parsing *parsing)										// partie expand, "go!
 			{
 				if (manage_dollar(data, parsing) == -1)									// créer un nouveau prompt avec le contenu de la var croisée
 					return (-1);
-				parsing->p_index--;														// sécuriser le cas où la var remplacée est plus longue que son contenu
 			}
-			parsing->p_index++;
+			if (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index] != '\0')
+				parsing->p_index++;
 		}
 		parsing->pipe_seg++;
 		parsing->p_index = 0;

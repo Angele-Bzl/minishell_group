@@ -4,7 +4,7 @@ int	find_var_end(char *prompt, int p_index)
 {
 	int	end;
 
-	end = p_index;
+	end = p_index + 1;
 	while (prompt[end] != ' ' && prompt[end] != '\'' && prompt[end] != '\"'
 		&& prompt[end] != '$' && prompt[end] != '\0')
 		end++;
@@ -23,7 +23,7 @@ char *find_var_content(char *variable, t_data *data)
 	tmp = data->env_head;
 	var = ft_strtrim(variable, "$");
 	if (!var)
-		return (NULL); 									//fail malloc
+		return (NULL); 											//fail malloc
 	free(variable);
 	var_len = (ft_strlen(var));
 	while (tmp)
@@ -36,10 +36,10 @@ char *find_var_content(char *variable, t_data *data)
 		tmp = tmp->next;
 	}
 	if (!env_var)
-		return (NULL); 									//si la variable existe pas c'est = NULL mais c'est pas un fail
+		return (NULL); 											//si la variable existe pas c'est = NULL mais c'est pas un fail
 	result = ft_cutstr(env_var, ft_strlen(var) + 1);
 	if (!result)
-		return (NULL); 									//fail malloc
+		return (NULL); 											//fail malloc
 	free(var);
 	return (result);
 }
@@ -53,24 +53,23 @@ char	*prompt_with_content(char *content, int start, char *prompt, int p_index)
 	char	*new_prompt;
 
 	end = find_var_end(prompt, p_index);
-	prompt_len = ft_strlen(prompt);
-	prompt_len = prompt_len - (end - start) + (ft_strlen(content));
+	prompt_len = ft_strlen(prompt) - (end - start) + (ft_strlen(content));
 	new_prompt = malloc(sizeof(char) * (prompt_len + 1));
 	if (!new_prompt)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while(prompt[i])
+	while (i < start)												// copier ce qui se trouve avant la variable.
+		new_prompt[j++] = prompt[i++];
+	while (content && content[j - i])								// inserer valeur de la variable.
 	{
-		if (prompt[i] == '$' && i == p_index)
-		{
-			while(content && content[j])
-				new_prompt[i++] = content[j++];
-			i = end;
-		}
-		else
-			new_prompt[j++] = prompt[i++];
+		new_prompt[j] = content[j - i];								// j - i car on veut content[0].
+		j++;
 	}
+	i = end;
+	while (prompt[i]) 												// recopier la fin du prompt
+		new_prompt[j++] = prompt[i++];
+	new_prompt[j] = '\0';
 	return (new_prompt);
 }
 
@@ -98,8 +97,9 @@ int manage_dollar(t_data *data,t_parsing *parsing)
 	start = parsing->p_index;
 	parsing->prompt_tab[parsing->pipe_seg] = NULL;
 	parsing->prompt_tab[parsing->pipe_seg] = prompt_with_content(content, start,
-			old_prompt, parsing->p_index);	// retirer la variable et rajouter contenu
-	if (!parsing->prompt[parsing->pipe_seg])
+			old_prompt, parsing->p_index);							// retirer la variable et rajouter contenu
+	if (!parsing->prompt_tab[parsing->pipe_seg])
 		return (-1);
+	parsing->p_index = start + ft_strlen(content);
 	return (0);
 }
