@@ -47,7 +47,8 @@ int	exec_single_cmd(t_data *data)
 		return (0);
 	}
 	// printf("ls env exec single cmd = %s\n", data->ls_env->line);
-	exec_homemade_builtin(data, env);
+	redirect_and_exec(data, io_fd, NULL, env);
+	// exec_homemade_builtin(data, env);
 	// path_cmd = find_cmd(env, data->ls_token->cmd[0]);
 	// if (!path_cmd)
 	// {

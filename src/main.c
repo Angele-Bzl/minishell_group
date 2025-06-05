@@ -18,13 +18,13 @@ int main(int ac, char **av, char **env)
 		ft_putstr_fd("Error: malloc failed\n", 2);
 		return (2);
 	}
-	// if (!struct_init(data, parsing, env))
-	// {
-	// 	free_all(data, parsing);
-	// 	return (ERR);
-	// }
-        // return(ALL_OK);
-	env_init(&data->ls_env, env, data);
+	if (!env_init(&data->ls_env, env, data))
+	{
+		free(data);
+		free(parsing);
+		ft_putstr_fd("Error: malloc failed\n", 2);
+	return (2);
+	}
     while (1)
     {
         if (!struct_init(data, parsing))
