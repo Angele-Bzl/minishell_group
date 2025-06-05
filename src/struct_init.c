@@ -26,11 +26,13 @@ static int	manage_no_env(t_env **ls_env)
 	return (0);
 }
 
-static int  env_init(t_env **ls_env, char **env, t_data *data)
+int  env_init(t_env **ls_env, char **env, t_data *data)
 { /*shlvl ? _ ?*/
 	unsigned int	i;
 	t_env			*new_node;
 
+	data->ls_env = NULL;
+	data->env_head = NULL;
 	i = 0;
 	if (!env || !env[0])
 		return(manage_no_env(ls_env));
@@ -52,7 +54,7 @@ static int  env_init(t_env **ls_env, char **env, t_data *data)
 	return (1);
 }
 
-static int	data_init(t_data *data, char **env)
+static int	data_init(t_data *data)
 {
 	data->ls_token = malloc(sizeof(t_token)); //data init
 	if (!data->ls_token)
@@ -70,20 +72,13 @@ static int	data_init(t_data *data, char **env)
 	if (!data->ls_token->io_redir[1])
 		return (0);
 	*data->ls_token->io_redir[1] = DEFAULT;
-	data->ls_env = NULL;
-	data->env_head = NULL;
 	data->pipe_nbr = 0;
-	if (env_init(&data->ls_env, env, data) == 0)
-		return (0);
+
 	return (1);
 }
 
-
-
-int	struct_init(t_data *data, t_parsing *parsing, char **env)
+static void parsing_init(t_data *data, t_parsing *parsing)
 {
-	if (data_init(data, env) == 0)
-		return (0);
 	parsing->data = data; //parsing init
 	parsing->dollar = false;
 	parsing->double_quote = false;
@@ -95,5 +90,14 @@ int	struct_init(t_data *data, t_parsing *parsing, char **env)
 	parsing->pipe_seg = 0;
 	parsing->p_index = 0;
 	parsing->word_length = 0;
+}
+
+int	struct_init(t_data *data, t_parsing *parsing)
+{
+	if (data_init(data) == 0)
+		return (0);
+	parsing_init(data, parsing);
+	// if (env_init(&data->ls_env, env, data) == 0)
+	// 	return (0);
 	return(1);
 }

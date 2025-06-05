@@ -75,7 +75,6 @@ static long long check_valid_arg(char *arg)
 		ft_putendl_fd("Error: exit: numeric argument required", STDERR_FILENO);
 		return (2);
 	}
-	printf("argull = %llu\n", arg_ull);
 	return (arg_ull * minus);
 }
 
@@ -84,13 +83,11 @@ static int	exit_arg(long long exit_code)
 	int exit_255;
 
 	/*free all*/
-	printf("exit arg : exit code : %lld\n" , exit_code);
 	exit_255 = exit_code % 256;
 	if (exit_255 < 0)
 	{
 		exit_255 += 256;
 	}
-	printf("exit arg : exit 255 : %d\n", exit_255);
 	exit(exit_255);
 }
 int	exec_exit(t_token *cmds, t_env *ls_env)
@@ -108,7 +105,6 @@ int	exec_exit(t_token *cmds, t_env *ls_env)
 		exit_no_arg();//
 	}
 	exit_code = check_valid_arg(cmds->cmd[1]);
-	printf("exec exit : exit code = %lld\n", exit_code);
 	if (exit_code == -1)
 	{
 		return (0);
@@ -116,7 +112,6 @@ int	exec_exit(t_token *cmds, t_env *ls_env)
 	exit_arg(exit_code);
 	return (1);
 }
-
 
 // static int  env_init_TEST(t_env **ls_env, char **env)
 // {

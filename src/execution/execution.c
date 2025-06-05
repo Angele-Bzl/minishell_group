@@ -27,10 +27,10 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 	}
 	if (cmd_is_builtin(data->ls_token->cmd[0]))
 	{
-		printf("kjhgfdsasdfghjhgfds\n");
 		exec_homemade_builtin(data, env);
+		exit(0);
 	}
-	if (execve(path_cmd, data->ls_token->cmd, env) == -1)
+	else if (execve(path_cmd, data->ls_token->cmd, env) == -1)
 	{
 		ft_putendl_fd("Error: execve failed", STDERR_FILENO);
 		return (0);
@@ -151,11 +151,11 @@ int	execution(t_data *data)
 	int		pipe_fd[2];
 	int		i;
 
-	// if (!data->ls_token->next && cmd_is_builtin(data->ls_token->cmd[0]))
-	// { //on ne rentre pas dans cette condition :(
-	// 	exec_single_cmd(data);
-	// 	return (1);
-	// }
+	if (!data->ls_token->next->next && cmd_is_builtin(data->ls_token->cmd[0]))
+	{
+		exec_single_cmd(data);
+		return (1);
+	}
 	pids = malloc(sizeof(pid_t) * count_cmds(data->ls_token));
 	if (!pids)
 	{

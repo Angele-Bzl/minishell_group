@@ -2,51 +2,38 @@
 
 // #include "../../../header/minishell.h"
 
-// static int	update_pwd(char *variable, int var_length, char *env_line, bool *pwd_exists)
-// {
-// 	if (!ft_strncmp(env_line, variable, var_length))
-// 	{
-// 		if (env_line)
-// 			free(env_line);
-// 		env_line = ft_strjoin(variable, getcwd(NULL, 0));//free getcwd
-// 		if (!env_line)
-// 		{
-// 			ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
-// 			return (0);
-// 		}
-// 		*pwd_exists = true;
-// 	}
-// 	return (1);
-// }
-
-static int	create_var_pwd(char *env_line, char *variable)
+static t_env	*create_var_pwd(char *variable)
 {
-	char *pwd;
+	char 	*pwd;
+	t_env	*new_node;
 
-	pwd = getcwd(NULL, 0);
-	env_line = ft_strjoin(variable, pwd);
-	free(pwd);
-	if (!env_line)
+	new_node = malloc(sizeof(t_env));
+	if (!new_node)
 	{
 		ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
-		return (0);
+		return (NULL);
 	}
-	return (1);
+	pwd = getcwd(NULL, 0);
+	new_node->line = ft_strjoin(variable, pwd);
+	free(pwd);
+	if (!new_node->line)
+	{
+		free(new_node);
+		ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
+		return (NULL);
+	}
+	return (new_node);
 }
 
-static int	update_pwd(t_env *list_env, char *variable, int var_length)
+static int	update_pwd(t_env *list_env, int var_length)
 {
-	bool	pwd_exists;
 	t_env	*current;
 	char	*pwd;
 
 	current = list_env;
-	pwd_exists = false;
 	while (current)
 	{
-		// if (!update_pwd(variable, var_length, current->line, &pwd_exists))
-		// 	return (0);
-		if (!ft_strncmp(current->line, variable, var_length))
+		if (!ft_strncmp(current->line, "PWD=", var_length))
 		{
 			if (current->line)
 				free(current->line);
@@ -56,30 +43,32 @@ static int	update_pwd(t_env *list_env, char *variable, int var_length)
 				ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
 				return (0);
 			}
-			current->line = ft_strjoin(variable, pwd);
+			current->line = ft_strjoin("PWD=", pwd);
 			free(pwd);
 			if (!current->line)
 			{
 				ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
 				return (0);
 			}
-			pwd_exists = true;
+			break ;
 		}
 		current = current->next;
 	}
-	if (pwd_exists == false)
-		return (create_var_pwd(current->line, variable));
+	if (!current)
+	{
+		current = create_var_pwd("PWD=");
+		if (!current)
+			return (0);
+	}
 	return (1);
 }
 
 static int	update_oldpwd(t_env *ls_env)
 {
-	bool	pwd_exists;
 	t_env	*current;
 	char	*pwd;
 
 	current = ls_env;
-	pwd_exists = false;
 	pwd = NULL;
 	while (current)
 	{
@@ -108,17 +97,23 @@ static int	update_oldpwd(t_env *ls_env)
 				ft_putendl_fd("Error: update_oldpwd failed", STDERR_FILENO);
 				return (0);
 			}
-			pwd_exists = true;
+			break ;
 		}
 		current = current->next;
 	}
-	if (pwd_exists == false)
-		return (create_var_pwd(current->line, "OLDPWD="));
+	if (!current)
+	{
+		current = create_var_pwd("OLDPWD=");
+		if (!current)
+			return (0);
+	}
 	return (1);
 }
 
 int	exec_cd(char **cmd, t_env *list_env)
 {
+	printf("exec_cd\n");
+	// printf("env ls = %s\n", list_env->line);
 	if (cmd[2])
 	{
 		ft_putendl_fd("Error: too many arguments", STDERR_FILENO);
@@ -131,7 +126,7 @@ int	exec_cd(char **cmd, t_env *list_env)
 		perror("Error chdir");
 		return (0);
 	}
-	update_pwd(list_env, "PWD=", 4);
+	update_pwd(list_env, 4);
 		return (0);
 	return (1);
 }

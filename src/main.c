@@ -18,14 +18,16 @@ int main(int ac, char **av, char **env)
 		ft_putstr_fd("Error: malloc failed\n", 2);
 		return (2);
 	}
-	// if (!struct_init(data, parsing, env))
-	// {
-    //     // return(free_all(data, parsing));
-	// }
-        // return(ALL_OK);
+	if (!env_init(&data->ls_env, env, data))
+	{
+		free(data);
+		free(parsing);
+		ft_putstr_fd("Error: malloc failed\n", 2);
+	return (2);
+	}
     while (1)
     {
-        if (!struct_init(data, parsing, env))
+        if (!struct_init(data, parsing))
             print_and_free(NULL, data, parsing);
         parsing->prompt = readline("minishell > ");
         if (parsing->prompt)
@@ -40,9 +42,9 @@ int main(int ac, char **av, char **env)
             }
 		}
     }
-	printf("HERE\n");
-    print_and_free(NULL, data, parsing);
-    free(data);
-    free(parsing);
+	// printf("HERE\n");
+    // print_and_free(NULL, data, parsing);
+    // free(data);
+    // free(parsing);
     return (0);
 }
