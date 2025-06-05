@@ -25,10 +25,12 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 		perror("dup2");
 		return (0);
 	}
+	// close(io_fd[0]);
+	// close(io_fd[1]);
 	if (cmd_is_builtin(data->ls_token->cmd[0]))
 	{
 		exec_homemade_builtin(data, env);
-		exit(0);
+		return (0); //exit ?
 	}
 	else if (execve(path_cmd, data->ls_token->cmd, env) == -1)
 	{
@@ -45,6 +47,7 @@ static int	get_input(char *io[2], t_rafter redirection[2], int previous_output)
 	input = previous_output;
 	if (io[0])
 	{
+		// close(previous_output);
 		if (redirection[0] == SIMPLE_LEFT)
 			input = open(io[0], O_RDONLY);
 		else if (redirection[0] == DOUBLE_LEFT)
@@ -62,12 +65,13 @@ static int	get_output(char *io[2], t_rafter redirection[2], int pipe_output, int
 {
 	int	output;
 
-	if (count_cmd == 2)
+	if (count_cmd == 1)
 		output = STDOUT_FILENO;
 	else
 		output = pipe_output;
 	if (io[1])
 	{
+		// close(pipe_output);
 		if (redirection[1] == SIMPLE_RIGHT)
 			output = open(io[1], O_WRONLY | O_TRUNC, 0644);
 		else if (redirection[1] == DOUBLE_RIGHT)
