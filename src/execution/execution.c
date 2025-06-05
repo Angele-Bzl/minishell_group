@@ -62,7 +62,7 @@ static int	get_output(char *io[2], t_rafter redirection[2], int pipe_output, int
 {
 	int	output;
 
-	if (count_cmd == 2)
+	if (count_cmd == 1)
 		output = STDOUT_FILENO;
 	else
 		output = pipe_output;
@@ -89,6 +89,8 @@ static int	manage_child(t_data *data, int previous_output, int pipe_fd[2])
 
 	io_fd[0] = get_input(data->ls_token->io_value, *data->ls_token->io_redir, previous_output);
 	io_fd[1] = get_output(data->ls_token->io_value, *data->ls_token->io_redir, pipe_fd[1], count_cmds(data->ls_token));
+	printf("iofd[0]=%d\n", io_fd[0]);
+	printf("iofd[1]=%d\n", io_fd[1]);
 	env = get_env_in_tab(&data->ls_env);
 	data->ls_env = data->env_head;
 	if (!env)
@@ -151,7 +153,7 @@ int	execution(t_data *data)
 	int		pipe_fd[2];
 	int		i;
 
-	if (!data->ls_token->next->next && cmd_is_builtin(data->ls_token->cmd[0]))
+	if (!data->ls_token->next && cmd_is_builtin(data->ls_token->cmd[0]))
 	{
 		exec_single_cmd(data);
 		return (1);
@@ -164,7 +166,7 @@ int	execution(t_data *data)
 	}
 	data->ls_token = data->token_head;
 	i = 0;
-	while (data->ls_token->next)
+	while (data->ls_token)//next ?
 	{
 		if (!create_children(data, pipe_fd, pids[i], i))
 		{
