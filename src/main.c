@@ -20,7 +20,8 @@ int main(int ac, char **av, char **env)
 	}
 	// if (!struct_init(data, parsing, env))
 	// {
-    //     // return(free_all(data, parsing));
+	// 	free_all(data, parsing);
+	// 	return (ERR);
 	// }
         // return(ALL_OK);
     while (1)
@@ -40,9 +41,9 @@ int main(int ac, char **av, char **env)
             }
 		}
     }
-	printf("HERE\n");
-    print_and_free(NULL, data, parsing);
-    free(data);
-    free(parsing);
+	// printf("HERE\n");
+    // print_and_free(NULL, data, parsing);
+    // free(data);
+    // free(parsing);
     return (0);
 }
