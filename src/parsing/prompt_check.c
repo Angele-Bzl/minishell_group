@@ -2,7 +2,7 @@
 
 static int	last_pipe_check(char *prompt, int i);
 
-int	prompt_check(char *prompt)
+int	prompt_check(char *prompt, t_parsing *parsing)
 {
 	int	i;
 	int	single_quote;
@@ -13,9 +13,10 @@ int	prompt_check(char *prompt)
 	double_quote = 0;
 	while (prompt[i] != '\0')
 	{
-		if (prompt[i] == '\'')
+		quote_check(prompt[i], parsing);
+		if (prompt[i] == '\'' && parsing->double_quote == false)
 			single_quote++;
-		if (prompt[i] == '\"')
+		if (prompt[i] == '\"' && parsing->simple_quote == false)
 			double_quote++;
 		i++;
 	}

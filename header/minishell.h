@@ -119,9 +119,12 @@ int		ft_parsing(t_data **data, t_parsing *parsing);
 /*free_parsing.c*/
 void	free_all(t_data *data, t_parsing *parsing);
 /*prompt_check.c*/
-int		prompt_check(char *prompt);
+int		prompt_check(char *prompt, t_parsing *parsing);
 /*expand_var.c*/
+void	quote_check(char c, t_parsing *parsing);
 int		expand_var(t_data *data, t_parsing *parsing);
+/*extract_token_without_quotes.c*/
+char	*extract_token_without_quotes(char *str, t_parsing *parsing);
 /*print_and_free.c*/
 void	print_and_free(char *str, t_data *data, t_parsing *parsing);
 /*manage_dollar*/
@@ -140,7 +143,7 @@ int		manage_quotes(char c, t_parsing *parsing);
 t_token	*token_lstnew(void);
 void	token_lstadd_back(t_token **lst, t_token *new);
 /*cmd_token_utils.c*/
-char	**split_whitespace_quotes(char const *s, char c);
+char	**split_whitespace_quotes(char const *s, char c, t_parsing *parsing);
 /*cmd_token.c*/
 char	*extract_clean_cmd(char *prompt);
 /*rafter_token.c*/

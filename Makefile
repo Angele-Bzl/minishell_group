@@ -47,6 +47,7 @@ FILES_PARS  =   parsing.c\
 				free_parsing.c\
 				prompt_check.c\
 				expand_var.c\
+				extract_token_without_quotes.c\
 				print_and_free.c\
 				manage_dollar.c\
 				manage_dollar_utils.c\

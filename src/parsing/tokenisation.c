@@ -18,12 +18,12 @@ static void	find_and_store_all_rafters(t_data *data, t_parsing *parsing, char *p
 	}
 }
 
-static void	find_and_store_all_cmds(t_data *data, char *prompt)
+static void	find_and_store_all_cmds(t_data *data, char *prompt, t_parsing *parsing)
 {
 	char	*clean_cmds;
 
 	clean_cmds = extract_clean_cmd(prompt);
-	(data)->ls_token->cmd = split_whitespace_quotes(clean_cmds, ' ');
+	(data)->ls_token->cmd = split_whitespace_quotes(clean_cmds, ' ', parsing);
 }
 
 int	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeuds de ls_token
@@ -36,7 +36,7 @@ int	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeud
 	if (parsing->prompt_tab[i])
 	{
         find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]);
-        find_and_store_all_cmds(data, parsing->prompt_tab[i]);
+        find_and_store_all_cmds(data, parsing->prompt_tab[i], parsing);
         i++;
     }
 	while (parsing->prompt_tab[i])
@@ -47,7 +47,7 @@ int	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeud
 		token_lstadd_back(&(data)->token_head, new_token_node);
 		(data)->ls_token = new_token_node;
 		find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]);
-		find_and_store_all_cmds(data, parsing->prompt_tab[i]);
+		find_and_store_all_cmds(data, parsing->prompt_tab[i], parsing);
 		i++;
 	}
 	return (0);

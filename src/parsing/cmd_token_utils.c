@@ -4,7 +4,7 @@ static int		ft_mark(const char *s, char c, int *start, int *end);
 static int	ft_countword(char const *s, char c);
 static int		ft_free(char **array, int limit);
 
-char	**split_whitespace_quotes(char const *s, char c)
+char	**split_whitespace_quotes(char const *s, char c, t_parsing *parsing)
 {
 	int	start;
 	int	end;
@@ -23,6 +23,7 @@ char	**split_whitespace_quotes(char const *s, char c)
 		if (ft_mark(s, c, &start, &end))
 			return (array);
 		array[limit] = ft_substr(s, start, (end - start));
+		array[limit] = extract_token_without_quotes(array[limit], parsing);
 		if (ft_free(array, limit))
 			return (NULL);
 		limit++;
