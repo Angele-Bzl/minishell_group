@@ -35,13 +35,13 @@ int	check_input_output(char *io[2], t_rafter redirection[2], int *io_fd)
 static int	reset_dup2(t_data *data)
 {
 	(void)data;
-	if (dup2(STDIN_FILENO, STDIN_FILENO))
+	if (dup2(STDIN_FILENO, STDIN_FILENO)  == -1)
 	{
 		// free_all(data);
 		perror("dup2");
 		return (0);
 	}
-	if (dup2(STDOUT_FILENO, STDOUT_FILENO))
+	if (dup2(STDOUT_FILENO, STDOUT_FILENO) == -1)
 	{
 		// free_all(data);
 		perror("dup2");
