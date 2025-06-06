@@ -36,7 +36,7 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 	if (cmd_is_builtin(data->ls_token->cmd[0]))
 	{
 		exec_homemade_builtin(data, env);
-		return (0); //exit ?
+		return (1); //exit ?
 	}
 	else if (execve(path_cmd, data->ls_token->cmd, env) == -1)
 	{
@@ -101,7 +101,7 @@ static int	get_output(char *io[2], t_rafter redirection[2], int pipe_output, int
 	return (output);
 }
 
-static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2])
+static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t pid)
 {
 	char	**env;
 	char	*path_cmd;
@@ -137,6 +137,8 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2])
 		close(io_fd[1]);
 		return (0);
 	}
+	if (pid == 0)
+		exit(0);
 	return (1);
 }
 
@@ -161,7 +163,7 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t *pid, int i)
 	if (pid[i] == 0)
 	{
 		close(pipe_fd[0]);
-		manage_child(data, previous_pipe, pipe_fd);
+		manage_child(data, previous_pipe, pipe_fd, pid[i]);
 	}
 	if (previous_pipe != STDIN_FILENO)
 		close(previous_pipe);
