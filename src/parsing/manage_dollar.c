@@ -70,6 +70,7 @@ char	*prompt_with_content(char *content, int start, char *prompt, int p_index)
 	while (prompt[i]) 												// recopier la fin du prompt
 		new_prompt[j++] = prompt[i++];
 	new_prompt[j] = '\0';
+	//printf("%s\n", new_prompt);
 	return (new_prompt);
 }
 

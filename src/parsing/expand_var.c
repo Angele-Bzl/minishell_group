@@ -34,14 +34,14 @@ int	expand_var(t_data *data, t_parsing *parsing)										// partie expand, "go!
 	{
 		while (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index])				// tant qu'on a des charactères dans le seg_pipe actuel
 		{
+			//printf("expand_var : %s\n", parsing->prompt_tab[parsing->pipe_seg]);
 			quote_check(parsing->prompt_tab[parsing->pipe_seg][parsing->p_index], parsing);
 			if (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index] == '$' && parsing->simple_quote == false)
 			{
 				if (manage_dollar(data, parsing) == -1)									// créer un nouveau prompt avec le contenu de la var croisée
 					return (-1);
 			}
-			if (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index] != '\0')
-				parsing->p_index++;
+			parsing->p_index++;
 		}
 		if (!dollar_remaining(parsing->prompt_tab[parsing->pipe_seg]))
 			parsing->pipe_seg++;
