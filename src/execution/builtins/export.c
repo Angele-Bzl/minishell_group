@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 // #include "../../../header/minishell.h"
 
@@ -18,7 +18,7 @@ int	exec_export(t_env *ls_env, char **cmds)
 		}
 		new->line = cmds[i];
 		new->next = NULL;
-		ft_lstadd_back((t_list**)&ls_env, (t_list*)new);
+		ft_lstadd_back((t_list **)&ls_env, (t_list *)new);
 		i++;
 	}
 	return (1);

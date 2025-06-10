@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 int main(int ac, char **av, char **env)
 {
@@ -29,7 +29,7 @@ int main(int ac, char **av, char **env)
     {
         if (!struct_init(data, parsing))
             print_and_free(NULL, data, parsing);
-        parsing->prompt = readline("minishell > ");
+        parsing->prompt = readline("minishell> ");
         if (parsing->prompt)
 		{
 			add_history(parsing->prompt);

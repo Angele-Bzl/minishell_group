@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 char	*ft_strtrim_improved(char *s1, char const *set)
 {
@@ -58,7 +58,7 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-	return (128 + WTERMSIG(status));
+		return (128 + WTERMSIG(status));
 	return (EXIT_SUCCESS);
 }
 
@@ -70,7 +70,7 @@ char	**get_env_in_tab(t_env **node_env)
 	int		i;
 
 	current = *node_env;
-	table_env = malloc(sizeof(char*) * (ft_lstsize((t_list*)current) + 1));
+	table_env = malloc(sizeof (char *) * (ft_lstsize((t_list *)current) + 1));
 	if (!table_env)
 		return (NULL);
 	i = 0;

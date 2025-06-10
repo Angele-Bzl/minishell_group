@@ -6,7 +6,7 @@
 /*   By: abarzila <abarzila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 09:21:43 by abarzila          #+#    #+#             */
-/*   Updated: 2025/05/06 18:07:27 by abarzila         ###   ########.fr       */
+/*   Updated: 2025/06/10 08:56:38 by abarzila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		return ;
 	current = ft_lstlast(*lst);
 	if (current)
-        current->next = new;
+		current->next = new;
 	else
-        *lst = new;
+		*lst = new;
 }

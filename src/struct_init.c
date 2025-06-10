@@ -1,11 +1,11 @@
-# include "minishell.h"
+#include "minishell.h"
 
 static int	manage_no_env(t_env **ls_env)
 {
 	t_env	*new_node;
 	char	*pwd;
 
-	new_node = malloc(sizeof(t_env));
+	new_node = malloc(sizeof (t_env));
 	if (!new_node)
 		return (0);
 	pwd = ft_strdup("PWD=");
@@ -23,7 +23,7 @@ static int	manage_no_env(t_env **ls_env)
 	}
 	new_node->next = NULL;
 	ft_lstadd_back((t_list**)ls_env, (t_list*)new_node);
-	return (0);
+	return (1);
 }
 
 int  env_init(t_env **ls_env, char **env, t_data *data)
@@ -45,7 +45,7 @@ int  env_init(t_env **ls_env, char **env, t_data *data)
 		if (!new_node->line)
 			return (0);
 		new_node->next = NULL;
-		ft_lstadd_back((t_list**)ls_env, (t_list*)new_node);
+		ft_lstadd_back((t_list **)ls_env, (t_list *)new_node);
 		new_node = new_node->next;
 		if (data->env_head == NULL)
 			data->env_head = *ls_env;
