@@ -20,7 +20,8 @@ int	dollar_remaining(char *str, t_parsing *parsing)
 	while (str[i])
 	{
 		quote_check(str[i], parsing);
-		if (str[i] == '$' && parsing->simple_quote == false)
+		if (str[i] == '$' && parsing->simple_quote == false && !ft_isspace(str[i + 1])
+			&& str[i + 1] != '\0')
 			return (1);
 		i++;
 	}
@@ -35,9 +36,10 @@ int	expand_var(t_data *data, t_parsing *parsing)										// partie expand, "go!
 	{
 		while (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index])				// tant qu'on a des charactères dans le seg_pipe actuel
 		{
-			//printf("expand_var : %s\n", parsing->prompt_tab[parsing->pipe_seg]);
 			quote_check(parsing->prompt_tab[parsing->pipe_seg][parsing->p_index], parsing);
-			if (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index] == '$' && parsing->simple_quote == false)
+			if (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index] == '$' && parsing->simple_quote == false
+				&& !ft_isspace(parsing->prompt_tab[parsing->pipe_seg][parsing->p_index + 1])
+				&& parsing->prompt_tab[parsing->pipe_seg][parsing->p_index + 1] != '\0')
 			{
 				if (manage_dollar(data, parsing) == -1)									// créer un nouveau prompt avec le contenu de la var croisée
 					return (-1);
