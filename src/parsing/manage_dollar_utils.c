@@ -10,8 +10,8 @@ char	*find_var_name(t_parsing *parsing)
 
 	start = parsing->p_index + 1;
 	end = start;
-	while (!isspace(parsing->prompt[end]) && parsing->prompt[end] != '\'' && parsing->prompt[end] != '\"'
-		&& parsing->prompt[end] != '$' && parsing->prompt[end] != '\0')		// Tant qu'on est pas a la fin de notre variable
+	while (!isspace(parsing->prompt_tab[parsing->pipe_seg][end]) && parsing->prompt_tab[parsing->pipe_seg][end] != '\'' && parsing->prompt_tab[parsing->pipe_seg][end] != '\"'
+		&& parsing->prompt_tab[parsing->pipe_seg][end] != '$' && parsing->prompt_tab[parsing->pipe_seg][end] != '\0')		// Tant qu'on est pas a la fin de notre variable
 		end++;
 	var_len = end - start;
 	var_name = malloc(sizeof(char) * (var_len + 1));
@@ -20,7 +20,7 @@ char	*find_var_name(t_parsing *parsing)
 	i = 0;
 	while (i < var_len)
 	{
-		var_name[i] = parsing->prompt[start + i];
+		var_name[i] = parsing->prompt_tab[parsing->pipe_seg][start + i];
 		i++;
 	}
 	var_name[i] = '\0';
