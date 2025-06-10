@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 static int	find_path_in_env(char **env)
 {
@@ -88,18 +88,22 @@ char	*find_cmd(char **env, char *cmd)
 	/*A FAIRE if option chemin absolu*/
 	env_path = ft_split(env[find_path_in_env(env)], ':');
 	if (!env_path)
+	{
+		printf("hello\n");
 		return (NULL);
+	}
 	env_path[0] = ft_strtrim_improved(env_path[0], "PATH=");
 	if (!env_path[0])
-		return (free_tab(env_path));
-
+	{
+		return (ft_strdup("./"));
+		//return (free_tab(env_path));
+	}
 	hypothetical_path_cmd = malloc(sizeof (char *) * tablen(env_path));
 	if (!hypothetical_path_cmd)
 		return (free_tab(env_path));
 	fill_tab_null(hypothetical_path_cmd, tablen(env_path));
 	if (init_hyp_path(hypothetical_path_cmd, cmd, env_path) == 0)
 		return (free_tab(env_path));
-
 	path_cmd = check_if_cmd_exists(hypothetical_path_cmd, env_path);
 	free_tab(env_path);
 	return (path_cmd);

@@ -1,10 +1,10 @@
-# include "minishell.h"
+#include "minishell.h"
 
 // #include "../../../header/minishell.h"
 
 static t_env	*create_var_pwd(char *variable)
 {
-	char 	*pwd;
+	char	*pwd;
 	t_env	*new_node;
 
 	new_node = malloc(sizeof(t_env));
@@ -126,7 +126,7 @@ int	exec_cd(char **cmd, t_env *list_env)
 		perror("Error chdir");
 		return (0);
 	}
-	update_pwd(list_env, 4);
+	if (!update_pwd(list_env, 4))
 		return (0);
 	return (1);
 }

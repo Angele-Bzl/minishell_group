@@ -1,22 +1,6 @@
-# include "minishell.h"
+#include "minishell.h"
 
 // #include "../../../header/minishell.h"
-
-// static void	check_and_update(char *cmd, t_env *current, t_env *previous, t_env **ls_env)
-// {
-// 		if (previous == NULL)
-// 		{
-// 			*ls_env = current->next;
-// 			free(current);
-// 			current = *ls_env;
-// 		}
-// 		else
-// 		{
-// 			previous->next = current->next;
-// 			free(current);
-// 		}
-// 		free(cmd);
-// }
 
 static void	update_ls_env_head(t_env **ls_env, t_env **current)
 {
@@ -93,7 +77,6 @@ int	exec_unset(t_env **ls_env, char **cmds)
 // 		current = (current)->next;
 // 	}
 // }
-
 
 // int	exec_export(t_env *ls_env, char **cmds)
 // {

@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 int	count_cmds(t_token *token)
 {
@@ -57,20 +57,15 @@ static int	get_input(char *io[2], t_rafter redirection[2], int previous_output)
 		if (redirection[0] == SIMPLE_LEFT)
 			input = open(io[0], O_RDONLY);
 		else if (redirection[0] == DOUBLE_LEFT)
+		{
 			/*heredoc*/
+		}
 		if (input == -1)
 		{
 			perror(io[0]);
-			return(-1);
+			return (-1);
 		}
 	}
-	// if (input != 0)
-	// {
-	// 	printf("gnl input = %d\n", input);
-	// 	char *gnl;
-	// 	gnl = get_next_line(input);
-	// 	printf("gnl = %s\n", gnl);
-	// }
 	return (input);
 }
 
@@ -95,7 +90,7 @@ static int	get_output(char *io[2], t_rafter redirection[2], int pipe_output, int
 		if (output == -1)
 		{
 			perror(io[1]);
-			return(-1);
+			return (-1);
 		}
 	}
 	return (output);
@@ -115,7 +110,6 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t p
 	{
 		ft_putendl_fd("Error: malloc", STDERR_FILENO);
 		exit(ERR);
-		// return (0);
 	}
 	path_cmd = find_cmd(env, data->ls_token->cmd[0]);
 	if (!path_cmd)
@@ -127,7 +121,6 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t p
 		close(io_fd[1]);
 		ft_putendl_fd("Error: No path to the command.", STDERR_FILENO);
 		exit(ERR);
-		// return (0);
 	}
 	else if (!redirect_and_exec(data, io_fd, path_cmd, env))
 	{
@@ -138,7 +131,6 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t p
 		close(io_fd[0]);
 		close(io_fd[1]);
 		exit(ERR);
-		// return (0);
 	}
 	if (pid == 0)
 		exit(0);
