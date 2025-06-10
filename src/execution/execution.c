@@ -36,7 +36,7 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 	if (cmd_is_builtin(data->ls_token->cmd[0]))
 	{
 		exec_homemade_builtin(data, env);
-		return (1); //exit ?
+		return (1);
 	}
 	else if (execve(path_cmd, data->ls_token->cmd, env) == -1)
 	{
@@ -114,7 +114,8 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t p
 	if (!env)
 	{
 		ft_putendl_fd("Error: malloc", STDERR_FILENO);
-		return (0);
+		exit(ERR);
+		// return (0);
 	}
 	path_cmd = find_cmd(env, data->ls_token->cmd[0]);
 	if (!path_cmd)
@@ -125,7 +126,8 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t p
 		close(io_fd[0]);
 		close(io_fd[1]);
 		ft_putendl_fd("Error: No path to the command.", STDERR_FILENO);
-		return (0);
+		exit(ERR);
+		// return (0);
 	}
 	else if (!redirect_and_exec(data, io_fd, path_cmd, env))
 	{
@@ -135,7 +137,8 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t p
 		close(pipe_fd[1]);
 		close(io_fd[0]);
 		close(io_fd[1]);
-		return (0);
+		exit(ERR);
+		// return (0);
 	}
 	if (pid == 0)
 		exit(0);
@@ -144,7 +147,7 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t p
 
 static int	create_children(t_data *data, int *pipe_fd, pid_t *pid, int i)
 {
-	int		previous_pipe;
+	int	previous_pipe;
 
 	previous_pipe = STDIN_FILENO;
 	if (i > 0)
