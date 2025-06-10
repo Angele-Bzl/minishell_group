@@ -11,6 +11,7 @@ static int	find_path_in_env(char **env)
 			return (i);
 		i++;
 	}
+	// ft_putendl_fd("Error: No such file or directory", STDERR_FILENO);
 	return (-1);
 }
 
@@ -82,21 +83,23 @@ char	*find_cmd(char **env, char *cmd)
 	char	**env_path;
 	char	**hypothetical_path_cmd;
 	char	*path_cmd;
+	int		i;
 
 	if (cmd_is_builtin(cmd))
 		return (cmd);
-	/*A FAIRE if option chemin absolu*/
-	env_path = ft_split(env[find_path_in_env(env)], ':');
-	if (!env_path)
-	{
-		printf("hello\n");
+	if (ft_strchr(cmd, '/'))
+		return(cmd);
+	i = find_path_in_env(env);
+	if (i == -1)
 		return (NULL);
-	}
+	env_path = ft_split(env[i], ':');
+	if (!env_path)
+		return (NULL);
 	env_path[0] = ft_strtrim_improved(env_path[0], "PATH=");
 	if (!env_path[0])
 	{
-		return (ft_strdup("./"));
-		//return (free_tab(env_path));
+		// return (ft_strdup("./"));
+		return (free_tab(env_path));
 	}
 	hypothetical_path_cmd = malloc(sizeof (char *) * tablen(env_path));
 	if (!hypothetical_path_cmd)
