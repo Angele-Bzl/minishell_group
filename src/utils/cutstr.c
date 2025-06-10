@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 char	*ft_cutstr(char const *s, unsigned int start)
 {

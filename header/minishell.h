@@ -5,7 +5,9 @@
 # include <readline/readline.h> //readline, rl_*
 # include <readline/history.h> //readline, rl_*
 # include <stdlib.h> //malloc, free, exit, ttyslot, getenv
-# include <unistd.h> //write, access, read, close, fork, getcwd, chdir, *stat, unlink, execve, dup*, pipe, isatty, ttyname, ttyslot, tcsetattr, tcgetattr
+# include <unistd.h> //write, access, read, close, fork, getcwd, chdir,
+	//*stat, unlink, execve, dup*,
+	//pipe, isatty, ttyname, ttyslot, tcsetattr, tcgetattr
 # include <sys/types.h> //open, wait*, kill, *stat, opendir, closedir
 # include <sys/stat.h> //open, stat
 # include <fcntl.h> //open
@@ -21,11 +23,9 @@
 
 # include "../libft/libft.h"
 
-/////////////////////////////////////////// enum ////////////////////////////////////////
+/////////////////////////////////////////// enum
 
-
-
-typedef enum	e_error
+typedef enum e_error
 {
 	ALL_OK,
 	ERR_CREAT,
@@ -35,9 +35,9 @@ typedef enum	e_error
 	ERR_RAFT,
 	ERR_MALLOC,
 	ERR_SYNTAXE
-} t_error;
+}	t_error;
 
-typedef enum	e_rafter
+typedef enum e_rafter
 {
 	EMPTY_RAFTER,
 	SIMPLE_LEFT,
@@ -45,34 +45,34 @@ typedef enum	e_rafter
 	SIMPLE_RIGHT,
 	DOUBLE_RIGHT,
 	DEFAULT
-} t_rafter;
+}	t_rafter;
 
-/////////////////////////////////////// structures //////////////////////////////////////
+/////////////////////////////////////// structures
 
-typedef struct	s_env
+typedef struct s_env
 {
 	struct s_env	*next;
 	char			*line;
-} t_env;
+}	t_env;
 
-typedef struct	s_token
+typedef struct s_token
 {
 	struct s_token	*next;
 	char			**cmd;
 	t_rafter		*io_redir[2]; //* ?
 	char			*io_value[2];
-} t_token;
+}	t_token;
 
-typedef struct	s_data
+typedef struct s_data
 {
 	t_env	*ls_env;
 	t_env	*env_head;
 	t_token	*ls_token;
 	t_token	*token_head;
 	int		pipe_nbr;
-} t_data;
+}	t_data;
 
-typedef struct	s_parsing
+typedef struct s_parsing
 {
 	int		pipe_seg;
 	int		p_index;
@@ -85,14 +85,14 @@ typedef struct	s_parsing
 	bool	double_quote;
 	bool	outfile_issue;
 	t_data	*data;
-} t_parsing;
+}	t_parsing;
 
-//////////////////////////////////////// functions //////////////////////////////////////
+//////////////////////////////////////// functions
 
 /*EXEC*/
 /*execution.c*/
 int		execution(t_data *data);
-int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
+int		redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd);
 /*utils_exec.c*/
@@ -107,8 +107,8 @@ int		cmd_is_builtin(char *path_cmd);
 int		exec_homemade_builtin(t_data *data, char **env);
 void	exec_echo(char **cmd);
 int		exec_export(t_env *ls_env, char **cmds);
-int		exec_pwd();
-void 	exec_env(t_env *ls_env);
+int		exec_pwd(void);
+void	exec_env(t_env *ls_env);
 int		exec_unset(t_env **ls_env, char **cmds);
 int		exec_cd(char **cmd, t_env *list_env);
 int		exec_exit(t_token *cmds, t_env *ls_env);
@@ -128,7 +128,7 @@ char	*extract_token_without_quotes(char *str, t_parsing *parsing);
 /*print_and_free.c*/
 void	print_and_free(char *str, t_data *data, t_parsing *parsing);
 /*manage_dollar*/
-int		manage_dollar(t_data *data,t_parsing *parsing);
+int		manage_dollar(t_data *data, t_parsing *parsing);
 /*manage_dollar_utils*/
 char	*find_var_name(t_parsing *parsing);
 /*pip_segmentation.c*/
@@ -149,7 +149,6 @@ char	*extract_clean_cmd(char *prompt);
 /*rafter_token.c*/
 void	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt);
 
-
 /*UTILS*/
 /*cutstr.c*/
 char	*ft_cutstr(char const *s, unsigned int start);
@@ -162,11 +161,11 @@ void	print_env(t_env *env);
 void	print_prompt_tab(char **p_tab);
 void	print_tokens(t_data *data);
 /*ft_isspace.c*/
-int	ft_isspace(char c);
+int		ft_isspace(char c);
 
 /*MAIN*/
 /*struct_init.c*/
 int		struct_init(t_data *data, t_parsing *parsing);
-int  env_init(t_env **ls_env, char **env, t_data *data);
+int		env_init(t_env **ls_env, char **env, t_data *data);
 
 #endif

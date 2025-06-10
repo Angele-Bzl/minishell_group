@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 void	print_prompt_tab(char **p_tab)
 {
@@ -18,7 +18,7 @@ void	print_env(t_env *env)
 	while (env)
 	{
 		printf("%d) %s\n", i, env->line);
-		env = env->next; 
+		env = env->next;
 		i++;
 	}
 }
@@ -30,7 +30,7 @@ static void	print_rafter(t_rafter *r)
 		printf("NULL\n");
 		return;
 	}
-	
+
 	// Affichage lisible de la valeur de l'énum
 	switch (*r)
 	{

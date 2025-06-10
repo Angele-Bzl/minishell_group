@@ -1,5 +1,5 @@
-# include "minishell.h"
-# include <limits.h>
+#include "minishell.h"
+#include <limits.h>
 // #include "../../../header/minishell.h"
 
 static void	go_to_num(const char *str, int *i, int *minus)
@@ -29,7 +29,7 @@ unsigned long long	ft_atoull(const char *str, int *minus)
 	return (result);
 }
 
-static int	exit_no_arg()
+static int	exit_no_arg(void)
 {
 	/*free t_token*/
 	/*free t_env*/
@@ -53,9 +53,9 @@ int	str_is_digit(char *arg)
 	return (1);
 }
 
-static long long check_valid_arg(char *arg)
+static long long	check_valid_arg(char *arg)
 {
-	int	minus;
+	int					minus;
 	unsigned long long	arg_ull;
 
 	if (ft_strlen(arg) > 21)
@@ -70,7 +70,8 @@ static long long check_valid_arg(char *arg)
 	}
 	minus = 1;
 	arg_ull = ft_atoull(arg, &minus);
-	if ((arg_ull > LLONG_MAX && minus == 1) || (arg_ull > 9223372036854775808ULL && minus == -1))//LLMAX+1
+	if ((arg_ull > LLONG_MAX && minus == 1)
+		|| (arg_ull > 9223372036854775808ULL && minus == -1))
 	{
 		ft_putendl_fd("Error: exit: numeric argument required", STDERR_FILENO);
 		return (2);
