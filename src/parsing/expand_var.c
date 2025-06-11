@@ -1,19 +1,5 @@
 # include "minishell.h"
 
-int	dollar_remaining(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 void	quote_check(char c, t_parsing *parsing)
 {
 	if (c == '\"' && parsing->double_quote == false && parsing->simple_quote == false)
@@ -24,6 +10,21 @@ void	quote_check(char c, t_parsing *parsing)
 		parsing->simple_quote = true;
 	else if (c == '\'' && parsing->simple_quote == true && parsing->double_quote == false)
 		parsing->simple_quote = false;
+}
+
+int	dollar_remaining(char *str, t_parsing *parsing)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		quote_check(str[i], parsing);
+		if (str[i] == '$' && parsing->simple_quote == false)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int	expand_var(t_data *data, t_parsing *parsing)										// partie expand, "go!". checker si on est dans une quote.
@@ -43,7 +44,7 @@ int	expand_var(t_data *data, t_parsing *parsing)										// partie expand, "go!
 			}
 			parsing->p_index++;
 		}
-		if (!dollar_remaining(parsing->prompt_tab[parsing->pipe_seg]))
+		if (!dollar_remaining(parsing->prompt_tab[parsing->pipe_seg], parsing))
 			parsing->pipe_seg++;
 		parsing->p_index = 0;
 	}
