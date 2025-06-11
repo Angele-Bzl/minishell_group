@@ -55,12 +55,12 @@ void	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt)
 	char	*file_name;
 
 	file_name = find_redir_file_name(prompt, *i);
-	if (prompt[*i] == '<')
+	if (prompt[*i] == '<' && prompt[*i + 1] != '<')
 	{
 		data->ls_token->io_value[0] = file_name;
 		data->ls_token->io_redir[0] = SIMPLE_LEFT;
 	}
-	if (prompt[*i] == '>' && parsing->outfile_issue == false)
+	if (prompt[*i] == '>' && prompt[*i + 1] != '>' && parsing->outfile_issue == false)
 	{
 		data->ls_token->io_value[1] = file_name;
 		data->ls_token->io_redir[1] = SIMPLE_RIGHT;
