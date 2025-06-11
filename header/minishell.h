@@ -39,12 +39,12 @@ typedef enum e_error
 
 typedef enum e_rafter
 {
+	DEFAULT = -1,
 	EMPTY_RAFTER,
 	SIMPLE_LEFT,
 	DOUBLE_LEFT,
 	SIMPLE_RIGHT,
-	DOUBLE_RIGHT,
-	DEFAULT
+	DOUBLE_RIGHT
 }	t_rafter;
 
 /////////////////////////////////////// structures
@@ -59,7 +59,7 @@ typedef struct s_token
 {
 	struct s_token	*next;
 	char			**cmd;
-	t_rafter		*io_redir[2]; //* ?
+	t_rafter		io_redir[2];
 	char			*io_value[2];
 }	t_token;
 
@@ -92,7 +92,7 @@ typedef struct s_parsing
 /*EXEC*/
 /*execution.c*/
 int		execution(t_data *data);
-int		redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
+int		redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env, int *save_std_io);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd);
 /*utils_exec.c*/

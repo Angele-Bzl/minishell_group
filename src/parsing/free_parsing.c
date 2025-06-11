@@ -32,10 +32,6 @@ void	free_token(t_token *token)
 			free(token->io_value[0]);
 		if (token->io_value[1])
 			free(token->io_value[1]);
-		if (token->io_redir[0])
-			free(token->io_redir[0]);
-		if (token->io_redir[1])
-			free(token->io_redir[1]);
 		free(token);
 		token = tmp;
 	}

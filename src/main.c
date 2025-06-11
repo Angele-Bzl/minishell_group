@@ -23,7 +23,7 @@ int main(int ac, char **av, char **env)
 		free(data);
 		free(parsing);
 		ft_putstr_fd("Error: malloc failed\n", 2);
-	return (2);
+		return (2);
 	}
     while (1)
     {
