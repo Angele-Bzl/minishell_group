@@ -70,7 +70,6 @@ char	*prompt_with_content(char *content, int start, char *prompt, int p_index)
 	while (prompt[i]) 												// recopier la fin du prompt
 		new_prompt[j++] = prompt[i++];
 	new_prompt[j] = '\0';
-	//printf("%s\n", new_prompt);
 	return (new_prompt);
 }
 
@@ -81,6 +80,7 @@ int manage_dollar(t_data *data,t_parsing *parsing)
 	char	*variable;
 	int		start;
 
+	//printf("(manage_dollar) mimimi\n");
 	if (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index] == '?')
 	{
 		// handle '?'
