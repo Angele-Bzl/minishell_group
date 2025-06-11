@@ -2,6 +2,11 @@
 
 // #include "../../../header/minishell.h"
 
+
+/*
+export with no argument
+*/
+
 int	exec_export(t_env *ls_env, char **cmds)
 {
 	int		i;
