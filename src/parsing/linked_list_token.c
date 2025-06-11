@@ -7,8 +7,8 @@ t_token	*token_lstnew(void)
 	new = malloc(sizeof (t_token));
 	if (!new)
 		return (NULL);
-	new->io_redir[0] = NULL;
-	new->io_redir[1] = NULL;
+	new->io_redir[0] = -1;
+	new->io_redir[1] = -1;
 	new->io_value[0] = NULL;
 	new->io_value[1] = NULL;
 	new->next = NULL;

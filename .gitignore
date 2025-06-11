@@ -7,3 +7,4 @@ obj/
 .editorconfig
 a.out
 src/parsing/(save_word)->save_io,cmd.c
+minishell_tester/

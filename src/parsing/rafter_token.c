@@ -32,17 +32,17 @@ static void	manage_outfile(t_data *data, t_parsing *parsing, char *file_name)
 {
 	int	fd;
 
-	if (*data->ls_token->io_redir[1] == SIMPLE_RIGHT)
+	if (data->ls_token->io_redir[1] == SIMPLE_RIGHT)
 	{
-		fd = open(file_name, O_CREAT);
+		fd = open(file_name, O_CREAT, 0644);
 		if (fd == -1)
 			parsing->outfile_issue = TRUE;
 		else
 			close(fd);
 	}
-	else if (*data->ls_token->io_redir[1] == DOUBLE_RIGHT)
+	else if (data->ls_token->io_redir[1] == DOUBLE_RIGHT)
 	{
-		fd = open(file_name, O_APPEND | O_CREAT);
+		fd = open(file_name, O_APPEND | O_CREAT, 0644);
 		if (fd == - 1)
 			parsing->outfile_issue = TRUE;
 		else
@@ -58,20 +58,20 @@ void	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt)
 	if (prompt[*i] == '<')
 	{
 		data->ls_token->io_value[0] = file_name;
-		*data->ls_token->io_redir[0] = SIMPLE_LEFT;
+		data->ls_token->io_redir[0] = SIMPLE_LEFT;
 	}
 	if (prompt[*i] == '>' && parsing->outfile_issue == false)
 	{
 		data->ls_token->io_value[1] = file_name;
-		*data->ls_token->io_redir[1] = SIMPLE_RIGHT;
+		data->ls_token->io_redir[1] = SIMPLE_RIGHT;
 	}
 	*i = *i + 1;
 	if (prompt[*i] == '<')
-		*data->ls_token->io_redir[0] = DOUBLE_LEFT;
+		data->ls_token->io_redir[0] = DOUBLE_LEFT;
 	if (prompt[*i] == '>' && parsing->outfile_issue == false)
 	{
 		data->ls_token->io_value[1] = file_name;
-		*data->ls_token->io_redir[1] = DOUBLE_RIGHT;
+		data->ls_token->io_redir[1] = DOUBLE_RIGHT;
 	}
 	while (prompt[*i] == ' ' || prompt[*i] == '\t')
 		*i = *i + 1;

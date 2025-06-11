@@ -23,39 +23,39 @@ void	print_env(t_env *env)
 	}
 }
 
-static void	print_rafter(t_rafter *r)
-{
-	if (!r)
-	{
-		printf("NULL\n");
-		return;
-	}
+// static void	print_rafter(t_rafter *r)
+// {
+// 	if (!r)
+// 	{
+// 		printf("NULL\n");
+// 		return;
+// 	}
 
-	// Affichage lisible de la valeur de l'énum
-	switch (*r)
-	{
-		case EMPTY_RAFTER:
-			printf("EMPTY_RAFTER\n");
-			break;
-		case SIMPLE_LEFT:
-			printf("SIMPLE_LEFT (<)\n");
-			break;
-		case DOUBLE_LEFT:
-			printf("DOUBLE_LEFT (<<)\n");
-			break;
-		case SIMPLE_RIGHT:
-			printf("SIMPLE_RIGHT (>)\n");
-			break;
-		case DOUBLE_RIGHT:
-			printf("DOUBLE_RIGHT (>>)\n");
-			break;
-		case DEFAULT:
-			printf("DEFAULT\n");
-			break;
-		default:
-			printf("UNKNOWN_RAFTER\n");
-	}
-}
+// 	// Affichage lisible de la valeur de l'énum
+// 	switch (*r)
+// 	{
+// 		case EMPTY_RAFTER:
+// 			printf("EMPTY_RAFTER\n");
+// 			break;
+// 		case SIMPLE_LEFT:
+// 			printf("SIMPLE_LEFT (<)\n");
+// 			break;
+// 		case DOUBLE_LEFT:
+// 			printf("DOUBLE_LEFT (<<)\n");
+// 			break;
+// 		case SIMPLE_RIGHT:
+// 			printf("SIMPLE_RIGHT (>)\n");
+// 			break;
+// 		case DOUBLE_RIGHT:
+// 			printf("DOUBLE_RIGHT (>>)\n");
+// 			break;
+// 		case DEFAULT:
+// 			printf("DEFAULT\n");
+// 			break;
+// 		default:
+// 			printf("UNKNOWN_RAFTER\n");
+// 	}
+// }
 
 void	print_tokens(t_data *data)
 {
@@ -80,11 +80,12 @@ void	print_tokens(t_data *data)
 			printf("Cmd %d : NULL\n", i);
 		printf("\n");
 		printf("In_redir : ");
-		print_rafter(data->ls_token->io_redir[0]);
+		printf("%d\n", data->ls_token->io_redir[0]);
 		printf("Out_redir : ");
-		print_rafter(data->ls_token->io_redir[1]);
+		printf("%d\n", data->ls_token->io_redir[1]);
 		printf("\nIn_value : %s\n", data->ls_token->io_value[0]);
 		printf("Out_value : %s\n\n", data->ls_token->io_value[1]);
+		printf("========= END OF NODE %d =\n\n", k);
 		data->ls_token = data->ls_token->next;
 		i = 0;
 		k++;

@@ -13,17 +13,28 @@ int	count_cmds(t_token *token)
 	return (i);
 }
 
-int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
+int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env, int *save_std_io)
 {
-	if (dup2(io_fd[0], STDIN_FILENO) == -1)
+	if (save_std_io)
 	{
-		perror("dup2");
-		return (0);
+		save_std_io[0] = dup(STDIN_FILENO);
+		save_std_io[1] = dup(STDOUT_FILENO);
 	}
-	if (dup2(io_fd[1], STDOUT_FILENO) == -1)
+	if (io_fd[0] != -1)
 	{
-		perror("dup2");
-		return (0);
+		if (dup2(io_fd[0], STDIN_FILENO) == -1)
+		{
+			perror("dup2");
+			return (0);
+		}
+	}
+	if (io_fd[1] != -1)
+	{
+		if (dup2(io_fd[1], STDOUT_FILENO) == -1)
+		{
+			perror("dup2");
+			return (0);
+		}
 	}
 	if (io_fd[0] != STDIN_FILENO)
 	{
@@ -102,8 +113,8 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t p
 	char	*path_cmd;
 	int		io_fd[2];
 
-	io_fd[0] = get_input(data->ls_token->io_value, *data->ls_token->io_redir, previous_pipe);
-	io_fd[1] = get_output(data->ls_token->io_value, *data->ls_token->io_redir, pipe_fd[1], count_cmds(data->ls_token));
+	io_fd[0] = get_input(data->ls_token->io_value, data->ls_token->io_redir, previous_pipe);
+	io_fd[1] = get_output(data->ls_token->io_value, data->ls_token->io_redir, pipe_fd[1], count_cmds(data->ls_token));
 	env = get_env_in_tab(&data->ls_env);
 	data->ls_env = data->env_head;
 	if (!env)
@@ -122,7 +133,7 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t p
 		ft_putendl_fd("Error: No path to the command.", STDERR_FILENO);
 		exit(ERR);
 	}
-	else if (!redirect_and_exec(data, io_fd, path_cmd, env))
+	else if (!redirect_and_exec(data, io_fd, path_cmd, env, NULL))
 	{
 		free(env);
 		free(path_cmd);
@@ -179,7 +190,10 @@ int	execution(t_data *data)
 	}
 	if (!data->ls_token->next && cmd_is_builtin(data->ls_token->cmd[0]))
 	{
-		exec_single_cmd(data);
+		if (!exec_single_cmd(data))
+		{
+			return (0);
+		}
 		return (1);
 	}
 	pids = malloc(sizeof(pid_t) * count_cmds(data->ls_token));
