@@ -1,6 +1,6 @@
-# include "minishell.h"
+#include "minishell.h"
 
-static void	find_and_store_all_rafters(t_data *data, t_parsing *parsing, char *prompt)
+static int	find_and_store_all_rafters(t_data *data, t_parsing *parsing, char *prompt)
 {
 	int	i;
 
@@ -11,11 +11,13 @@ static void	find_and_store_all_rafters(t_data *data, t_parsing *parsing, char *p
 			i++;
 		if (prompt[i] == '<' || prompt[i] == '>')
 		{
-			manage_rafters(data, parsing, &i, prompt);
-			while (prompt[i] == ' ' || prompt[i] == '\t')
+			if (manage_rafters(data, parsing, &i, prompt) == -1)
+				return (-1);
+			while (prompt[i] == ' ' || prompt[i] == '\t' || prompt[i] == '<' ||  prompt[i] == '>')
 				i++;
 		}
 	}
+	return (0);
 }
 
 static void	find_and_store_all_cmds(t_data *data, char *prompt, t_parsing *parsing)
@@ -35,7 +37,8 @@ int	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeud
 	i = 0;
 	if (parsing->prompt_tab[i])
 	{
-        find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]);
+        if (find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
+			return (-1);
         find_and_store_all_cmds(data, parsing->prompt_tab[i], parsing);
         i++;
     }

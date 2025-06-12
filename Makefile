@@ -58,7 +58,8 @@ FILES_PARS  =   parsing.c\
 				linked_list_token.c\
 				cmd_token_utils.c\
 				cmd_token.c\
-				rafter_token.c
+				rafter_token.c\
+				manage_heredoc.c
 FILES_UTILS =   cutstr.c\
 				free_tab.c\
 				ft_isspace.c\

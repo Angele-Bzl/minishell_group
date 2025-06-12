@@ -6,8 +6,10 @@ static char	*find_redir_file_name(char *prompt, int i)
 	int		len;
 	int		start;
 	int		end;
+	
 	i++;
-
+	if (prompt[i] == '<' || prompt[i] == '>')
+		i++;
 	while (ft_isspace(prompt[i]))										// on saute les espaces
 		i++;
 	start = i;
@@ -50,7 +52,7 @@ static void	manage_outfile(t_data *data, t_parsing *parsing, char *file_name)
 	}
 }
 
-void	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt)
+int	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt)
 {
 	char	*file_name;
 
@@ -67,7 +69,12 @@ void	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt)
 	}
 	*i = *i + 1;
 	if (prompt[*i] == '<')
+	{
 		data->ls_token->io_redir[0] = DOUBLE_LEFT;
+		if (!here_doc(file_name))
+			return (-1);
+		data->ls_token->io_value[0] = ft_strdup(".infile.tmp");
+	}
 	if (prompt[*i] == '>' && parsing->outfile_issue == false)
 	{
 		data->ls_token->io_value[1] = file_name;
@@ -77,4 +84,5 @@ void	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt)
 		*i = *i + 1;
 	if (parsing->outfile_issue == false)
 		manage_outfile(data, parsing, file_name);
+	return (0);
 }

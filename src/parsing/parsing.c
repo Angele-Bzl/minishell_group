@@ -17,6 +17,6 @@ int	ft_parsing(t_data **data, t_parsing *parsing)
 	// print_prompt_tab(parsing->prompt_tab);
 	if (tokenisation(*data, parsing) == -1)
 		print_and_free(NULL, *data, parsing);	// gerer la cmd ou le i/o
-	// print_tokens(*data);
+	print_tokens(*data);
 	return (0);
 }

@@ -147,7 +147,10 @@ char	**split_whitespace_quotes(char const *s, char c, t_parsing *parsing);
 /*cmd_token.c*/
 char	*extract_clean_cmd(char *prompt);
 /*rafter_token.c*/
-void	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt);
+int	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt);
+/*manage_heredoc.c*/
+int 	here_doc(char *eof);
+
 
 /*UTILS*/
 /*cutstr.c*/
