@@ -8,7 +8,7 @@ static char	*find_redir_file_name(char *prompt, int i)
 	int		end;
 	
 	i++;
-	if (prompt[i] == '<')
+	if (prompt[i] == '<' || prompt[i] == '>')
 		i++;
 	while (ft_isspace(prompt[i]))										// on saute les espaces
 		i++;
