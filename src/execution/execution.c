@@ -69,7 +69,8 @@ static int	get_input(char *io[2], t_rafter redirection[2], int previous_output)
 			input = open(io[0], O_RDONLY);
 		else if (redirection[0] == DOUBLE_LEFT)
 		{
-			/*heredoc*/
+			input = open(io[0], O_RDONLY);
+			unlink(io[0]);
 		}
 		if (input == -1)
 		{
