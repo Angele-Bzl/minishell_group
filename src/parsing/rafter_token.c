@@ -67,7 +67,15 @@ void	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt)
 	}
 	*i = *i + 1;
 	if (prompt[*i] == '<')
+	{
 		data->ls_token->io_redir[0] = DOUBLE_LEFT;
+		/*
+		create .infile.tmp
+		fill it
+		data->ls_token->io_redir[0] == SIMPLE_LEFT
+		data->ls_token->io_value[0] = .infile.tmp;
+		*/
+	}
 	if (prompt[*i] == '>' && parsing->outfile_issue == false)
 	{
 		data->ls_token->io_value[1] = file_name;
