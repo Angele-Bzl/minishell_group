@@ -4,14 +4,14 @@ int	is_expandable(char current_i, char next_i, t_parsing *parsing)
 {
 	if (current_i != '$')
 		return (0);
-	if (current_i == '$' && parsing->simple_quote == false)
+	if (parsing->simple_quote == false)
 		return (1);
 	if (!ft_isspace(next_i))
 		return (1);
 	if (next_i != '\0')
 		return (1);
 	if (next_i == '\"' && parsing->double_quote == true)
-		return (0);
+		return (1);
 	return (0);
 }
 
