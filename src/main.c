@@ -2,49 +2,29 @@
 
 int main(int ac, char **av, char **env)
 {
-    (void)ac;
-    (void)av;
-    t_data      *data;
-    t_parsing   *parsing;
+	(void)ac;
+	(void)av;
+	t_data      data;
+	t_parsing   parsing;
 
-    data = malloc(sizeof(t_data));
-    parsing = malloc(sizeof(t_parsing));
-    if (!data || !parsing)
+	if (!env_init(&(&data)->ls_env, env, &data))
 	{
-		if (data)
-			free(data);
-		if (parsing)
-			free(parsing);
 		ft_putstr_fd("Error: malloc failed\n", 2);
-		return (2);
+		return (ERR);
 	}
-	if (!env_init(&data->ls_env, env, data))
+	while (1)
 	{
-		free(data);
-		free(parsing);
-		ft_putstr_fd("Error: malloc failed\n", 2);
-		return (2);
-	}
-    while (1)
-    {
-        if (!struct_init(data, parsing))
-            print_and_free(NULL, data, parsing);
-        parsing->prompt = readline("minishell> ");
-        if (parsing->prompt)
+		struct_init(&data, &parsing);
+		(&parsing)->prompt = readline("minishell> ");
+		if ((&parsing)->prompt)
 		{
-			add_history(parsing->prompt);
-			ft_parsing(&data, parsing);
-			data->ls_token = data->token_head;
-            if (!execution(data))
-            {
-                // free_all(data);
-                return (1);
-            }
+			add_history((&parsing)->prompt);
+			if (ft_parsing(&data, &parsing) != OK)
+				break ;
+			(&data)->ls_token = (&data)->token_head;
+			if (execution(&data) == OK)
+				sleep(1); //free all (data)
 		}
-    }
-	// printf("HERE\n");
-    // print_and_free(NULL, data, parsing);
-    // free(data);
-    // free(parsing);
-    return (0);
+	}
+	return (OK);
 }
