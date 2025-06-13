@@ -91,7 +91,5 @@ int	struct_init(t_data *data, t_parsing *parsing)
 	if (data_init(data) == 0)
 		return (0);
 	parsing_init(data, parsing);
-	// if (env_init(&data->ls_env, env, data) == 0)
-	// 	return (0);
 	return(1);
 }
