@@ -13,6 +13,11 @@ static char	*find_redir_file_name(char *prompt, int i)
 	while (ft_isspace(prompt[i]))										// on saute les espaces
 		i++;
 	start = i;
+	if (prompt[i] == '<' || prompt[i] == '>')							// si on a un autre rafter, retour d'erreur
+	{
+		printf("bash: syntax error near unexpected token '%c'\n", prompt[i]);
+		return (NULL);
+	}
 	while (!ft_isspace(prompt[i]) && prompt[i] != '\0')					// on va jusqu'à la fin du nom
 		i++;
 	end = i;
@@ -57,6 +62,8 @@ int	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt)
 	char	*file_name;
 
 	file_name = find_redir_file_name(prompt, *i);
+	if (file_name == NULL)
+		return (-1);
 	if (prompt[*i] == '<' && prompt[*i + 1] != '<')
 	{
 		data->ls_token->io_value[0] = file_name;

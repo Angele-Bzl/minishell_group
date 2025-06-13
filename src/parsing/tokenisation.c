@@ -49,7 +49,8 @@ int	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeud
 			return (1);
 		token_lstadd_back(&(data)->token_head, new_token_node);
 		(data)->ls_token = new_token_node;
-		find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]);
+		if (find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
+			return (-1);
 		find_and_store_all_cmds(data, parsing->prompt_tab[i], parsing);
 		i++;
 	}
