@@ -19,9 +19,8 @@ int	cmd_is_builtin(char *path_cmd)
 	return (0);
 }
 
-int	exec_homemade_builtin(t_data *data, char **env)
+int	exec_homemade_builtin(t_data *data)
 {
-	(void)env;
 	if (!ft_strncmp(data->ls_token->cmd[0], "echo\0", 5))
 		exec_echo(data->ls_token->cmd);
 	if (!ft_strncmp(data->ls_token->cmd[0], "cd\0", 3))

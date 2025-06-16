@@ -6,7 +6,7 @@ static char	*find_redir_file_name(char *prompt, int i)
 	int		len;
 	int		start;
 	int		end;
-	
+
 	i++;
 	if (prompt[i] == '<' || prompt[i] == '>')
 		i++;

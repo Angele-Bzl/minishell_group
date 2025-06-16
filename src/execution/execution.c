@@ -13,28 +13,17 @@ int	count_cmds(t_token *token)
 	return (i);
 }
 
-int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env, int *save_std_io)
+int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 {
-	if (save_std_io)
+	if (dup2(io_fd[0], STDIN_FILENO) == -1)
 	{
-		save_std_io[0] = dup(STDIN_FILENO);
-		save_std_io[1] = dup(STDOUT_FILENO);
+		perror("dup2");
+		return (0);
 	}
-	if (io_fd[0] != -1)
+	if (dup2(io_fd[1], STDOUT_FILENO) == -1)
 	{
-		if (dup2(io_fd[0], STDIN_FILENO) == -1)
-		{
-			perror("dup2");
-			return (0);
-		}
-	}
-	if (io_fd[1] != -1)
-	{
-		if (dup2(io_fd[1], STDOUT_FILENO) == -1)
-		{
-			perror("dup2");
-			return (0);
-		}
+		perror("dup2");
+		return (0);
 	}
 	if (io_fd[0] != STDIN_FILENO)
 	{
@@ -46,7 +35,7 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env, int 
 	}
 	if (cmd_is_builtin(data->ls_token->cmd[0]))
 	{
-		exec_homemade_builtin(data, env);
+		exec_homemade_builtin(data);
 		return (1);
 	}
 	else if (execve(path_cmd, data->ls_token->cmd, env) == -1)
@@ -57,31 +46,27 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env, int 
 	return (1);
 }
 
-static int	get_input(char *io[2], t_rafter redirection[2], int previous_output)
+static int	get_input(char *io_value[2], t_rafter redirection[2], int previous_pipe)
 {
 	int	input;
 
-	input = previous_output;
-	if (io[0])
+	input = previous_pipe;
+	if (io_value[0])
 	{
-		close(previous_output);
-		if (redirection[0] == SIMPLE_LEFT)
-			input = open(io[0], O_RDONLY);
-		else if (redirection[0] == DOUBLE_LEFT)
-		{
-			input = open(io[0], O_RDONLY);
-			unlink(io[0]);
-		}
+		close(previous_pipe);
+		input = open(io_value[0], O_RDONLY);
+		if (redirection[0] == DOUBLE_LEFT)
+			unlink(io_value[0]);
 		if (input == -1)
 		{
-			perror(io[0]);
+			perror(io_value[0]);
 			return (-1);
 		}
 	}
 	return (input);
 }
 
-static int	get_output(char *io[2], t_rafter redirection[2], int pipe_output, int count_cmd)
+static int	get_output(char *io_value[2], t_rafter redirection[2], int pipe_output, int count_cmd)
 {
 	int	output;
 
@@ -92,16 +77,16 @@ static int	get_output(char *io[2], t_rafter redirection[2], int pipe_output, int
 	}
 	else
 		output = pipe_output;
-	if (io[1])
+	if (io_value[1])
 	{
 		close(pipe_output);
 		if (redirection[1] == SIMPLE_RIGHT)
-			output = open(io[1], O_WRONLY | O_TRUNC, 0644);
+			output = open(io_value[1], O_WRONLY | O_TRUNC, 0644);
 		else if (redirection[1] == DOUBLE_RIGHT)
-			output = open(io[1], O_WRONLY | O_APPEND, 0644);
+			output = open(io_value[1], O_WRONLY | O_APPEND, 0644);
 		if (output == -1)
 		{
-			perror(io[1]);
+			perror(io_value[1]);
 			return (-1);
 		}
 	}
@@ -116,6 +101,10 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t p
 
 	io_fd[0] = get_input(data->ls_token->io_value, data->ls_token->io_redir, previous_pipe);
 	io_fd[1] = get_output(data->ls_token->io_value, data->ls_token->io_redir, pipe_fd[1], count_cmds(data->ls_token));
+	if (io_fd[0] == -1 || io_fd[1] == -1)
+	{
+		/*free and exit*/
+	}
 	env = get_env_in_tab(&data->ls_env);
 	data->ls_env = data->env_head;
 	if (!env)
@@ -134,7 +123,7 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t p
 		ft_putendl_fd("Error: No path to the command.", STDERR_FILENO);
 		exit(ERR);
 	}
-	else if (!redirect_and_exec(data, io_fd, path_cmd, env, NULL))
+	else if (!redirect_and_exec(data, io_fd, path_cmd, env))
 	{
 		free(env);
 		free(path_cmd);
@@ -220,3 +209,65 @@ int	execution(t_data *data)
 	data->ls_token = data->token_head;
 	return (1);
 }
+/*------------------------------------------------------------------------*/
+
+// /*parsing*/
+// if (open(fd) == -1)
+// {
+// 	free_all_parsing(parsing);
+// 	errormsg_close_free_exit(parsing->data, perror(file_name), NULL, ERR);
+// }
+// fais tes trucs
+// free_all_parsing(parsing)
+// return (OK);
+
+// HELLO(jhgfds)
+// {
+// 	if (">    >")
+// 	{
+// 		free_all_parsing(parsing);
+// 		errormsg_close_free_return(parsing->data, RAFTERSPACE, NULL, ERR);
+// 	}
+// 	fais tes trucs
+// 	free_all_parsing(parsing)
+// 	return (OK);
+// }
+
+// if (HELLO(arguement) != OK)
+// {
+// 	return (ERR);
+// }
+
+
+// /*exec*/
+// if (open(fd) == -1)
+// {
+// 	errormsg_close_free_exit(data, perror(file_name), fd, ERR);
+// }
+// fais tes trucs
+// errormsg_close_free_exit(data, NULL, NULL, OK)
+
+
+// free_all_parsing(parsing)
+// {
+// 	free(parsing->prout);
+// 	free(parsing->prout1);
+// 	free(parsing->prout2);
+// }
+
+// errormsg_close_free_exit(t_data *data, char *errormsg, void *argument, int exitcode)
+// {
+// 	if (errormsg)
+// 		ft_printf_err(errormsg, argument);
+// 	close_all(data->fd);
+// 	free_all(data->trucafree);
+// 	exit(exitcode);
+// }
+// errormsg_close_free_return(t_data *data, char *errormsg, void *argument, int exitcode)
+// {
+// 	if (errormsg)
+// 		ft_printf_err(errormsg, argument);
+// 	close_all(data->fd);
+// 	free_all(data->trucafree);
+// 	return(exitcode);
+// }
