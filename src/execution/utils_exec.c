@@ -79,7 +79,7 @@ char	**get_env_in_tab(t_env **node_env)
 		table_env[i] = ft_strdup((current)->line);
 		if (!table_env[i])
 		{
-			free_tab(table_env);
+			free_array(table_env);
 			return (NULL);
 		}
 		current = (current)->next;

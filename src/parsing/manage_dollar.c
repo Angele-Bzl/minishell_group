@@ -5,7 +5,7 @@ int	find_var_end(char *prompt, int p_index)
 	int	end;
 
 	end = p_index + 1;
-	while (prompt[end] != ' ' && prompt[end] != '\'' && prompt[end] != '\"'
+	while (ft_isspace(prompt[end]) && prompt[end] != '\'' && prompt[end] != '\"'
 		&& prompt[end] != '$' && prompt[end] != '\0')
 		end++;
 	return (end);

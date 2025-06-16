@@ -120,8 +120,6 @@ void	quote_check(char c, t_parsing *parsing);
 int		expand_var(t_data *data, t_parsing *parsing);
 /*extract_token_without_quotes.c*/
 char	*extract_token_without_quotes(char *str, t_parsing *parsing);
-/*print_and_free.c*/
-void	print_and_free(char *str, t_data *data, t_parsing *parsing);
 /*manage_dollar*/
 int		manage_dollar(t_data *data, t_parsing *parsing);
 /*manage_dollar_utils*/

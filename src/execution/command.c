@@ -38,14 +38,14 @@ static int	init_hyp_path(char **hyp_path, char *cmd, char **env_path)
 		path_w_backslash = ft_strjoin(env_path[i], "/");
 		if (!path_w_backslash)
 		{
-			free_tab(hyp_path);
+			free_array(hyp_path);
 			return (0);
 		}
 		hyp_path[i] = ft_strjoin(path_w_backslash, cmd);
 		if (!hyp_path[i])
 		{
 			free(path_w_backslash);
-			free_tab(hyp_path);
+			free_array(hyp_path);
 			return (0);
 		}
 		free(path_w_backslash);
@@ -99,15 +99,15 @@ char	*find_cmd(char **env, char *cmd)
 	if (!env_path[0])
 	{
 		// return (ft_strdup("./"));
-		return (free_tab(env_path));
+		return (free_array(env_path));
 	}
 	hypothetical_path_cmd = malloc(sizeof (char *) * tablen(env_path));
 	if (!hypothetical_path_cmd)
-		return (free_tab(env_path));
+		return (free_array(env_path));
 	fill_tab_null(hypothetical_path_cmd, tablen(env_path));
 	if (init_hyp_path(hypothetical_path_cmd, cmd, env_path) == 0)
-		return (free_tab(env_path));
+		return (free_array(env_path));
 	path_cmd = check_if_cmd_exists(hypothetical_path_cmd, env_path);
-	free_tab(env_path);
+	free_array(env_path);
 	return (path_cmd);
 }

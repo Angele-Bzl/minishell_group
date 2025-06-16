@@ -99,6 +99,7 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t p
 	char	*path_cmd;
 	int		io_fd[2];
 
+
 	io_fd[0] = get_input(data->ls_token->io_value, data->ls_token->io_redir, previous_pipe);
 	io_fd[1] = get_output(data->ls_token->io_value, data->ls_token->io_redir, pipe_fd[1], count_cmds(data->ls_token));
 	if (io_fd[0] == -1 || io_fd[1] == -1)
@@ -106,7 +107,7 @@ static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t p
 		/*free and exit*/
 	}
 	env = get_env_in_tab(&data->ls_env);
-	data->ls_env = data->env_head;
+	//data->ls_env = data->env_head;
 	if (!env)
 	{
 		ft_putendl_fd("Error: malloc", STDERR_FILENO);
@@ -172,13 +173,15 @@ int	execution(t_data *data)
 	pid_t	*pids;
 	int		pipe_fd[2];
 	int		i;
+	t_token	*current;
 
-	if (!data->ls_token->cmd || !data->ls_token->cmd[0])
+	current = data->ls_token;
+	if (!current->cmd || !current->cmd[0])
 	{
 		/*free*/
 		return (1);
 	}
-	if (!data->ls_token->next && cmd_is_builtin(data->ls_token->cmd[0]))
+	if (!current->next && cmd_is_builtin(current->cmd[0]))
 	{
 		if (!exec_single_cmd(data))
 		{
@@ -186,27 +189,27 @@ int	execution(t_data *data)
 		}
 		return (1);
 	}
-	pids = malloc(sizeof(pid_t) * count_cmds(data->ls_token));
+	pids = malloc(sizeof(pid_t) * count_cmds(current));
 	if (!pids)
 	{
 		ft_putendl_fd("Error: pids malloc", STDERR_FILENO);
 		return (0);
 	}
-	data->ls_token = data->token_head;
+	current = data->ls_token;
 	i = 0;
-	while (data->ls_token)
+	while (current)
 	{
 		if (!create_children(data, pipe_fd, pids, i))
 		{
 			return (0);
 		}
-		data->ls_token = data->ls_token->next;
+		current = current->next;
 		i++;
 	}
 	close(pipe_fd[0]);
-	data->ls_token = data->token_head;
-	wait_for_pid(data->ls_token, pids);
-	data->ls_token = data->token_head;
+	current = data->ls_token;
+	wait_for_pid(current, pids);
+	current = data->ls_token;
 	return (1);
 }
 /*------------------------------------------------------------------------*/

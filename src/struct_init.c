@@ -32,6 +32,7 @@ int  env_init(char **env, t_data *data)
 	t_env			*new_node;
 	t_env			*current;
 
+	data->ls_env = NULL;
 	current = data->ls_env;
 	i = 0;
 	if (!env || !env[0])
