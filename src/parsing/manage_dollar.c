@@ -20,7 +20,7 @@ char *find_var_content(char *variable, t_data *data)
 	t_env	*tmp;
 
 	env_var = NULL;
-	tmp = data->env_head;
+	tmp = data->ls_env;
 	var = ft_strtrim(variable, "$");
 	if (!var)
 		return (NULL); 											//fail malloc

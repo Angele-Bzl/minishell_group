@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int	manage_no_env(t_env **ls_env)
+static int	manage_no_env(t_env **current)
 {
 	t_env	*new_node;
 	char	*pwd;
@@ -22,20 +22,20 @@ static int	manage_no_env(t_env **ls_env)
 		return (0);
 	}
 	new_node->next = NULL;
-	ft_lstadd_back((t_list**)ls_env, (t_list*)new_node);
+	ft_lstadd_back((t_list**)current, (t_list*)new_node);
 	return (1);
 }
 
-int  env_init(t_env **ls_env, char **env, t_data *data)
+int  env_init(char **env, t_data *data)
 { /*shlvl ? _ ?*/
 	unsigned int	i;
 	t_env			*new_node;
+	t_env			*current;
 
-	data->ls_env = NULL;
-	data->env_head = NULL;
+	current = data->ls_env;
 	i = 0;
 	if (!env || !env[0])
-		return(manage_no_env(ls_env));
+		return(manage_no_env(&current));
 	while (env[i])
 	{
 		new_node = malloc(sizeof(t_env));
@@ -45,10 +45,8 @@ int  env_init(t_env **ls_env, char **env, t_data *data)
 		if (!new_node->line)
 			return (0);
 		new_node->next = NULL;
-		ft_lstadd_back((t_list **)ls_env, (t_list *)new_node);
+		ft_lstadd_back((t_list **)current, (t_list *)new_node);
 		new_node = new_node->next;
-		if (data->env_head == NULL)
-			data->env_head = *ls_env;
 		i++;
 	}
 	return (1);
@@ -59,7 +57,6 @@ static int	data_init(t_data *data)
 	data->ls_token = malloc(sizeof(t_token)); //data init
 	if (!data->ls_token)
 		return (0);
-	data->token_head = data->ls_token;
 	data->ls_token->next = NULL;
 	data->ls_token->cmd = NULL;
 	data->ls_token->io_value[0] = NULL;

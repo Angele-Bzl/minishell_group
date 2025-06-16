@@ -66,9 +66,7 @@ typedef struct s_token
 typedef struct s_data
 {
 	t_env	*ls_env;
-	t_env	*env_head;
 	t_token	*ls_token;
-	t_token	*token_head;
 	int		pipe_nbr;
 }	t_data;
 
@@ -116,8 +114,6 @@ int		exec_exit(t_token *cmds, t_env *ls_env);
 /*PARSING*/
 /*parsing.c*/
 int		ft_parsing(t_data **data, t_parsing *parsing);
-/*free_parsing.c*/
-void	free_all(t_data *data, t_parsing *parsing);
 /*prompt_check.c*/
 int		prompt_check(char *prompt, t_parsing *parsing);
 /*expand_var.c*/
@@ -155,20 +151,24 @@ int 	here_doc(char *eof);
 /*UTILS*/
 /*cutstr.c*/
 char	*ft_cutstr(char const *s, unsigned int start);
-/*free_tab.c*/
-char	*free_tab(char **table);
 /*print_err_message.c*/
 int		err_message(t_error error);
 /*debug_print.c*/
 void	print_env(t_env *env);
 void	print_prompt_tab(char **p_tab);
 void	print_tokens(t_data *data);
+/*free_minishell.c*/
+void	free_all(t_parsing *parsing);
+/*free_utils.c*/
+char	*free_array(char **array);
+void	free_env(t_env *env);
+void	free_token(t_token *token);
 /*ft_isspace.c*/
 int		ft_isspace(char c);
 
 /*MAIN*/
 /*struct_init.c*/
 int		struct_init(t_data *data, t_parsing *parsing);
-int		env_init(t_env **ls_env, char **env, t_data *data);
+int		env_init(char **env, t_data *data);
 
 #endif

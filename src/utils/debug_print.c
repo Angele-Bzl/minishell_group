@@ -61,18 +61,19 @@ void	print_tokens(t_data *data)
 {
 	int	i;
 	int k;
+	t_token *current;
 
 	i = 0;
 	k = 0;
-	data->ls_token = data->token_head;
-	while (data->ls_token)
+	current = data->ls_token;
+	while (current)
 	{
 		printf("========= NODE %d =========\n\n", k);
-		if (data->ls_token->cmd)
+		if (current->cmd)
 		{
-			while (data->ls_token->cmd[i])
+			while (current->cmd[i])
 			{
-				printf("Cmd %d : %s\n", i, data->ls_token->cmd[i]);
+				printf("Cmd %d : %s\n", i, current->cmd[i]);
 				i++;
 			}
 		}
@@ -80,13 +81,13 @@ void	print_tokens(t_data *data)
 			printf("Cmd %d : NULL\n", i);
 		printf("\n");
 		printf("In_redir : ");
-		printf("%d\n", data->ls_token->io_redir[0]);
+		printf("%d\n", current->io_redir[0]);
 		printf("Out_redir : ");
-		printf("%d\n", data->ls_token->io_redir[1]);
-		printf("\nIn_value : %s\n", data->ls_token->io_value[0]);
-		printf("Out_value : %s\n\n", data->ls_token->io_value[1]);
+		printf("%d\n", current->io_redir[1]);
+		printf("\nIn_value : %s\n", current->io_value[0]);
+		printf("Out_value : %s\n\n", current->io_value[1]);
 		printf("========= END OF NODE %d =\n\n", k);
-		data->ls_token = data->ls_token->next;
+		current = current->next;
 		i = 0;
 		k++;
 	}

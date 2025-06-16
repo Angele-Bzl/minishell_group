@@ -44,11 +44,9 @@ FILES_BUILT	=	utils_builtin.c\
 				pwd.c\
 				unset.c
 FILES_PARS  =   parsing.c\
-				free_parsing.c\
 				prompt_check.c\
 				expand_var.c\
 				extract_token_without_quotes.c\
-				print_and_free.c\
 				manage_dollar.c\
 				manage_dollar_utils.c\
 				pipe_segmentation.c\
@@ -61,9 +59,10 @@ FILES_PARS  =   parsing.c\
 				rafter_token.c\
 				manage_heredoc.c
 FILES_UTILS =   cutstr.c\
-				free_tab.c\
-				ft_isspace.c\
-				debug_print.c
+				debug_print.c\
+				free_minishell.c\
+				free_utils.c\
+				ft_isspace.c
 FILES		=	struct_init.c\
 				main.c\
 				$(addprefix $(DIR_PARS)/,$(FILES_PARS))\

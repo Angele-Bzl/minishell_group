@@ -32,8 +32,9 @@ int	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeud
 {
 	int	i;
 	t_token	*new_token_node;
+	t_token	*current;
 
-	(data)->ls_token = (data)->token_head;
+	current = (data)->ls_token;
 	i = 0;
 	if (parsing->prompt_tab[i])
 	{
@@ -47,8 +48,8 @@ int	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeud
 		new_token_node = token_lstnew();
 		if (!new_token_node)
 			return (1);
-		token_lstadd_back(&(data)->token_head, new_token_node);
-		(data)->ls_token = new_token_node;
+		token_lstadd_back(&current, new_token_node);
+		current = new_token_node;
 		if (find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
 			return (-1);
 		find_and_store_all_cmds(data, parsing->prompt_tab[i], parsing);
