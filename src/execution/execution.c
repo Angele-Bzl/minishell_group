@@ -173,15 +173,16 @@ int	execution(t_data *data)
 	pid_t	*pids;
 	int		pipe_fd[2];
 	int		i;
-	t_token	*current;
+	t_token	*head;
+	t_token	*tmp;
 
-	current = data->ls_token;
-	if (!current->cmd || !current->cmd[0])
+	head = data->ls_token;
+	if (!head->cmd || !head->cmd[0])
 	{
 		/*free*/
 		return (1);
 	}
-	if (!current->next && cmd_is_builtin(current->cmd[0]))
+	if (!head->next && cmd_is_builtin(head->cmd[0]))
 	{
 		if (!exec_single_cmd(data))
 		{
@@ -189,27 +190,27 @@ int	execution(t_data *data)
 		}
 		return (1);
 	}
-	pids = malloc(sizeof(pid_t) * count_cmds(current));
+	pids = malloc(sizeof(pid_t) * count_cmds(head));
 	if (!pids)
 	{
 		ft_putendl_fd("Error: pids malloc", STDERR_FILENO);
 		return (0);
 	}
-	current = data->ls_token;
+	tmp = head;
 	i = 0;
-	while (current)
+	while (tmp)
 	{
+		data->ls_token = tmp;
 		if (!create_children(data, pipe_fd, pids, i))
 		{
 			return (0);
 		}
-		current = current->next;
+		tmp = tmp->next;
 		i++;
 	}
 	close(pipe_fd[0]);
-	current = data->ls_token;
-	wait_for_pid(current, pids);
-	current = data->ls_token;
+	data->ls_token = head;
+	wait_for_pid(head, pids);
 	return (1);
 }
 /*------------------------------------------------------------------------*/

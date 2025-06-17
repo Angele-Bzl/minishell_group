@@ -1,24 +1,41 @@
 # include "minishell.h"
 
-int	ft_parsing(t_data *data, t_parsing *parsing)
+static void	parsing_errcode_check(int *errcode, t_parsing *parsing)
+{
+	if (*errcode == ERR_MALLOC)											// on free + quitte le prog
+	{
+		free_all(parsing);
+		exit(EXIT_FAILURE);
+	}
+	if (*errcode == ERR_PROMPT)											// on free + continue avec new prompt
+		free_all(parsing);
+}
+
+static int	fill_prompt_tab(t_parsing *parsing)
+{
+	int	errcode;
+
+	errcode = OK;
+	parsing->prompt_tab = pipe_segmentation(parsing->prompt, '|', &errcode);		// créer le prompt_tab et print les erreurs
+	return (errcode);
+}
+
+int	ft_parsing(t_data *data, t_parsing *parsing, int *errcode)
 {
 	int	i;
 
 	i = 0;
-	if (prompt_check(parsing->prompt, parsing) == -1)	// check si le prompt a des quotes ouverte ou finit par un pipe. Ne pas gerer les cas de heredoc
-		return (ERR);
-		//print_and_free("syntax error : heredoc not handled\n", data, parsing);
-	parsing->prompt_tab = pipe_segmentation(parsing->prompt, '|'); // créer le prompt_tab et print les erreurs
-	if (!parsing->prompt_tab)					// en cas de soucis, free sans print
-		return (ERR);
-	// print_prompt_tab(parsing->prompt_tab);
-	if (expand_var(data, parsing) == -1)		// si mauvais, expand et on free
-		return (ERR);
-	// printf("\n----------- after expand -----------\n\n");
-	// print_prompt_tab(parsing->prompt_tab);
-	if (tokenisation(data, parsing) == -1)
-		return (ERR);
-	// 	print_and_free(NULL, data, parsing);	// gerer la cmd ou le i/o
-	// print_tokens(data);
-	return (0);
+	*errcode = prompt_check(parsing->prompt, parsing);					// check si le prompt a des quotes ouverte ou finit par un pipe. Ne pas gerer les cas de heredoc
+	if (*errcode == OK)
+		*errcode = fill_prompt_tab(parsing);
+	if (*errcode == OK)
+		*errcode = expand_var(data, parsing);							// si mauvais, expand et on free
+	if (*errcode == OK)
+		*errcode = tokenisation(data, parsing);
+	parsing_errcode_check(errcode, parsing);
+	return (*errcode);
 }
+
+// si result = MALLOC_ERROR(-42), on exit après free.
+// si result = PROMPT_ERROR(-1), on free le prompt actuel et on continue.
+// si result = OK(1), on continue.

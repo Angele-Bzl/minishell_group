@@ -6,7 +6,9 @@ int main(int ac, char **av, char **env)
 	(void)av;
 	t_data      data;
 	t_parsing   parsing;
+	int			errcode;
 
+	errcode = OK;
 	if (!env_init(env, &data))
 	{
 		ft_putstr_fd("Error: malloc failed\n", 2);
@@ -19,11 +21,11 @@ int main(int ac, char **av, char **env)
 		if ((&parsing)->prompt)
 		{
 			add_history((&parsing)->prompt);
-			if (ft_parsing(&data, &parsing) != OK)
-				break ;
-			//(&data)->ls_token = (&data)->token_head;
-			if (execution(&data) == OK)
-				sleep(1); //free all (data)
+			ft_parsing(&data, &parsing, &errcode);
+			// (&data)->ls_token = (&data)->token_head;
+			if (errcode == OK)
+				if (execution(&data) == OK)
+					sleep(1); //free all (data)
 		}
 	}
 	return (OK);

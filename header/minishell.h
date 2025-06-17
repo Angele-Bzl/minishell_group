@@ -27,13 +27,14 @@
 
 typedef enum e_error
 {
+	ERR_MALLOC = -42,
+	ERR_PROMPT = -1,
 	ALL_OK,
 	ERR_CREAT,
 	ERR_ID,
 	ERR_EXEC,
 	ERR_PIPE,
 	ERR_RAFT,
-	ERR_MALLOC,
 	ERR_SYNTAXE
 }	t_error;
 
@@ -112,7 +113,7 @@ int		exec_exit(t_token *cmds, t_env *ls_env);
 
 /*PARSING*/
 /*parsing.c*/
-int		ft_parsing(t_data *data, t_parsing *parsing);
+int		ft_parsing(t_data *data, t_parsing *parsing, int *errcode);
 /*prompt_check.c*/
 int		prompt_check(char *prompt, t_parsing *parsing);
 /*expand_var.c*/
@@ -120,12 +121,15 @@ void	quote_check(char c, t_parsing *parsing);
 int		expand_var(t_data *data, t_parsing *parsing);
 /*extract_token_without_quotes.c*/
 char	*extract_token_without_quotes(char *str, t_parsing *parsing);
+/*ft_coutpipe_utils.c*/
+int	prompt_begins_with_a_pipe(const char *s, int *i, int *errcode);
+int	parse_pipe_segments(char const *s, char c, int i);
 /*manage_dollar*/
 int		manage_dollar(t_data *data, t_parsing *parsing);
 /*manage_dollar_utils*/
 char	*find_var_name(t_parsing *parsing);
 /*pip_segmentation.c*/
-char	**pipe_segmentation(char const *s, char c);
+char	**pipe_segmentation(char const *s, char c, int *errcode);
 /*skip_quote.c*/
 int		skip_quote(const char *str, int *i);
 /*tokenisation.c*/

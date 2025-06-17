@@ -6,7 +6,11 @@ void	print_prompt_tab(char **p_tab)
 
 	i = 0;
 	while (p_tab[i])
-		printf("%s\n", p_tab[i++]);
+	{
+		printf("prompt_tab[%d] : %s\n", i, p_tab[i]);
+		i++;
+	}
+	printf("prompt_tab[%d] : %s\n", i, p_tab[i]);
 }
 
 void	print_env(t_env *env)

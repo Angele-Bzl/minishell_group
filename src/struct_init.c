@@ -30,13 +30,11 @@ int  env_init(char **env, t_data *data)
 { /*shlvl ? _ ?*/
 	unsigned int	i;
 	t_env			*new_node;
-	t_env			*current;
 
-	data->ls_env = NULL;
-	current = data->ls_env;
+	data->ls_env = NULL;;
 	i = 0;
 	if (!env || !env[0])
-		return(manage_no_env(&current));
+		return(manage_no_env(&data->ls_env));
 	while (env[i])
 	{
 		new_node = malloc(sizeof(t_env));
@@ -46,7 +44,7 @@ int  env_init(char **env, t_data *data)
 		if (!new_node->line)
 			return (0);
 		new_node->next = NULL;
-		ft_lstadd_back((t_list **)current, (t_list *)new_node);
+		ft_lstadd_back((t_list **)&data->ls_env, (t_list *)new_node);
 		new_node = new_node->next;
 		i++;
 	}

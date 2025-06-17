@@ -1,8 +1,33 @@
 # include "minishell.h"
 
-static int	last_pipe_check(char *prompt, int i);
+static int	last_pipe_check(char *prompt)								// si dernier charactere effectif est un pipe, on se comporte comme pour une ERR_PROMPT
+{
+	int	i;
 
-int	prompt_check(char *prompt, t_parsing *parsing)
+	i = ft_strlen(prompt) - 1;
+	if (prompt[i] != ' ' && prompt[i] != '|')
+		return (OK);
+	if (prompt[i] == '|')
+	{
+		ft_printf_err("syntax error: pipe '|' must be followed by a command\n");
+		return (ERR_PROMPT);
+	}
+	i--;
+	while (prompt[i])
+	{
+		if (prompt[i] == '|')
+		{
+			ft_printf_err("syntax error: pipe '|' must be followed by a command\n");
+			return (ERR_PROMPT);
+		}
+		if (prompt[i] != ' ')
+			return (OK);
+		i--;
+	}
+	return (OK);
+}
+
+static int	quote_count(char *prompt, t_parsing *parsing)				// si le nbr de quote est impaire, on free
 {
 	int	i;
 	int	single_quote;
@@ -21,27 +46,19 @@ int	prompt_check(char *prompt, t_parsing *parsing)
 		i++;
 	}
 	if (single_quote%2 == 1 || double_quote%2 == 1)
-		return (-1);
-	i--;
-	if (last_pipe_check(prompt, i) == 0)
-		return (0);
-	return (-1);
+	{
+		printf("syntaxe error : open quote\n");
+		return (ERR_PROMPT);
+	}
+	return (OK);
 }
 
-static int	last_pipe_check(char *prompt, int i)
+int	prompt_check(char *prompt, t_parsing *parsing)
 {
-	if (prompt[i] != ' ' && prompt[i] != '|')
-		return (0);
-	if (prompt[i] == '|')
-		return (-1);
-	i--;
-	while (prompt[i])
-	{
-		if (prompt[i] == '|')
-			return (-1);
-		if (prompt[i] != ' ')
-			return (0);
-		i--;
-	}
-	return (-1);
+	if (quote_count(prompt, parsing) == ERR_PROMPT)
+		return (ERR_PROMPT);
+	if (last_pipe_check(prompt) == ERR_PROMPT)
+		return (ERR_PROMPT);
+	return (OK);
 }
+

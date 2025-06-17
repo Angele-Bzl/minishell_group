@@ -47,6 +47,7 @@ FILES_PARS  =   parsing.c\
 				prompt_check.c\
 				expand_var.c\
 				extract_token_without_quotes.c\
+				ft_countpipe_utils.c\
 				manage_dollar.c\
 				manage_dollar_utils.c\
 				pipe_segmentation.c\

@@ -1,39 +1,34 @@
 # include "minishell.h"
 
-static int		next_pipe_segment(const char *s, char c, int *start, int *end);
-static int		ft_countpipe(char const *s, char c);
-static int		ft_free(char **array, int i);
-
-char	**pipe_segmentation(char const *s, char c)
+static int	next_pipe_segment(const char *s, char c, int *start, int *end, int *errcode)
 {
-	int		start;
-	int		end;
-	int		i;
-	int		words;
-	char	**array;
+	int	pipe_count;
 
-	i = 0;
-	end = 0;
-	words = ft_countpipe(s, c);
-	if (words == -1)
-		return(NULL);
-	array = malloc(sizeof(char *) * (words + 1));
-	if (!array)
-		return (NULL);
-	while (i < words)
+	pipe_count = 0;
+	*start = *end;
+	while (s[*start] == c || ft_isspace(s[*start]))
 	{
-		if (next_pipe_segment(s, c, &start, &end) == -1)
-			return (NULL);
-		array[i] = ft_substr(s, start, (end - start));
-		if (ft_free(array, i))
-			return (NULL);
-		i++;
+		if (s[*start] == c && ++pipe_count > 1)								// s'il y a plusieurs pipe sans rien entre les 2
+		{
+			ft_printf_err("syntaxe error near unexpected token '|'\n");
+			*errcode = ERR_PROMPT;
+			return (ERR_PROMPT);
+		}
+		(*start)++;
 	}
-	array[i] = NULL;
-	return (array);
+	if (s[*start] == '\0' )
+		return (OK);
+	*end = *start;
+	while (s[*end] != c && s[*end] != '\0')
+	{
+		if (s[*end] == '\"' || s[*end] == '\'')
+			skip_quote(s, end);												// si s[i] = quote, on continue jusqu'a la prochaine
+		*end = *end + 1;
+	}
+	return (OK);
 }
 
-static int	ft_free(char **array, int i)
+static int	free_split_on_failure(char **array, int i, int *errcode)
 {
 	if (!array[i])
 	{
@@ -43,70 +38,65 @@ static int	ft_free(char **array, int i)
 			i--;
 		}
 		free(array);
-		return (1);
+		*errcode = ERR_MALLOC;
+		return (ERR_MALLOC);
 	}
-	return (0);
+	return (OK);
 }
 
-static int	next_pipe_segment(const char *s, char c, int *start, int *end)
-{
-	int	pipe_count;
-
-	pipe_count = 0;
-	*start = *end;
-	while (s[*start] == c || ft_isspace(s[*start]))
-	{
-		if (s[*start] == c)
-			pipe_count++;
-		*start = *start + 1;
-		if (pipe_count > 1) // s'il y a plusieurs pipe sans rien entre les 2
-		{
-			printf("syntaxe error\n");
-			return (-1);
-		}
-	}
-	if (s[*start] == '\0' )
-		return (1);
-	*end = *start;
-	while (s[*end] != c && s[*end] != '\0')
-	{
-		if (s[*end] == '\"' || s[*end] == '\'')
-			skip_quote(s, end); // si s[i] = quote, on continue jusqu'a la prochaine
-		*end = *end + 1;
-	}
-	return (0);
-}
-
-static int		ft_countpipe(char const *s, char c)
+static int		ft_countpipe(char const *s, char c, int *errcode)
 {
 	int		i;
 	int		count;
+	int		check;
 
 	i = 0;
-	count = 1; //on commence forcement avec un node ?
+	count = 0;
 	if (!s)
-		return (0);
-	while (ft_isspace(s[i])) // on supprime les premiers espaces //changer en isspace
-		i++;
-	if (s[i] == '|') // si on croise direct un pipe, syntax error
-	{
-		printf("syntax error\n");
 		return (-1);
-	}
-	while (s[i])
-	{
-		while (ft_isspace(s[i])) //il faudra plutot mettre is space ici
-			i++;
-		while (s[i] != c && s[i] != '\0')
-		{
-			if (s[i] == '\"' || s[i] == '\'')
-				skip_quote(s, &i); // si s[i] = quote, on continue jusqu'a la prochaine
-			i++;
-		}
-		count++;
-		if (s[i] != '\0')
-			i++;
-	}
-	count--;
+	check = prompt_begins_with_a_pipe(s, &i, errcode);
+	if (check != OK)
+		return (check);
+	count = parse_pipe_segments(s, c, i);
 	return (count);
+}
+
+static int	fill_pipe_segments(char **array, char const *s, char c, int *errcode)
+{
+	int	i = 0;
+	int	start;
+	int	end = 0;
+	int pipe_seg;
+
+	pipe_seg = ft_countpipe(s, c, errcode);
+	while (i <= pipe_seg)
+	{
+		if (next_pipe_segment(s, c, &start, &end, errcode) == ERR_PROMPT)	// errcode a deja ete update plus haut donc on travail avec -1
+			return (-1);
+		array[i] = ft_substr(s, start, end - start);
+		if (free_split_on_failure(array, i, errcode) == ERR_MALLOC)			// errcode a deja ete update plus haut donc on travail avec -1
+			return (-1);
+		i++;
+	}
+	array[i] = NULL;
+	return (0);
+}
+
+char	**pipe_segmentation(char const *s, char c, int *errcode)
+{
+	int		pipe_seg;
+	char	**array;
+
+	pipe_seg = ft_countpipe(s, c, errcode);
+	if (pipe_seg == ERR_PROMPT)
+		return(NULL);
+	array = malloc(sizeof(char *) * (pipe_seg + 1));
+	if (!array)
+	{
+		*errcode = ERR_MALLOC;
+		return (NULL);
+	}
+	if (fill_pipe_segments(array, s, c, errcode) == -1)						// errcode a deja ete update plus haut donc on travail avec -1
+		return (NULL);
+	return (array);
 }
