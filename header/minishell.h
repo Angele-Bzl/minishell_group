@@ -113,7 +113,7 @@ int		exec_exit(t_token *cmds, t_env *ls_env);
 
 /*PARSING*/
 /*parsing.c*/
-int		ft_parsing(t_data *data, t_parsing *parsing, int *errcode);
+void	ft_parsing(t_data *data, t_parsing *parsing, int *errcode);
 /*prompt_check.c*/
 int		prompt_check(char *prompt, t_parsing *parsing);
 /*expand_var.c*/

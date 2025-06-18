@@ -20,28 +20,29 @@ static int	find_and_store_all_rafters(t_data *data, t_parsing *parsing, char *pr
 	return (0);
 }
 
-static void	find_and_store_all_cmds(t_data *data, char *prompt, t_parsing *parsing)
+static void	find_and_store_all_cmds(t_token *current, char *prompt, t_parsing *parsing)
 {
 	char	*clean_cmds;
 
 	clean_cmds = extract_clean_cmd(prompt);
-	(data)->ls_token->cmd = split_whitespace_quotes(clean_cmds, ' ', parsing);
+	current->cmd = split_whitespace_quotes(clean_cmds, ' ', parsing);
 }
 
 int	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeuds de ls_token
 {
-	int	i;
+	int		i;
 	t_token	*new_token_node;
 	t_token	*current;
 
-	current = (data)->ls_token;
+	current = data->ls_token;
 	i = 0;
 	if (parsing->prompt_tab[i])
 	{
         if (find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
 			return (-1);
-        find_and_store_all_cmds(data, parsing->prompt_tab[i], parsing);
+        find_and_store_all_cmds(current, parsing->prompt_tab[i], parsing);
         i++;
+		// printf("TOKEN data ls token cmd 0 = %s | address token = %p\n", data->ls_token->cmd[0], data->ls_token);
     }
 	while (parsing->prompt_tab[i])
 	{
@@ -52,8 +53,9 @@ int	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeud
 		current = new_token_node;
 		if (find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
 			return (-1);
-		find_and_store_all_cmds(data, parsing->prompt_tab[i], parsing);
+		find_and_store_all_cmds(current, parsing->prompt_tab[i], parsing);
 		i++;
+		// printf("TOKEN data ls token cmd 0 = %s | address token = %p\n", data->ls_token->cmd[0], data->ls_token);
 	}
 	return (0);
 }

@@ -40,12 +40,14 @@ int	tablen(char **table)
 
 int	wait_for_pid(t_token *token, pid_t *pid)
 {
-	int	i;
-	int	status;
+	int		i;
+	int		status;
+	t_token	*current;
 
 	i = 0;
 	status = 0;
-	while (token)
+	current = token;
+	while (current)
 	{
 		if (waitpid(pid[i], &status, 0) == -1)
 		{
@@ -53,7 +55,7 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 			exit(EXIT_FAILURE);
 		}
 		i++;
-		token = token->next;
+		current = current->next;
 	}
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
