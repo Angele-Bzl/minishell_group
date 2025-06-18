@@ -37,3 +37,20 @@ int	exec_homemade_builtin(t_data *data)
 		exec_exit(data->ls_token, data->ls_env);//
 	return (1);
 }
+
+
+int	var_cmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] != '=')
+	{
+		if (s1[i] != s2[i])
+			return (0);
+		i++;
+	}
+	if (s1[i] != s2[i])
+		return (0);
+	return (1);
+}
