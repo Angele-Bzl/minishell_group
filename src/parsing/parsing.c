@@ -1,6 +1,6 @@
 # include "minishell.h"
 
-static void	parsing_errcode_check(int *errcode, t_parsing *parsing)
+static void	errcode_check_in_parsing(int *errcode, t_parsing *parsing)
 {
 	if (*errcode == ERR_MALLOC)											// on free + quitte le prog
 	{
@@ -26,10 +26,10 @@ void	ft_parsing(t_data *data, t_parsing *parsing, int *errcode)
 	if (*errcode == OK)
 		*errcode = fill_prompt_tab(parsing);
 	if (*errcode == OK)
-		*errcode = expand_var(data, parsing);							// si mauvais, expand et on free
+		*errcode = expand_var(parsing);							// si mauvais, expand et on free
 	if (*errcode == OK)
 		*errcode = tokenisation(data, parsing);
-	parsing_errcode_check(errcode, parsing);
+	errcode_check_in_parsing(errcode, parsing);
 }
 
 // si result = MALLOC_ERROR(-42), on exit après free.

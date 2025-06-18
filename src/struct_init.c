@@ -76,6 +76,7 @@ static void parsing_init(t_data *data, t_parsing *parsing)
 	parsing->outfile_issue = false;
 	parsing->skip = 0;
 	parsing->prompt = NULL;
+	parsing->old_prompt = NULL;
 	parsing->prompt_tab = NULL;
 	parsing->pipe_seg = 0;
 	parsing->p_index = 0;

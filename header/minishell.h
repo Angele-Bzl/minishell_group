@@ -78,6 +78,7 @@ typedef struct s_parsing
 	int		word_length;
 	char	skip;
 	char	*prompt;
+	char	*old_prompt;
 	char	**prompt_tab;
 	bool	dollar;
 	bool	simple_quote;
@@ -118,16 +119,18 @@ void	ft_parsing(t_data *data, t_parsing *parsing, int *errcode);
 int		prompt_check(char *prompt, t_parsing *parsing);
 /*expand_var.c*/
 void	quote_check(char c, t_parsing *parsing);
-int		expand_var(t_data *data, t_parsing *parsing);
+int		expand_var(t_parsing *parsing);
 /*extract_token_without_quotes.c*/
 char	*extract_token_without_quotes(char *str, t_parsing *parsing);
 /*ft_coutpipe_utils.c*/
 int		prompt_begins_with_a_pipe(const char *s, int *i, int *errcode);
 int		parse_pipe_segments(char const *s, char c, int i);
 /*manage_dollar*/
-int		manage_dollar(t_data *data, t_parsing *parsing, int *errcode);
+int		manage_dollar_sign(t_parsing *parsing, int *errcode);
 /*manage_dollar_utils*/
 char	*find_var_name(t_parsing *parsing);
+int		find_var_end(char *prompt, int p_index);
+char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
 /*pip_segmentation.c*/
 char	**pipe_segmentation(char const *s, char c, int *errcode);
 /*skip_quote.c*/

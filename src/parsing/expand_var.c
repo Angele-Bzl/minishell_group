@@ -45,7 +45,7 @@ static int	dollar_remaining(char *str, t_parsing *parsing)
 	return (0);
 }
 
-int	expand_var(t_data *data, t_parsing *parsing)										// partie expand, "go!". checker si on est dans une quote.
+int	expand_var(t_parsing *parsing)										// partie expand, "go!". checker si on est dans une quote.
 {
 	int	errcode;
 
@@ -60,7 +60,7 @@ int	expand_var(t_data *data, t_parsing *parsing)										// partie expand, "go!
 			if (is_expandable(parsing->prompt_tab[parsing->pipe_seg][parsing->p_index],
 				parsing->prompt_tab[parsing->pipe_seg][parsing->p_index + 1], parsing))
 			{
-				if (manage_dollar(data, parsing, &errcode) == -1)									// créer un nouveau prompt avec le contenu de la var croisée
+				if (manage_dollar_sign(parsing, &errcode) != OK)									// créer un nouveau prompt avec le contenu de la var croisée
 					return (errcode);
 			}
 			parsing->p_index++;
