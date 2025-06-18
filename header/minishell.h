@@ -122,10 +122,10 @@ int		expand_var(t_data *data, t_parsing *parsing);
 /*extract_token_without_quotes.c*/
 char	*extract_token_without_quotes(char *str, t_parsing *parsing);
 /*ft_coutpipe_utils.c*/
-int	prompt_begins_with_a_pipe(const char *s, int *i, int *errcode);
-int	parse_pipe_segments(char const *s, char c, int i);
+int		prompt_begins_with_a_pipe(const char *s, int *i, int *errcode);
+int		parse_pipe_segments(char const *s, char c, int i);
 /*manage_dollar*/
-int		manage_dollar(t_data *data, t_parsing *parsing);
+int		manage_dollar(t_data *data, t_parsing *parsing, int *errcode);
 /*manage_dollar_utils*/
 char	*find_var_name(t_parsing *parsing);
 /*pip_segmentation.c*/
@@ -144,7 +144,7 @@ char	**split_whitespace_quotes(char const *s, char c, t_parsing *parsing);
 /*cmd_token.c*/
 char	*extract_clean_cmd(char *prompt);
 /*rafter_token.c*/
-int	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt);
+int		manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt);
 /*manage_heredoc.c*/
 int 	here_doc(char *eof);
 

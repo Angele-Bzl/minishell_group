@@ -73,7 +73,7 @@ char	*prompt_with_content(char *content, int start, char *prompt, int p_index)
 	return (new_prompt);
 }
 
-int manage_dollar(t_data *data,t_parsing *parsing)
+int manage_dollar(t_data *data,t_parsing *parsing, int *errcode)
 {
 	char	*content;
 	char	*old_prompt;

@@ -1,6 +1,6 @@
 # include "minishell.h"
 
-int	is_expandable(char current_i, char next_i, t_parsing *parsing)
+static int	is_expandable(char current_i, char next_i, t_parsing *parsing)
 {
 	if (current_i != '$')
 		return (0);
@@ -29,7 +29,7 @@ void	quote_check(char c, t_parsing *parsing)
 		parsing->simple_quote = false;
 }
 
-int	dollar_remaining(char *str, t_parsing *parsing)
+static int	dollar_remaining(char *str, t_parsing *parsing)
 {
 	int	i;
 
@@ -47,6 +47,9 @@ int	dollar_remaining(char *str, t_parsing *parsing)
 
 int	expand_var(t_data *data, t_parsing *parsing)										// partie expand, "go!". checker si on est dans une quote.
 {
+	int	errcode;
+
+	errcode = OK;
 	parsing->pipe_seg = 0;
 	parsing->p_index = 0;
 	while (parsing->prompt_tab[parsing->pipe_seg])										// tant qu'on a un seg_pipe
@@ -57,8 +60,8 @@ int	expand_var(t_data *data, t_parsing *parsing)										// partie expand, "go!
 			if (is_expandable(parsing->prompt_tab[parsing->pipe_seg][parsing->p_index],
 				parsing->prompt_tab[parsing->pipe_seg][parsing->p_index + 1], parsing))
 			{
-				if (manage_dollar(data, parsing) == -1)									// créer un nouveau prompt avec le contenu de la var croisée
-					return (-1);
+				if (manage_dollar(data, parsing, &errcode) == -1)									// créer un nouveau prompt avec le contenu de la var croisée
+					return (errcode);
 			}
 			parsing->p_index++;
 		}
@@ -66,5 +69,5 @@ int	expand_var(t_data *data, t_parsing *parsing)										// partie expand, "go!
 			parsing->pipe_seg++;
 		parsing->p_index = 0;
 	}
-	return (0);
+	return (errcode);
 }
