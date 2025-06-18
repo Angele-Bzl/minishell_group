@@ -5,7 +5,7 @@ int	find_var_end(char *prompt, int p_index)
 	int	end;
 
 	end = p_index + 1;
-	while (ft_isspace(prompt[end]) && prompt[end] != '\'' && prompt[end] != '\"'
+	while (!ft_isspace(prompt[end]) && prompt[end] != '\'' && prompt[end] != '\"'
 		&& prompt[end] != '$' && prompt[end] != '\0')
 		end++;
 	return (end);
@@ -80,7 +80,7 @@ int manage_dollar(t_data *data,t_parsing *parsing, int *errcode)
 	char	*variable;
 	int		start;
 
-	//printf("(manage_dollar) mimimi\n");
+	(void)errcode;
 	if (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index] == '?')
 	{
 		// handle '?'
