@@ -20,11 +20,8 @@ static int	fill_prompt_tab(t_parsing *parsing)
 	return (errcode);
 }
 
-int	ft_parsing(t_data *data, t_parsing *parsing, int *errcode)
+void	ft_parsing(t_data *data, t_parsing *parsing, int *errcode)
 {
-	int	i;
-
-	i = 0;
 	*errcode = prompt_check(parsing->prompt, parsing);					// check si le prompt a des quotes ouverte ou finit par un pipe. Ne pas gerer les cas de heredoc
 	if (*errcode == OK)
 		*errcode = fill_prompt_tab(parsing);
@@ -33,7 +30,6 @@ int	ft_parsing(t_data *data, t_parsing *parsing, int *errcode)
 	if (*errcode == OK)
 		*errcode = tokenisation(data, parsing);
 	parsing_errcode_check(errcode, parsing);
-	return (*errcode);
 }
 
 // si result = MALLOC_ERROR(-42), on exit après free.

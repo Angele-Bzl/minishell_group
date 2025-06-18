@@ -22,7 +22,7 @@ int main(int ac, char **av, char **env)
 		{
 			add_history((&parsing)->prompt);
 			ft_parsing(&data, &parsing, &errcode);
-			// (&data)->ls_token = (&data)->token_head;
+			// print_tokens(&data);
 			if (errcode == OK)
 				if (execution(&data) == OK)
 					sleep(1); //free all (data)

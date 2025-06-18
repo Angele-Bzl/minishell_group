@@ -174,7 +174,7 @@ int	execution(t_data *data)
 	int		pipe_fd[2];
 	int		i;
 	t_token	*head;
-	t_token	*tmp;
+	t_token	*current;
 
 	head = data->ls_token;
 	if (!head->cmd || !head->cmd[0])
@@ -196,16 +196,16 @@ int	execution(t_data *data)
 		ft_putendl_fd("Error: pids malloc", STDERR_FILENO);
 		return (0);
 	}
-	tmp = head;
+	current = head;
 	i = 0;
-	while (tmp)
+	while (current)
 	{
-		data->ls_token = tmp;
+		data->ls_token = current;
 		if (!create_children(data, pipe_fd, pids, i))
 		{
 			return (0);
 		}
-		tmp = tmp->next;
+		current = current->next;
 		i++;
 	}
 	close(pipe_fd[0]);
