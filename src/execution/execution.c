@@ -36,23 +36,23 @@ int	execution(t_data *data)
 	if (!head->cmd[0])
 	{
 		free(head);
-		return (1);
+		return (OK);
 	}
 	if (!head->next && cmd_is_builtin(head->cmd[0]))
 		return (exec_single_cmd(data));
 	pids = malloc(sizeof(pid_t) * count_cmds(head));
 	if (!pids)
-		return (msg_return("Error: pids malloc", STDERR_FILENO, 0));
+		return (msg_return("Error: pids malloc", STDERR_FILENO, ERR));
 	current = head;
 	if (!loop_children(current, data, pids))
 	{
 		free(pids);
-		return (0);
+		return (ERR);
 	}
 	wait_for_pid(head, pids);
 	free(pids);
 	data->ls_token = head;
-	return (1);
+	return (OK);
 }
 /*------------------------------------------------------------------------*/
 

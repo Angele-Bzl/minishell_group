@@ -32,8 +32,10 @@ LFLAGS		=	-lreadline -lncurses
 FILES_EXEC  =   execution.c\
 				command.c\
 				utils_exec.c\
-				utils_exec01.c\
+				single_cmd.c\
 				error_exec.c\
+				input_output.c\
+				children.c\
 				$(addprefix $(DIR_BUILTINS)/, $(FILES_BUILT))
 
 FILES_BUILT	=	utils_builtin.c\

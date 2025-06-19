@@ -19,7 +19,7 @@ int main(int ac, char **av, char **env)
 		{
 			add_history((&parsing)->prompt);
 			ft_parsing(&data, &parsing, &errcode);
-			// print_tokens(&data);
+			print_tokens(&data);
 			if (errcode == OK)
 			{
 				if (execution(&data) == OK)

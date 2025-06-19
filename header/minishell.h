@@ -102,13 +102,18 @@ char	**get_env_in_tab(t_env **node_env);
 int		exec_single_cmd(t_data *data);
 /*error_exec.c*/
 void	free_str_close_fds(char **array, char *str, int *fd);
+int		free_str_close_fds_return(char **array, char *str, int *fd, int return_value);
 void	free_token_and_env(t_data *data);
 void	free_data_exit(t_data *data, int exit_value);
+int		msg_return(char *message, int fd, int return_value);
+int		msg_exit(char *message, int fd, int exit_value);
+int		perror_return(char *message, int return_value);
+void	close_fds(int fd1, int fd2);
 /*children.c*/
 int		loop_children(t_token *current, t_data *data, pid_t *pids);
 /*input_output.c*/
-int	get_input(char *io_value[2], t_rafter redirection[2], int previous_pipe);
-int	get_output(char *io_value[2], t_rafter redirection[2], int pipe_output, int count_cmd);
+int		get_input(char *io_value[2], t_rafter redirection[2], int previous_pipe);
+int		get_output(char *io_value[2], t_rafter redirection[2], int pipe_output, int count_cmd);
 int		redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
 /*BUILTINS*/
 int		cmd_is_builtin(char *path_cmd);
@@ -165,8 +170,6 @@ int 	here_doc(char *eof);
 char	*ft_cutstr(char const *s, unsigned int start);
 /*print_err_message.c*/
 int		err_message(t_error error);
-int		msg_return(char *message, int fd, int return_value);
-int		msg_exit(char *message, int fd, int exit_value);
 /*debug_print.c*/
 void	print_env(t_env *env);
 void	print_prompt_tab(char **p_tab);

@@ -5,6 +5,7 @@ int	count_cmds(t_token *token)
 	t_token	*current;
 	int		i;
 
+	current = token;
 	i = 0;
 	while (current)
 	{

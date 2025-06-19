@@ -3,9 +3,17 @@
 int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 {
 	if (dup2(io_fd[0], STDIN_FILENO) == -1)
+	{
+		ft_printf_err("io_fd[0] = %d\n", io_fd[0]);
+		ft_printf_err("cmd = %s\n", path_cmd);
 		return (perror_return("dup2", 0));
+	}
 	if (dup2(io_fd[1], STDOUT_FILENO) == -1)
+	{
+		ft_printf_err("io_fd[1] = %d\n", io_fd[1]);
+		ft_printf_err("cmd = %s\n", path_cmd);
 		return (perror_return("dup2", 0));
+	}
 	if (io_fd[0] != STDIN_FILENO)
 		close(io_fd[0]);
 	if (io_fd[1] != STDOUT_FILENO)

@@ -22,16 +22,4 @@ int	err_message(t_error error)
 	return (1);
 }
 
-int	msg_return(char *message, int fd, int return_value)
-{
-	if (message)
-		ft_putendl_fd(message, fd);
-	return (return_value);
-}
 
-int	msg_exit(char *message, int fd, int exit_value)
-{
-	if (message)
-		ft_putendl_fd(message, fd);
-	return (exit_value);
-}

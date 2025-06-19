@@ -20,6 +20,7 @@ int	free_str_close_fds_return(char **array, char *str, int *fd, int return_value
 	close(fd[1]);
 	return (return_value);
 }
+
 void	free_token_and_env(t_data *data)
 {
 	free_token(data->ls_token);
@@ -31,6 +32,7 @@ void	free_data_exit(t_data *data, int exit_value)
 	free_token_and_env(data);
 	exit(exit_value);
 }
+
 void	close_fds(int fd1, int fd2)
 {
 	close(fd1);
@@ -42,4 +44,18 @@ int	perror_return(char *message, int return_value)
 	if (message)
 		perror(message);
 	return (return_value);
+}
+
+int	msg_return(char *message, int fd, int return_value)
+{
+	if (message)
+		ft_putendl_fd(message, fd);
+	return (return_value);
+}
+
+int	msg_exit(char *message, int fd, int exit_value)
+{
+	if (message)
+		ft_putendl_fd(message, fd);
+	return (exit_value);
 }

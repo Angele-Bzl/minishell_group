@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t pid)
+static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2])
 {
 	char	**env;
 	char	*path_cmd;
@@ -39,7 +39,7 @@ static int	create_children(t_data *data, int *pipe_fd, pid_t *pids, int i)
 	if (pids[i] == 0)
 	{
 		close(pipe_fd[0]);
-		if (!manage_child(data, previous_pipe, pipe_fd, pids[i]))
+		if (!manage_child(data, previous_pipe, pipe_fd))
 		{
 			free(pids);
 			close_fds(previous_pipe, pipe_fd[1]);
