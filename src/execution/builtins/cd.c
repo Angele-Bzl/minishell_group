@@ -33,32 +33,43 @@ static int	update_pwd(t_env *list_env, int var_length)
 	{
 		if (!ft_strncmp(current->line, "PWD=", var_length))
 		{
-			if (current->line)
-				free(current->line);
+			free(current->line);
 			pwd = getcwd(NULL, 0);
 			if (!pwd)
-			{
-				ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
-				return (0);
-			}
+				return (msg_return("Error: update_pwd failed", STDERR_FILENO, 0));
 			current->line = ft_strjoin("PWD=", pwd);
 			free(pwd);
 			if (!current->line)
-			{
-				ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
-				return (0);
-			}
+				return (msg_return("Error: update_pwd failed", STDERR_FILENO, 0));
 			break ;
 		}
 		current = current->next;
 	}
 	if (!current)
-	{
 		current = create_var_pwd("PWD=");
-		if (!current)
-			return (0);
-	}
+	if (!current)
+		return (0);
 	return (1);
+}
+
+static char	*get_var_pwd(t_env *current, t_env *ls_env)
+{
+	char	*pwd;
+
+	pwd = NULL;
+	while (current)
+	{
+		if (!ft_strncmp(current->line, "PWD=", 4))
+		{
+			pwd = ft_strdup(current->line + 4);
+			if (!pwd)
+				return (NULL);
+			break ;
+		}
+		current = current->next;
+	}
+	current = ls_env;
+	return (pwd);
 }
 
 static int	update_oldpwd(t_env *ls_env)
@@ -67,22 +78,9 @@ static int	update_oldpwd(t_env *ls_env)
 	char	*pwd;
 
 	current = ls_env;
-	pwd = NULL;
-	while (current)
-	{
-		if (!ft_strncmp(current->line, "PWD=", 4))
-		{
-			pwd = ft_strdup(current->line + 4);
-			if (!pwd)
-			{
-				ft_putendl_fd("Error: update_oldpwd failed", STDERR_FILENO);
-				return (0);
-			}
-			break ;
-		}
-		current = current->next;
-	}
-	current = ls_env;
+	pwd = get_var_pwd(current, ls_env);
+	if (!pwd)
+		return (msg_return("Error: update_oldpwd failed", STDERR_FILENO, 0));
 	while (current)
 	{
 		if (!ft_strncmp(current->line, "OLDPWD=", 7))
@@ -91,20 +89,15 @@ static int	update_oldpwd(t_env *ls_env)
 			current->line = ft_strjoin("OLDPWD=", pwd);
 			free(pwd);
 			if (!current->line)
-			{
-				ft_putendl_fd("Error: update_oldpwd failed", STDERR_FILENO);
-				return (0);
-			}
+				return (msg_return("Error: update_oldpwd failed", STDERR_FILENO, 0));
 			break ;
 		}
 		current = current->next;
 	}
 	if (!current)
-	{
 		current = create_var_pwd("OLDPWD=");
-		if (!current)
-			return (0);
-	}
+	if (!current)
+		return (0);
 	return (1);
 }
 
@@ -115,13 +108,13 @@ int	exec_cd(char **cmd, t_env *list_env)
 		ft_putendl_fd("Error: too many arguments", STDERR_FILENO);
 		return (0);
 	}
-	if (!update_oldpwd(list_env))
-		return (0);
 	if (chdir(cmd[1]) == -1)
 	{
 		perror("Error chdir");
 		return (0);
 	}
+	if (!update_oldpwd(list_env))
+		return (0);
 	if (!update_pwd(list_env, 4))
 		return (0);
 	return (1);

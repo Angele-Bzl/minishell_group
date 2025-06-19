@@ -63,7 +63,8 @@ FILES_UTILS =   cutstr.c\
 				debug_print.c\
 				free_minishell.c\
 				free_utils.c\
-				ft_isspace.c
+				ft_isspace.c\
+				print_err_message.c
 FILES		=	struct_init.c\
 				main.c\
 				$(addprefix $(DIR_PARS)/,$(FILES_PARS))\
