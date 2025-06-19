@@ -2,18 +2,15 @@
 
 int main(int ac, char **av, char **env)
 {
-	(void)ac;
-	(void)av;
 	t_data      data;
 	t_parsing   parsing;
 	int			errcode;
 
+	(void)ac;
+	(void)av;
 	errcode = OK;
 	if (!env_init(env, &data))
-	{
-		ft_putstr_fd("Error: malloc failed\n", 2);
-		return (ERR);
-	}
+		return (msg_return("Error: malloc failed\n", STDERR_FILENO, ERR));
 	while (1)
 	{
 		struct_init(&data, &parsing);
@@ -24,8 +21,10 @@ int main(int ac, char **av, char **env)
 			ft_parsing(&data, &parsing, &errcode);
 			// print_tokens(&data);
 			if (errcode == OK)
+			{
 				if (execution(&data) == OK)
-					sleep(1); //free all (data)
+					free_token((&data)->ls_token);
+			}
 		}
 	}
 	return (OK);

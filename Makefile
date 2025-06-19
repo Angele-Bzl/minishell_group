@@ -33,6 +33,7 @@ FILES_EXEC  =   execution.c\
 				command.c\
 				utils_exec.c\
 				utils_exec01.c\
+				error_exec.c\
 				$(addprefix $(DIR_BUILTINS)/, $(FILES_BUILT))
 
 FILES_BUILT	=	utils_builtin.c\

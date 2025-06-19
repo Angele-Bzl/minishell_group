@@ -1,5 +1,19 @@
 #include "minishell.h"
 
+int	count_cmds(t_token *token)
+{
+	t_token	*current;
+	int		i;
+
+	i = 0;
+	while (current)
+	{
+		current = current->next;
+		i++;
+	}
+	return (i);
+}
+
 char	*ft_strtrim_improved(char *s1, char const *set)
 {
 	int		start;
@@ -37,33 +51,6 @@ int	tablen(char **table)
 		i++;
 	return (i);
 }
-
-int	wait_for_pid(t_token *token, pid_t *pid)
-{
-	int		i;
-	int		status;
-	t_token	*current;
-
-	i = 0;
-	status = 0;
-	current = token;
-	while (current)
-	{
-		if (waitpid(pid[i], &status, 0) == -1)
-		{
-			perror("waitpid");
-			exit(EXIT_FAILURE);
-		}
-		i++;
-		current = current->next;
-	}
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
-	return (EXIT_SUCCESS);
-}
-
 
 char	**get_env_in_tab(t_env **node_env)
 {

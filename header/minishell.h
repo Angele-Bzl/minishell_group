@@ -91,15 +91,25 @@ typedef struct s_parsing
 /*EXEC*/
 /*execution.c*/
 int		execution(t_data *data);
-int		redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd);
 /*utils_exec.c*/
+int		count_cmds(t_token *token);
 char	*ft_strtrim_improved(char *s1, char const *set);
 int		tablen(char **table);
-int		wait_for_pid(t_token *token, pid_t *pid);
 char	**get_env_in_tab(t_env **node_env);
+/*single_cmd.c*/
 int		exec_single_cmd(t_data *data);
+/*error_exec.c*/
+void	free_str_close_fds(char **array, char *str, int *fd);
+void	free_token_and_env(t_data *data);
+void	free_data_exit(t_data *data, int exit_value);
+/*children.c*/
+int		loop_children(t_token *current, t_data *data, pid_t *pids);
+/*input_output.c*/
+int	get_input(char *io_value[2], t_rafter redirection[2], int previous_pipe);
+int	get_output(char *io_value[2], t_rafter redirection[2], int pipe_output, int count_cmd);
+int		redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
 /*BUILTINS*/
 int		cmd_is_builtin(char *path_cmd);
 int		exec_homemade_builtin(t_data *data);
@@ -156,6 +166,7 @@ char	*ft_cutstr(char const *s, unsigned int start);
 /*print_err_message.c*/
 int		err_message(t_error error);
 int		msg_return(char *message, int fd, int return_value);
+int		msg_exit(char *message, int fd, int exit_value);
 /*debug_print.c*/
 void	print_env(t_env *env);
 void	print_prompt_tab(char **p_tab);
