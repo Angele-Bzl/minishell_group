@@ -1,6 +1,5 @@
 #include "minishell.h"
 #include <limits.h>
-// #include "../../../header/minishell.h"
 
 static void	go_to_num(const char *str, int *i, int *minus)
 {
@@ -29,10 +28,10 @@ unsigned long long	ft_atoull(const char *str, int *minus)
 	return (result);
 }
 
-static int	exit_no_arg(void)
+static int	exit_no_arg(t_data *data)
 {
-	/*free t_token*/
-	/*free t_env*/
+	free_token(data->ls_token);
+	free_env(data->ls_env);
 	exit(0);
 }
 
@@ -79,11 +78,12 @@ static long long	check_valid_arg(char *arg)
 	return (arg_ull * minus);
 }
 
-static int	exit_arg(long long exit_code)
+static int	exit_arg(t_data *data, long long exit_code)
 {
 	int exit_255;
 
-	/*free all*/
+	free_token(data->ls_token);
+	free_env(data->ls_env);
 	exit_255 = exit_code % 256;
 	if (exit_255 < 0)
 	{
@@ -91,7 +91,7 @@ static int	exit_arg(long long exit_code)
 	}
 	exit(exit_255);
 }
-int	exec_exit(t_token *cmds, t_env *ls_env)
+int	exec_exit(t_data *data, t_token *cmds, t_env *ls_env)
 {
 	(void)ls_env;
 	long long	exit_code;
@@ -103,47 +103,13 @@ int	exec_exit(t_token *cmds, t_env *ls_env)
 	}
 	if (!cmds->cmd[1])
 	{
-		exit_no_arg();//
+		exit_no_arg(data);
 	}
 	exit_code = check_valid_arg(cmds->cmd[1]);
 	if (exit_code == -1)
 	{
 		return (0);
 	}
-	exit_arg(exit_code);
+	exit_arg(data, exit_code);
 	return (1);
 }
-
-// static int  env_init_TEST(t_env **ls_env, char **env)
-// {
-// 	unsigned int	i;
-// 	t_env			*new_node;
-// 	i = 0;
-// 	while (env[i])
-// 	{
-// 		new_node = malloc(sizeof(t_env));
-// 		if (!new_node)
-// 			return (0);
-// 		new_node->line = ft_strdup(env[i]);
-// 		if (!new_node->line)
-// 			return (0);
-// 		new_node->next = NULL;
-// 		ft_lstadd_back((t_list**)ls_env, (t_list*)new_node);
-// 		new_node = new_node->next;
-// 		i++;
-// 	}
-// 	return (1);
-// }
-
-// int main(int ac, char **av, char **env)
-// {
-// 	t_env 	*ls_env;
-// 	t_token	*token;
-// 	char *cmds[3] = {"exit", "9223372036854775808", NULL};
-// 	ls_env = NULL;
-// 	env_init_TEST(&ls_env, env);
-// 	token = malloc(sizeof(t_token));
-// 	token->cmd = cmds;
-// 	token->next = NULL;
-// 	exec_exit(token, ls_env);
-// }

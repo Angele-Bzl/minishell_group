@@ -110,7 +110,7 @@ int		exec_pwd(void);
 void	exec_env(t_env *ls_env);
 void	exec_unset(t_env **ls_env, char **cmds);
 int		exec_cd(char **cmd, t_env *list_env);
-int		exec_exit(t_token *cmds, t_env *ls_env);
+int		exec_exit(t_data *data, t_token *cmds, t_env *ls_env);
 
 /*PARSING*/
 /*parsing.c*/
@@ -155,7 +155,7 @@ int 	here_doc(char *eof);
 char	*ft_cutstr(char const *s, unsigned int start);
 /*print_err_message.c*/
 int		err_message(t_error error);
-int	msg_return(char *message, int fd, int return_value);
+int		msg_return(char *message, int fd, int return_value);
 /*debug_print.c*/
 void	print_env(t_env *env);
 void	print_prompt_tab(char **p_tab);
