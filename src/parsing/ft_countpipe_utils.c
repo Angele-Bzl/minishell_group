@@ -1,16 +1,16 @@
 # include "minishell.h"
 
-int	prompt_begins_with_a_pipe(const char *s, int *i, int *errcode)
+int	prompt_begins_with_a_pipe(const char *prompt, int *i, t_parsing *parsing)
 {
-	while (ft_isspace(s[*i]))
+	while (ft_isspace(prompt[*i]))
 		(*i)++;
-	if (s[*i] == '|')
+	if (prompt[*i] == '|')
 	{
 		printf("syntax error near unexpected token '|'\n");
-		*errcode = ERR_PROMPT;
-		return (ERR_PROMPT);
+		parsing->errcode = ERR_PROMPT;
+		return (-1);
 	}
-	return (OK);
+	return (0);
 }
 
 int	parse_pipe_segments(char const *s, char c, int i)

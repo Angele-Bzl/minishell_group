@@ -1,4 +1,4 @@
-#ifndef MINISHELL_H
+# ifndef MINISHELL_H
 # define MINISHELL_H
 
 # include <stdio.h> //printf, readline, perror
@@ -25,11 +25,18 @@
 
 /////////////////////////////////////////// enum
 
-typedef enum e_error
+typedef enum e_parsing_error
 {
 	ERR_MALLOC = -42,
 	ERR_PROMPT = -1,
 	ALL_OK,
+}	t_parsing_error;
+
+typedef enum e_error
+{
+	ERROR_MALLOC = -42,
+	ERROR_PROMPT = -1,
+	ALL_IS_OK,
 	ERR_CREAT,
 	ERR_ID,
 	ERR_EXEC,
@@ -56,12 +63,26 @@ typedef struct s_env
 	char			*line;
 }	t_env;
 
+typedef struct s_infile
+{
+	struct s_infile		*next;
+	char				*value;
+	t_rafter			redirection;
+}	t_infile;
+
+typedef struct s_outfile
+{
+	struct s_outfile	*next;
+	char				*value;
+	t_rafter			redirection;
+}	t_outfile;
+
 typedef struct s_token
 {
 	struct s_token	*next;
 	char			**cmd;
-	t_rafter		io_redir[2];
-	char			*io_value[2];
+	t_infile		*ls_infile;
+	t_outfile		*ls_outfile;
 }	t_token;
 
 typedef struct s_data
@@ -84,6 +105,7 @@ typedef struct s_parsing
 	bool	simple_quote;
 	bool	double_quote;
 	bool	outfile_issue;
+	t_parsing_error	errcode;
 	t_data	*data;
 }	t_parsing;
 
@@ -114,25 +136,25 @@ int		exec_exit(t_token *cmds, t_env *ls_env);
 
 /*PARSING*/
 /*parsing.c*/
-void	ft_parsing(t_data *data, t_parsing *parsing, int *errcode);
+void	ft_parsing(t_data *data, t_parsing *parsing);
 /*prompt_check.c*/
 int		prompt_check(char *prompt, t_parsing *parsing);
 /*expand_var.c*/
 void	quote_check(char c, t_parsing *parsing);
-int		expand_var(t_parsing *parsing);
+void	expand_var(t_parsing *parsing);
 /*extract_token_without_quotes.c*/
 char	*extract_token_without_quotes(char *str, t_parsing *parsing);
 /*ft_coutpipe_utils.c*/
-int		prompt_begins_with_a_pipe(const char *s, int *i, int *errcode);
+int		prompt_begins_with_a_pipe(const char *s, int *i, t_parsing *parsing);
 int		parse_pipe_segments(char const *s, char c, int i);
 /*manage_dollar*/
-int		manage_dollar_sign(t_parsing *parsing, int *errcode);
+void	manage_dollar_sign(t_parsing *parsing);
 /*manage_dollar_utils*/
 char	*find_var_name(t_parsing *parsing);
 int		find_var_end(char *prompt, int p_index);
 char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
 /*pip_segmentation.c*/
-char	**pipe_segmentation(char const *s, char c, int *errcode);
+char	**pipe_segmentation(t_parsing *parsing, char c);
 /*skip_quote.c*/
 int		skip_quote(const char *str, int *i);
 /*tokenisation.c*/
@@ -142,12 +164,20 @@ int		manage_quotes(char c, t_parsing *parsing);
 /*linked_list_token.c*/
 t_token	*token_lstnew(void);
 void	token_lstadd_back(t_token **lst, t_token *new);
+/*linked_list_infile.c*/
+t_infile	*infile_lstnew(void);
+void	infile_lstadd_back(t_infile **lst, t_infile *new);
+/*linked_list_outfile.c*/
+t_outfile	*outfile_lstnew(void);
+void	outfile_lstadd_back(t_outfile **lst, t_outfile *new);
 /*cmd_token_utils.c*/
 char	**split_whitespace_quotes(char const *s, char c, t_parsing *parsing);
 /*cmd_token.c*/
 char	*extract_clean_cmd(char *prompt);
 /*rafter_token.c*/
 int		manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt);
+/*rafter_token_utils.c*/
+char	*find_redir_file_name(char *prompt, int i);
 /*manage_heredoc.c*/
 int 	here_doc(char *eof);
 

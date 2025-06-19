@@ -29,6 +29,34 @@ void	free_env(t_env *env)
 	}
 }
 
+void	free_infile(t_token *ls_token)
+{
+	t_infile	*current;
+	t_infile	*next;
+
+	current = ls_token->ls_infile;
+	while (current)
+	{
+		next = current->next;
+		free(current->value);
+		current = next;
+	}
+}
+
+void	free_outfile(t_token *ls_token)
+{
+	t_outfile	*current;
+	t_outfile	*next;
+
+	current = ls_token->ls_outfile;
+	while (current)
+	{
+		next = current->next;
+		free(current->value);
+		current = next;
+	}
+}
+
 void	free_token(t_token *token)
 {
 	t_token	*tmp;
@@ -44,10 +72,10 @@ void	free_token(t_token *token)
 				free(token->cmd[i++]);
 			free(token->cmd);
 		}
-		if (token->io_value[0])
-			free(token->io_value[0]);
-		if (token->io_value[1])
-			free(token->io_value[1]);
+		if (token->ls_infile)
+			free_infile(token);
+		if (token->ls_outfile)
+			free_outfile(token);
 		free(token);
 		token = tmp;
 	}

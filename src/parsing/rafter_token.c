@@ -1,60 +1,65 @@
 # include "minishell.h"
 
-static char	*find_redir_file_name(char *prompt, int i)
+void	update_infile(t_data *data, char *file_name, t_rafter redirection)
 {
-	char	*file_name;
-	int		len;
-	int		start;
-	int		end;
+	t_infile	*new_in_node;
+	t_infile	*current;
 
-	i++;
-	if (prompt[i] == '<' || prompt[i] == '>')
-		i++;
-	while (ft_isspace(prompt[i]))										// on saute les espaces
-		i++;
-	start = i;
-	if (prompt[i] == '<' || prompt[i] == '>')							// si on a un autre rafter, retour d'erreur
+	current = data->ls_token->ls_infile;
+	if (current->next == NULL)
 	{
-		printf("bash: syntax error near unexpected token '%c'\n", prompt[i]);
-		return (NULL);
+		current->value = file_name;
+		current->redirection = redirection;
 	}
-	while (!ft_isspace(prompt[i]) && prompt[i] != '\0')					// on va jusqu'à la fin du nom
-		i++;
-	end = i;
-	len = end - start;
-	file_name = malloc(sizeof(char) * (len + 1));
-	if (!file_name)
-		return (NULL);
-	i = 0;
-	while (i < len)														// copie du nom dp le prompt sur "len" characteres
+	else
 	{
-		file_name[i] = prompt[start + i];
-		i++;
+		new_in_node = infile_lstnew();
+		infile_lstadd_back(&current, new_in_node);
+		current->value = file_name;
+		current->redirection = redirection;
 	}
-	file_name[i] = '\0';
-	return (file_name);
 }
 
-static void	manage_outfile(t_data *data, t_parsing *parsing, char *file_name)
+void	update_outfile(t_data *data, char *file_name, t_rafter redirection)
 {
-	int	fd;
+	t_outfile	*new_in_node;
+	t_outfile	*current;
 
-	if (data->ls_token->io_redir[1] == SIMPLE_RIGHT)
+	current = data->ls_token->ls_outfile;
+	if (current->next == NULL)
 	{
-		fd = open(file_name, O_CREAT, 0644);
-		if (fd == -1)
-			parsing->outfile_issue = TRUE;
-		else
-			close(fd);
+		current->value = file_name;
+		current->redirection = redirection;
 	}
-	else if (data->ls_token->io_redir[1] == DOUBLE_RIGHT)
+	else
 	{
-		fd = open(file_name, O_APPEND | O_CREAT, 0644);
-		if (fd == - 1)
-			parsing->outfile_issue = TRUE;
-		else
-			close(fd);
+		new_in_node = outfile_lstnew();
+		outfile_lstadd_back(&current, new_in_node);
+		current->value = file_name;
+		current->redirection = redirection;
 	}
+}
+
+static void manage_simple_rafter(t_data *data, t_parsing *parsing, int *i, char *file_name)
+{
+	char *prompt;
+
+	prompt = parsing->prompt_tab[*i];
+	if (prompt[*i] == '<' && prompt[*i + 1] != '<')
+		update_infile(data, file_name, SIMPLE_LEFT);
+	if (prompt[*i] == '>' && prompt[*i + 1] != '>' && parsing->outfile_issue == false)
+		update_outfile(data, file_name, SIMPLE_RIGHT);
+}
+
+static void manage_double_rafter(t_data *data, t_parsing *parsing, int *i, char *file_name)
+{
+	char *prompt;
+
+	prompt = parsing->prompt_tab[*i];
+	if (prompt[*i] == '<')
+		update_infile(data, file_name, DOUBLE_LEFT);
+	if (prompt[*i] == '>' && parsing->outfile_issue == false)
+		update_outfile(data, file_name, DOUBLE_RIGHT);
 }
 
 int	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt)
@@ -63,33 +68,11 @@ int	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt)
 
 	file_name = find_redir_file_name(prompt, *i);
 	if (file_name == NULL)
-		return (-1);
-	if (prompt[*i] == '<' && prompt[*i + 1] != '<')
-	{
-		data->ls_token->io_value[0] = file_name;
-		data->ls_token->io_redir[0] = SIMPLE_LEFT;
-	}
-	if (prompt[*i] == '>' && prompt[*i + 1] != '>' && parsing->outfile_issue == false)
-	{
-		data->ls_token->io_value[1] = file_name;
-		data->ls_token->io_redir[1] = SIMPLE_RIGHT;
-	}
+		return (ERR_MALLOC);
+	manage_simple_rafter(data, parsing, i, file_name);
 	*i = *i + 1;
-	if (prompt[*i] == '<')
-	{
-		data->ls_token->io_redir[0] = DOUBLE_LEFT;
-		if (!here_doc(file_name))
-			return (-1);
-		data->ls_token->io_value[0] = ft_strdup(".infile.tmp");
-	}
-	if (prompt[*i] == '>' && parsing->outfile_issue == false)
-	{
-		data->ls_token->io_value[1] = file_name;
-		data->ls_token->io_redir[1] = DOUBLE_RIGHT;
-	}
+	manage_double_rafter(data, parsing, i, file_name);
 	while (prompt[*i] == ' ' || prompt[*i] == '\t')
-		*i = *i + 1;
-	if (parsing->outfile_issue == false)
-		manage_outfile(data, parsing, file_name);
-	return (0);
+	*i = *i + 1;
+	return (OK);
 }
