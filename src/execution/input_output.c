@@ -14,48 +14,60 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 	return (OK);
 }
 
-int	get_input(char *io_value[2], t_rafter redirection[2], int previous_pipe)
+int	get_input(t_infile *ls_infile, int previous_pipe)
 {
 	int	input;
+	t_infile	*current;
 
 	input = previous_pipe;
-	if (io_value[0])
+	if (ls_infile->value)
 	{
-		close(previous_pipe);
-		input = open(io_value[0], O_RDONLY);
-		if (redirection[0] == DOUBLE_LEFT)
-			unlink(io_value[0]);
-		if (input == -1)
+		current = ls_infile;
+		while (current)
 		{
-			perror(io_value[0]);
-			return (-1);
+			if (current->redirection == SIMPLE_LEFT)
+				input = open(current->value, O_RDONLY);
+			if (current->redirection == DOUBLE_LEFT)
+				input = here_doc(current->value);
+			if (input == -1)
+				perror_return(ls_infile->value, ERROR_SYSTEM);
+			if (ls_infile->redirection == DOUBLE_LEFT)
+				unlink(ls_infile->value);
+			if (current->next)
+				close(input);
+			current = current->next;
 		}
+		close(previous_pipe);
 	}
 	return (input);
 }
 
-int	get_output(char *io_value[2], t_rafter redirection[2], int pipe_output, int count_cmd)
+int	get_output(t_outfile *ls_outfile, int pipe_output, int count_cmd)
 {
 	int	output;
+	t_infile	*current;
 
 	if (count_cmd == 1)
 	{
 		close(pipe_output);
 		output = STDOUT_FILENO;
 	}
-	else
-		output = pipe_output;
-	if (io_value[1])
+	if (ls_outfile->value)
 	{
-		close(pipe_output);
-		if (redirection[1] == SIMPLE_RIGHT)
-			output = open(io_value[1], O_WRONLY | O_TRUNC, 0644);
-		else if (redirection[1] == DOUBLE_RIGHT)
-			output = open(io_value[1], O_WRONLY | O_APPEND, 0644);
-		if (output == -1)
+		if (count_cmd != 1)
+			close(pipe_output);
+		current = ls_outfile;
+		while (current)
 		{
-			perror(io_value[1]);
-			return (-1);
+			if (current->redirection == SIMPLE_RIGHT)
+				output = open(current->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (current->redirection == DOUBLE_RIGHT)
+				output = open(current->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (output == -1)
+				perror_return(ls_outfile->value, ERROR_SYSTEM);
+			if (current->next)
+				close(output);
+			current = current->next;
 		}
 	}
 	return (output);

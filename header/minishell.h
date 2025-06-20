@@ -133,8 +133,8 @@ int	msg_return_close_all(int *fds, char *message, int fd, int return_value);
 int	loop_children(t_data *data, t_token *current, pid_t *pids);
 /*input_output.c*/
 int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
-int	get_input(char *io_value[2], t_rafter redirection[2], int previous_pipe);
-int	get_output(char *io_value[2], t_rafter redirection[2], int pipe_output, int count_cmd);
+int	get_input(t_infile *ls_infile, int previous_pipe);
+int	get_output(t_outfile *ls_outfile, int pipe_output, int count_cmd);
 /*BUILTINS*/
 int		cmd_is_builtin(char *path_cmd);
 int		exec_homemade_builtin(t_data *data);

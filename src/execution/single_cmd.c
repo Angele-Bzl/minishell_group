@@ -2,11 +2,8 @@
 
 static int	input_output_single_cmd(char *io_value[2], t_rafter redirection[2], int *io_fd, int *save_std_io)
 {
-	if (save_std_io)
-	{
-		save_std_io[0] = dup(STDIN_FILENO);
-		save_std_io[1] = dup(STDOUT_FILENO);
-	}
+	save_std_io[0] = dup(STDIN_FILENO);
+	save_std_io[1] = dup(STDOUT_FILENO);
 	io_fd[0] = STDIN_FILENO;
 	io_fd[1] = STDOUT_FILENO;
 	if (io_value[0])
