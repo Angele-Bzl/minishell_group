@@ -19,7 +19,7 @@ static int	var_new(t_env *ls_env, char *cmd)
 	new = malloc(sizeof(t_env));
 	if (!new)
 	{
-		ft_putendl_fd("Error exec_export: malloc failed", STDERR_FILENO);
+		ft_putendl_fd("Error: malloc failed", STDERR_FILENO);
 		return (0);
 	}
 	new->line = cmd;
@@ -74,15 +74,15 @@ int	exec_export(t_env *ls_env, char **cmds)
 			if (var_already_exists(current, cmds[i]))
 			{
 				if (!var_update(current, cmds[i]))
-					return (0);
+					return (ERROR_SYSTEM);
 			}
 			else
 			{
 				if (!var_new(ls_env, cmds[i]))
-					return (0);
+					return (ERROR_SYSTEM);
 			}
 		}
 		i++;
 	}
-	return (1);
+	return (OK);
 }

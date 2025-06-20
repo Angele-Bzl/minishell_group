@@ -106,16 +106,16 @@ int	exec_cd(char **cmd, t_env *list_env)
 	if (cmd[2])
 	{
 		ft_putendl_fd("Error: too many arguments", STDERR_FILENO);
-		return (0);
+		return (ERROR_PROMPT);
 	}
 	if (chdir(cmd[1]) == -1)
 	{
 		perror("Error chdir");
-		return (0);
+		return (ERROR_PROMPT);
 	}
 	if (!update_oldpwd(list_env))
-		return (0);
+		return (ERROR_SYSTEM);
 	if (!update_pwd(list_env, 4))
-		return (0);
-	return (1);
+		return (ERROR_SYSTEM);
+	return (OK);
 }

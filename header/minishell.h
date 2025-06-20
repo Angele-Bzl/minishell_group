@@ -48,6 +48,13 @@ typedef enum e_rafter
 	DOUBLE_RIGHT
 }	t_rafter;
 
+typedef enum e_err_exec
+{
+	NO_ERROR,
+	ERROR_SYSTEM,
+	ERROR_PROMPT,
+}	t_err_exec;
+
 /////////////////////////////////////// structures
 
 typedef struct s_env
@@ -102,9 +109,10 @@ char	**get_env_in_tab(t_env *node_env);
 int		exec_single_cmd(t_data *data);
 int		count_cmds(t_token *token);
 /*clean.c*/
-void	close_free_data_pids(t_data *data, int fd0, int fd1, pid_t *pids);
-void	free_all_data(t_data *data);
+void	close_free_data_env_pids(t_data *data, int fd0, int fd1, pid_t *pids);
+void	free_data_env(t_data *data);
 void	close_all(int fd0, int fd1);
+void	close_free_data_env(t_data *data, int fd0, int fd1);
 void	close_free_array_str(int fd0, int fd1, char **env, char *path);
 /*error_exec.c*/
 void	msg_exit(char *message, int fd, int exit_value);

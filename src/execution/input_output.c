@@ -8,15 +8,9 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 		return (perror_return("dup2", ERR));
 	close_all(io_fd[0], io_fd[1]);
 	if (cmd_is_builtin(data->ls_token->cmd[0]))
-	{
-		exec_homemade_builtin(data);
-		return (1);
-	}
-	else if (execve(path_cmd, data->ls_token->cmd, env) == -1)
-	{
-		ft_putendl_fd("Error: execve failed", STDERR_FILENO);
-		return (0);
-	}
+		return (exec_homemade_builtin(data));
+	if (execve(path_cmd, data->ls_token->cmd, env) == -1)
+		return (msg_return("Error: execve failed", STDERR_FILENO, ERR));
 	return (OK);
 }
 

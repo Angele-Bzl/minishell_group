@@ -10,14 +10,10 @@ int	execution(t_data *data)
 	if (!head->cmd || !head->cmd[0])
 		return (OK);
 	if (!head->next && cmd_is_builtin(head->cmd[0]))
-	{
-		if (!exec_single_cmd(data))
-			return (ERR);
-		return (OK);
-	}
+		return (exec_single_cmd(data));
 	pids = malloc(sizeof(pid_t) * count_cmds(head));
 	if (!pids)
-		return (msg_return("Error: pids malloc", STDERR_FILENO, ERR));
+		msg_exit("Error: pids malloc", STDERR_FILENO, STDERR_FILENO);
 	current = head;
 	if (loop_children(data, current, pids) == ERR)
 		return (ERR);

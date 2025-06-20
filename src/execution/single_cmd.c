@@ -15,10 +15,7 @@ static int	input_output_single_cmd(char *io_value[2], t_rafter redirection[2], i
 		if (redirection[1] == DOUBLE_LEFT)
 			unlink(io_value[0]);
 		if (io_fd[0] == -1)
-		{
-			perror(io_value[0]);
-			return (0);
-		}
+			return (perror_return(io_value[0], ERR));
 	}
 	if (io_value[1])
 	{
@@ -29,40 +26,46 @@ static int	input_output_single_cmd(char *io_value[2], t_rafter redirection[2], i
 		if (io_fd[1] == -1)
 		{
 			close(io_fd[0]);
-			perror(io_value[1]);
-			return (0);
+			return (perror_return(io_value[1], ERR));
 		}
 	}
-	return (1);
+	return (OK);
 }
 
 static int	reset_dup2(t_data *data, int *save_std_io)
 {
 	(void)data;
 	if (dup2(save_std_io[0], STDIN_FILENO) == -1)
-	{
-		// free_all(data);
-		perror("dup2");
-		return (0);
-	}
+		return (perror_return("dup2", ERR));
 	if (dup2(save_std_io[1], STDOUT_FILENO) == -1)
-	{
-		// free_all(data);
-		perror("dup2");
-		return (0);
-	}
-	return (1);
+		return (perror_return("dup2", ERR));
+	return (OK);
 }
 
 int	exec_single_cmd(t_data *data)
 {
 	int		io_fd[2];
 	int		save_std_io[2];
+	int		return_value;
 
-	if (!input_output_single_cmd(data->ls_token->io_value, data->ls_token->io_redir, io_fd, save_std_io)) //open io_fd[0] et io_fd[1]
-		return (0);
-	redirect_and_exec(data, io_fd, NULL, NULL);
-	if (!reset_dup2(data, save_std_io))
-		return (0);
-	return (1);
+	if (input_output_single_cmd(data->ls_token->io_value, data->ls_token->io_redir, io_fd, save_std_io) != OK)
+	{
+		close_free_data_env(data, io_fd[0], io_fd[1]);
+		exit(STDERR_FILENO);
+	}
+	return_value = redirect_and_exec(data, io_fd, NULL, NULL);
+	if (return_value != OK)
+	{
+		close_free_data_env(data, io_fd[0], io_fd[1]);
+		if (return_value == ERROR_PROMPT)
+			return (ERR);
+		else if (return_value == ERROR_SYSTEM)
+			exit(STDERR_FILENO);
+	}
+	if (reset_dup2(data, save_std_io) != OK)
+	{
+		close_free_data_env(data, io_fd[0], io_fd[1]);
+		exit(STDERR_FILENO);
+	}
+	return (OK);
 }

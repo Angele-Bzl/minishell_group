@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	free_all_data(t_data *data)
+void	free_data_env(t_data *data)
 {
 	free_token(data->ls_token);
 	free_env(data->ls_env);
@@ -14,9 +14,15 @@ void	close_all(int fd0, int fd1)
 		close(fd1);
 }
 
-void	close_free_data_pids(t_data *data, int fd0, int fd1, pid_t *pids)
+void	close_free_data_env(t_data *data, int fd0, int fd1)
 {
-	free_all_data(data);
+	free_data_env(data);
+	close_all(fd0, fd1);
+}
+
+void	close_free_data_env_pids(t_data *data, int fd0, int fd1, pid_t *pids)
+{
+	free_data_env(data);
 	close_all(fd0, fd1);
 	free(pids);
 }

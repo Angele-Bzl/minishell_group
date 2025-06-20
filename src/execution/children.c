@@ -10,42 +10,35 @@ int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t pid)
 	io_fd[1] = get_output(data->ls_token->io_value, data->ls_token->io_redir, pipe_fd[1], count_cmds(data->ls_token));
 	if (io_fd[0] == -1 || io_fd[1] == -1)
 	{
-		/*free and exit*/
+		close_all(io_fd[0], io_fd[1]);
+		return (ERR);
 	}
 	env = get_env_in_tab(data->ls_env);
-	//data->ls_env = data->env_head;
 	if (!env)
 	{
-		ft_putendl_fd("Error: malloc", STDERR_FILENO);
-		exit(ERR);
+		close_all(io_fd[0], io_fd[1]);
+		return (msg_return("Error: malloc", STDERR_FILENO, ERR));
 	}
 	path_cmd = find_cmd(env, data->ls_token->cmd[0]);
 	if (!path_cmd)
 	{
 		free(env);
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		close(io_fd[0]);
-		close(io_fd[1]);
-		ft_putendl_fd("Error: No path to the command.", STDERR_FILENO);
-		exit(ERR);
+		close_all(io_fd[0], io_fd[1]);
+		return (msg_return("Error: No path to the command.", STDERR_FILENO, ERR));
 	}
-	else if (!redirect_and_exec(data, io_fd, path_cmd, env))
+	else if (redirect_and_exec(data, io_fd, path_cmd, env) != OK)
 	{
 		free(env);
 		free(path_cmd);
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		close(io_fd[0]);
-		close(io_fd[1]);
-		exit(ERR);
+		close_all(io_fd[0], io_fd[1]);
+		return (ERR);
 	}
 	if (pid == 0)
-		exit(0);
-	return (1);
+		return (42);
+	return (OK);
 }
 
-int	create_children(t_data *data, int *pipe_fd, pid_t *pid, int i)
+int	create_children(t_data *data, int *pipe_fd, pid_t *pids, int i)
 {
 	int	previous_pipe;
 
@@ -54,13 +47,17 @@ int	create_children(t_data *data, int *pipe_fd, pid_t *pid, int i)
 		previous_pipe = pipe_fd[0];
 	if (pipe(pipe_fd) == -1)
 		return (perror_return("Pipe", ERR));
-	pid[i] = fork();
-	if (pid[i] == -1)
+	pids[i] = fork();
+	if (pids[i] == -1)
 		return (perror_return("Fork", ERR));
-	if (pid[i] == 0)
+	if (pids[i] == 0)
 	{
 		close(pipe_fd[0]);
-		manage_child(data, previous_pipe, pipe_fd, pid[i]);
+		if (manage_child(data, previous_pipe, pipe_fd, pids[i]) != OK)
+		{
+			close_free_data_env_pids(data, previous_pipe, pipe_fd[1], pids);
+			exit(ERR);
+		}
 	}
 	if (previous_pipe != STDIN_FILENO)
 		close(previous_pipe);

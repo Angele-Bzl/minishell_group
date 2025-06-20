@@ -22,8 +22,8 @@ int main(int ac, char **av, char **env)
 			// print_tokens(&data);
 			if (errcode == OK)
 			{
-				if (execution(&data) == OK)
-					free_token((&data)->ls_token);
+				execution(&data);
+				free_token((&data)->ls_token);
 			}
 		}
 	}
