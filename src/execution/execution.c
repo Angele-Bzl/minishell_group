@@ -1,217 +1,29 @@
 #include "minishell.h"
 
-int	count_cmds(t_token *token)
-{
-	int	i;
-
-	i = 0;
-	while (token)
-	{
-		token = token->next;
-		i++;
-	}
-	return (i);
-}
-
-int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
-{
-	if (dup2(io_fd[0], STDIN_FILENO) == -1)
-	{
-		perror("dup2");
-		return (0);
-	}
-	if (dup2(io_fd[1], STDOUT_FILENO) == -1)
-	{
-		perror("dup2");
-		return (0);
-	}
-	if (io_fd[0] != STDIN_FILENO)
-	{
-		close(io_fd[0]);
-	}
-	if (io_fd[1] != STDOUT_FILENO)
-	{
-		close(io_fd[1]);
-	}
-	if (cmd_is_builtin(data->ls_token->cmd[0]))
-	{
-		exec_homemade_builtin(data);
-		return (1);
-	}
-	else if (execve(path_cmd, data->ls_token->cmd, env) == -1)
-	{
-		ft_putendl_fd("Error: execve failed", STDERR_FILENO);
-		return (0);
-	}
-	return (1);
-}
-
-static int	get_input(char *io_value[2], t_rafter redirection[2], int previous_pipe)
-{
-	int	input;
-
-	input = previous_pipe;
-	if (io_value[0])
-	{
-		close(previous_pipe);
-		input = open(io_value[0], O_RDONLY);
-		if (redirection[0] == DOUBLE_LEFT)
-			unlink(io_value[0]);
-		if (input == -1)
-		{
-			perror(io_value[0]);
-			return (-1);
-		}
-	}
-	return (input);
-}
-
-static int	get_output(char *io_value[2], t_rafter redirection[2], int pipe_output, int count_cmd)
-{
-	int	output;
-
-	if (count_cmd == 1)
-	{
-		close(pipe_output);
-		output = STDOUT_FILENO;
-	}
-	else
-		output = pipe_output;
-	if (io_value[1])
-	{
-		close(pipe_output);
-		if (redirection[1] == SIMPLE_RIGHT)
-			output = open(io_value[1], O_WRONLY | O_TRUNC, 0644);
-		else if (redirection[1] == DOUBLE_RIGHT)
-			output = open(io_value[1], O_WRONLY | O_APPEND, 0644);
-		if (output == -1)
-		{
-			perror(io_value[1]);
-			return (-1);
-		}
-	}
-	return (output);
-}
-
-static int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t pid)
-{
-	char	**env;
-	char	*path_cmd;
-	int		io_fd[2];
-
-
-	io_fd[0] = get_input(data->ls_token->io_value, data->ls_token->io_redir, previous_pipe);
-	io_fd[1] = get_output(data->ls_token->io_value, data->ls_token->io_redir, pipe_fd[1], count_cmds(data->ls_token));
-	if (io_fd[0] == -1 || io_fd[1] == -1)
-	{
-		/*free and exit*/
-	}
-	env = get_env_in_tab(&data->ls_env);
-	//data->ls_env = data->env_head;
-	if (!env)
-	{
-		ft_putendl_fd("Error: malloc", STDERR_FILENO);
-		exit(ERR);
-	}
-	path_cmd = find_cmd(env, data->ls_token->cmd[0]);
-	if (!path_cmd)
-	{
-		free(env);
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		close(io_fd[0]);
-		close(io_fd[1]);
-		ft_putendl_fd("Error: No path to the command.", STDERR_FILENO);
-		exit(ERR);
-	}
-	else if (!redirect_and_exec(data, io_fd, path_cmd, env))
-	{
-		free(env);
-		free(path_cmd);
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		close(io_fd[0]);
-		close(io_fd[1]);
-		exit(ERR);
-	}
-	if (pid == 0)
-		exit(0);
-	return (1);
-}
-
-static int	create_children(t_data *data, int *pipe_fd, pid_t *pid, int i)
-{
-	int	previous_pipe;
-
-	previous_pipe = STDIN_FILENO;
-	if (i > 0)
-		previous_pipe = pipe_fd[0];
-	if (pipe(pipe_fd) == -1)
-	{
-		perror("Pipe");
-		return (0);
-	}
-	pid[i] = fork();
-	if (pid[i] == -1)
-	{
-		perror("fork");
-		return (0);
-	}
-	if (pid[i] == 0)
-	{
-		close(pipe_fd[0]);
-		manage_child(data, previous_pipe, pipe_fd, pid[i]);
-	}
-	if (previous_pipe != STDIN_FILENO)
-		close(previous_pipe);
-	close(pipe_fd[1]);
-	return (1);
-}
-
 int	execution(t_data *data)
 {
 	pid_t	*pids;
-	int		pipe_fd[2];
-	int		i;
 	t_token	*head;
 	t_token	*current;
 
 	head = data->ls_token;
 	if (!head->cmd || !head->cmd[0])
-	{
-		/*free*/
-		return (1);
-	}
+		return (OK);
 	if (!head->next && cmd_is_builtin(head->cmd[0]))
 	{
 		if (!exec_single_cmd(data))
-		{
-			return (0);
-		}
-		return (1);
+			return (ERR);
+		return (OK);
 	}
 	pids = malloc(sizeof(pid_t) * count_cmds(head));
 	if (!pids)
-	{
-		ft_putendl_fd("Error: pids malloc", STDERR_FILENO);
-		return (0);
-	}
+		msg_return("Error: pids malloc", STDERR_FILENO, ERR);
 	current = head;
-	i = 0;
-	while (current)
-	{
-		data->ls_token = current;
-		if (!create_children(data, pipe_fd, pids, i))
-		{
-			return (0);
-		}
-		current = current->next;
-		i++;
-	}
-	close(pipe_fd[0]);
+	if (loop_children(data, current, pids) == ERR)
+		return (ERR);
 	data->ls_token = head;
 	wait_for_pid(head, pids);
-	return (1);
+	return (OK);
 }
 /*------------------------------------------------------------------------*/
 

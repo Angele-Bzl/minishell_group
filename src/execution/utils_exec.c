@@ -64,7 +64,6 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 	return (EXIT_SUCCESS);
 }
 
-
 char	**get_env_in_tab(t_env **node_env)
 {
 	char	**table_env;
@@ -89,4 +88,17 @@ char	**get_env_in_tab(t_env **node_env)
 	}
 	table_env[i] = NULL;
 	return (table_env);
+}
+
+int	count_cmds(t_token *token)
+{
+	int	i;
+
+	i = 0;
+	while (token)
+	{
+		token = token->next;
+		i++;
+	}
+	return (i);
 }

@@ -10,10 +10,7 @@ int main(int ac, char **av, char **env)
 
 	errcode = OK;
 	if (!env_init(env, &data))
-	{
-		ft_putstr_fd("Error: malloc failed\n", 2);
-		return (ERR);
-	}
+		msg_exit("Error: malloc failed\n", STDERR_FILENO, ERR);
 	while (1)
 	{
 		struct_init(&data, &parsing);
@@ -24,8 +21,10 @@ int main(int ac, char **av, char **env)
 			ft_parsing(&data, &parsing, &errcode);
 			// print_tokens(&data);
 			if (errcode == OK)
+			{
 				if (execution(&data) == OK)
-					sleep(1); //free all (data)
+					free_token((&data)->ls_token);
+			}
 		}
 	}
 	return (OK);

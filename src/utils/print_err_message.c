@@ -21,10 +21,3 @@ int	err_message(t_error error)
 		fprintf(stderr, "minishell: syntax error\n");
 	return (1);
 }
-
-int	msg_return(char *message, int fd, int return_value)
-{
-	if (message)
-		ft_putendl_fd(message, fd);
-	return (return_value);
-}

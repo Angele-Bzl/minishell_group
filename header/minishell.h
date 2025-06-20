@@ -100,6 +100,18 @@ int		tablen(char **table);
 int		wait_for_pid(t_token *token, pid_t *pid);
 char	**get_env_in_tab(t_env **node_env);
 int		exec_single_cmd(t_data *data);
+int		count_cmds(t_token *token);
+/*error_exec.c*/
+void	msg_exit(char *message, int fd, int exit_value);
+int	msg_return(char *message, int fd, int return_value);
+/*children.c*/
+int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t pid);
+int	create_children(t_data *data, int *pipe_fd, pid_t *pid, int i);
+int	loop_children(t_data *data, t_token *current, pid_t *pids);
+/*input_output.c*/
+int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
+int	get_input(char *io_value[2], t_rafter redirection[2], int previous_pipe);
+int	get_output(char *io_value[2], t_rafter redirection[2], int pipe_output, int count_cmd);
 /*BUILTINS*/
 int		cmd_is_builtin(char *path_cmd);
 int		exec_homemade_builtin(t_data *data);
@@ -155,7 +167,6 @@ int 	here_doc(char *eof);
 char	*ft_cutstr(char const *s, unsigned int start);
 /*print_err_message.c*/
 int		err_message(t_error error);
-int		msg_return(char *message, int fd, int return_value);
 /*debug_print.c*/
 void	print_env(t_env *env);
 void	print_prompt_tab(char **p_tab);
