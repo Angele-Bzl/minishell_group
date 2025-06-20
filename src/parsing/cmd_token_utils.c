@@ -1,93 +1,23 @@
 # include "minishell.h"
 
-static int		ft_mark(const char *s, char c, int *start, int *end);
-static int	ft_countword(char const *s, char c);
-static int		ft_free(char **array, int limit);
-
-char	**split_whitespace_quotes(char const *s, char c, t_parsing *parsing)
+void	find_all_cmds(char *clean_cmd, char *prompt)
 {
-	int	start;
-	int	end;
-	int	limit;
-	int	word;
-	char	**array;
-
-	limit = 0;
-	end = 0;
-	word = ft_countword(s, c);
-	array = malloc(sizeof(char *) * (word + 1));
-	if (!array)
-		return (NULL);
-	while (limit < word)
-	{
-		if (ft_mark(s, c, &start, &end))
-			return (array);
-		array[limit] = ft_substr(s, start, (end - start));
-		array[limit] = extract_token_without_quotes(array[limit], parsing);
-		if (ft_free(array, limit))
-			return (NULL);
-		limit++;
-	}
-	array[limit] = NULL;
-	return (array);
-}
-
-static int	ft_free(char **array, int limit)
-{
-	if (!array[limit])
-	{
-		while (limit + 1 > 0)
-		{
-			free(array[limit]);
-			limit--;
-		}
-		free(array);
-		return (1);
-	}
-	return (0);
-}
-
-static int	ft_mark(const char *s, char c, int *start, int *end)
-{
-	*start = *end;
-	while (s[*start] == c)
-		(*start)++;
-	if (s[*start] == '\0' )
-		return (1);
-	*end = *start;
-	while (s[*end] && s[*end] != c)
-	{
-		if (s[*end] == '\'' || s[*end] == '\"')
-			*end = skip_quote(s, end);
-		else
-			(*end)++;
-	}
-	return (0);
-}
-
-static int	ft_countword(char const *s, char c)
-{
-	int	i;
-	int	count;
+	int i;
+	int j;
 
 	i = 0;
-	count = 0;
-	if (!s)
-		return (0);
-	while (s[i])
+	j = 0;
+	while (prompt[i])
 	{
-		while (s[i] == c)
+		while (ft_isspace(prompt[i]))
 			i++;
-		if (s[i] == '\0')
-			break;
-		count++;
-		while (s[i] && s[i] != c)
-		{
-			if (s[i] == '\'' || s[i] == '\"')
-				i = skip_quote(s, &i);
-			else
-				i++;
-		}
+		if (prompt[i] == '<' || prompt[i] == '>')				// on croise un io
+			i = skip_io(prompt, i);								// avancer jusqu'au prochain arg de de cmd.
+		extract_current_cmd(prompt, &i, &j, clean_cmd);
+		if (prompt[i] && prompt[i] != '<' && prompt[i] != '>')											// ajouter un espace avant le prochain argument
+			clean_cmd[j++] = ' ';
 	}
-	return (count);
+	if (j > 0 && clean_cmd[j - 1] == ' ')
+		j--;
+	clean_cmd[j] = '\0';
 }

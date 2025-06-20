@@ -58,10 +58,10 @@ static int	data_init(t_data *data)
 		return (0);
 	data->ls_token->next = NULL;
 	data->ls_token->cmd = NULL;
-	data->ls_token->io_value[0] = NULL;
-	data->ls_token->io_value[1] = NULL;
-	data->ls_token->io_redir[0] = DEFAULT;
-	data->ls_token->io_redir[1] = DEFAULT;
+	data->ls_token->ls_infile->value = NULL;
+	data->ls_token->ls_outfile->value = NULL;
+	data->ls_token->ls_infile->redirection = DEFAULT;
+	data->ls_token->ls_outfile->redirection = DEFAULT;
 	data->pipe_nbr = 0;
 
 	return (1);
@@ -70,12 +70,14 @@ static int	data_init(t_data *data)
 static void parsing_init(t_data *data, t_parsing *parsing)
 {
 	parsing->data = data; //parsing init
+	parsing->errcode = ALL_OK;
 	parsing->dollar = false;
 	parsing->double_quote = false;
 	parsing->simple_quote = false;
 	parsing->outfile_issue = false;
 	parsing->skip = 0;
 	parsing->prompt = NULL;
+	parsing->old_prompt = NULL;
 	parsing->prompt_tab = NULL;
 	parsing->pipe_seg = 0;
 	parsing->p_index = 0;

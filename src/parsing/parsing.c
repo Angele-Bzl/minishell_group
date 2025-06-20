@@ -1,35 +1,31 @@
 # include "minishell.h"
 
-static void	parsing_errcode_check(int *errcode, t_parsing *parsing)
+static void	errcode_check_in_parsing(t_parsing *parsing)
 {
-	if (*errcode == ERR_MALLOC)											// on free + quitte le prog
+	if (parsing->errcode == ERR_MALLOC)											// on free + quitte le prog
 	{
 		free_all(parsing);
 		exit(EXIT_FAILURE);
 	}
-	if (*errcode == ERR_PROMPT)											// on free + continue avec new prompt
+	if (parsing->errcode == ERR_PROMPT)											// on free + continue avec new prompt
 		free_all(parsing);
 }
 
-static int	fill_prompt_tab(t_parsing *parsing)
+static void	fill_prompt_tab(t_parsing *parsing)
 {
-	int	errcode;
-
-	errcode = OK;
-	parsing->prompt_tab = pipe_segmentation(parsing->prompt, '|', &errcode);		// créer le prompt_tab et print les erreurs
-	return (errcode);
+	parsing->prompt_tab = pipe_segmentation(parsing, '|');		// créer le prompt_tab et print les erreurs
 }
 
-void	ft_parsing(t_data *data, t_parsing *parsing, int *errcode)
+void	ft_parsing(t_data *data, t_parsing *parsing)
 {
-	*errcode = prompt_check(parsing->prompt, parsing);					// check si le prompt a des quotes ouverte ou finit par un pipe. Ne pas gerer les cas de heredoc
-	if (*errcode == OK)
-		*errcode = fill_prompt_tab(parsing);
-	if (*errcode == OK)
-		*errcode = expand_var(data, parsing);							// si mauvais, expand et on free
-	if (*errcode == OK)
-		*errcode = tokenisation(data, parsing);
-	parsing_errcode_check(errcode, parsing);
+	parsing->errcode = prompt_check(parsing->prompt, parsing);					// check si le prompt a des quotes ouverte ou finit par un pipe. Ne pas gerer les cas de heredoc
+	if (parsing->errcode == ALL_OK)
+		fill_prompt_tab(parsing);
+	if (parsing->errcode == ALL_OK)
+		expand_var(parsing);							// si mauvais, expand et on free
+	if (parsing->errcode == ALL_OK)
+		tokenisation(data, parsing);
+	errcode_check_in_parsing(parsing);
 }
 
 // si result = MALLOC_ERROR(-42), on exit après free.

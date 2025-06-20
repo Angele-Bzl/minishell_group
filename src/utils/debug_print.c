@@ -63,16 +63,22 @@ void	print_env(t_env *env)
 
 void	print_tokens(t_data *data)
 {
-	int	i;
-	int k;
-	t_token *current;
+	int			i;
+	int 		k;
+	int			j;
+	t_token		*current;
+	t_infile	*cur_in;
+	t_outfile	*cur_out;
 
 	i = 0;
 	k = 0;
+	j = 0;
 	current = data->ls_token;
+	cur_in = data->ls_token->ls_infile;
+	cur_out = data->ls_token->ls_outfile;
 	while (current)
 	{
-		printf("========= NODE %d =========\n\n", k);
+		printf("========= NODE (%d) =========\n\n", k);
 		if (current->cmd)
 		{
 			while (current->cmd[i])
@@ -84,12 +90,26 @@ void	print_tokens(t_data *data)
 		else
 			printf("Cmd %d : NULL\n", i);
 		printf("\n");
-		printf("In_redir : ");
-		printf("%d\n", current->io_redir[0]);
-		printf("Out_redir : ");
-		printf("%d\n", current->io_redir[1]);
-		printf("\nIn_value : %s\n", current->io_value[0]);
-		printf("Out_value : %s\n\n", current->io_value[1]);
+		printf("Infiles : ");
+		while(cur_in)
+		{
+			printf("in_node(%d)", j);
+			printf("redir: %d\n", cur_in->redirection);
+			printf("value: %s\n\n", cur_in->value);
+			cur_in = cur_in->next;
+			j++;
+		}
+		j = 0;
+		printf("Outfiles : ");
+		while(cur_out)
+		{
+			printf("in_node(%d)", j);
+			printf("redir: %d\n", cur_out->redirection);
+			printf("value: %s\n\n", cur_out->value);
+			cur_out = cur_out->next;
+			j++;
+		}
+		j = 0;
 		printf("========= END OF NODE %d =\n\n", k);
 		current = current->next;
 		i = 0;

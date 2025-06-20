@@ -47,22 +47,26 @@ FILES_BUILT	=	utils_builtin.c\
 				exit.c\
 				pwd.c\
 				unset.c
-FILES_PARS  =   parsing.c\
-				prompt_check.c\
+FILES_PARS  =   cmd_token_utils.c\
+				cmd_token.c\
 				expand_var.c\
 				extract_token_without_quotes.c\
 				ft_countpipe_utils.c\
-				manage_dollar.c\
-				manage_dollar_utils.c\
-				pipe_segmentation.c\
-				skip_quote.c\
-				tokenisation.c\
-                manage_quotes.c\
+				linked_list_infile.c\
+				linked_list_outfile.c\
 				linked_list_token.c\
-				cmd_token_utils.c\
-				cmd_token.c\
+				manage_dollar_utils.c\
+				manage_heredoc.c\
+				manage_dollar.c\
+                manage_quotes.c\
+				parsing.c\
+				pipe_segmentation.c\
+				prompt_check.c\
 				rafter_token.c\
-				manage_heredoc.c
+				rafter_token_utils.c\
+				skip_quote.c\
+				split_whitespace_quote.c\
+				tokenisation.c
 FILES_UTILS =   cutstr.c\
 				debug_print.c\
 				free_minishell.c\
