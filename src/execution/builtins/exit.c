@@ -80,7 +80,7 @@ static long long	check_valid_arg(char *arg)
 
 static int	exit_arg(t_data *data, long long exit_code)
 {
-	int exit_255;
+	int	exit_255;
 
 	free_token(data->ls_token);
 	free_env(data->ls_env);
@@ -91,9 +91,9 @@ static int	exit_arg(t_data *data, long long exit_code)
 	}
 	exit(exit_255);
 }
-int	exec_exit(t_data *data, t_token *cmds, t_env *ls_env)
+
+int	exec_exit(t_data *data, t_token *cmds)
 {
-	(void)ls_env;
 	long long	exit_code;
 
 	if (cmds->cmd[0] && cmds->cmd[1] && cmds->cmd[2])

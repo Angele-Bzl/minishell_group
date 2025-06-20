@@ -2,7 +2,7 @@
 
 // #include "../../../header/minishell.h"
 
-int	exec_pwd()
+int	exec_pwd(void)
 {
 	char	*pwd;
 

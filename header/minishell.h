@@ -135,7 +135,7 @@ int		exec_pwd(void);
 void	exec_env(t_env *ls_env);
 void	exec_unset(t_env **ls_env, char **cmds);
 int		exec_cd(char **cmd, t_env *list_env);
-int		exec_exit(t_data *data, t_token *cmds, t_env *ls_env);
+int		exec_exit(t_data *data, t_token *cmds);
 
 /*PARSING*/
 /*parsing.c*/

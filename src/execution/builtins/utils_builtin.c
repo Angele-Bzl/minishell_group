@@ -34,10 +34,9 @@ int	exec_homemade_builtin(t_data *data)
 	if (!ft_strncmp(data->ls_token->cmd[0], "env\0", 4))
 		exec_env(data->ls_env);
 	if (!ft_strncmp(data->ls_token->cmd[0], "exit\0", 5))
-		exec_exit(data, data->ls_token, data->ls_env);
+		exec_exit(data, data->ls_token);
 	return (OK);
 }
-
 
 int	var_cmp(char *s1, char *s2)
 {

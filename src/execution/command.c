@@ -88,7 +88,7 @@ char	*find_cmd(char **env, char *cmd)
 	if (cmd_is_builtin(cmd))
 		return (cmd);
 	if (ft_strchr(cmd, '/'))
-		return(cmd);
+		return (cmd);
 	i = find_path_in_env(env);
 	if (i == -1)
 		return (NULL);
@@ -97,10 +97,7 @@ char	*find_cmd(char **env, char *cmd)
 		return (NULL);
 	env_path[0] = ft_strtrim_improved(env_path[0], "PATH=");
 	if (!env_path[0])
-	{
-		// return (ft_strdup("./"));
 		return (free_array(env_path));
-	}
 	hypothetical_path_cmd = malloc(sizeof (char *) * tablen(env_path));
 	if (!hypothetical_path_cmd)
 		return (free_array(env_path));
