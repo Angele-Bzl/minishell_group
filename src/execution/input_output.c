@@ -3,23 +3,10 @@
 int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 {
 	if (dup2(io_fd[0], STDIN_FILENO) == -1)
-	{
-		perror("dup2");
-		return (0);
-	}
+		return (perror_return("dup2", ERR));
 	if (dup2(io_fd[1], STDOUT_FILENO) == -1)
-	{
-		perror("dup2");
-		return (0);
-	}
-	if (io_fd[0] != STDIN_FILENO)
-	{
-		close(io_fd[0]);
-	}
-	if (io_fd[1] != STDOUT_FILENO)
-	{
-		close(io_fd[1]);
-	}
+		return (perror_return("dup2", ERR));
+	close_all(io_fd[0], io_fd[1]);
 	if (cmd_is_builtin(data->ls_token->cmd[0]))
 	{
 		exec_homemade_builtin(data);
@@ -30,7 +17,7 @@ int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
 		ft_putendl_fd("Error: execve failed", STDERR_FILENO);
 		return (0);
 	}
-	return (1);
+	return (OK);
 }
 
 int	get_input(char *io_value[2], t_rafter redirection[2], int previous_pipe)

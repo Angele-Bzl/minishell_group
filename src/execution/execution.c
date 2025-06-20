@@ -17,7 +17,7 @@ int	execution(t_data *data)
 	}
 	pids = malloc(sizeof(pid_t) * count_cmds(head));
 	if (!pids)
-		msg_return("Error: pids malloc", STDERR_FILENO, ERR);
+		return (msg_return("Error: pids malloc", STDERR_FILENO, ERR));
 	current = head;
 	if (loop_children(data, current, pids) == ERR)
 		return (ERR);

@@ -36,6 +36,7 @@ FILES_EXEC  =   execution.c\
 				error_exec.c\
 				children.c\
 				input_output.c\
+				clean.c\
 				$(addprefix $(DIR_BUILTINS)/, $(FILES_BUILT))
 
 FILES_BUILT	=	utils_builtin.c\

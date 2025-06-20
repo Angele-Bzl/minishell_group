@@ -12,7 +12,7 @@ int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t pid)
 	{
 		/*free and exit*/
 	}
-	env = get_env_in_tab(&data->ls_env);
+	env = get_env_in_tab(data->ls_env);
 	//data->ls_env = data->env_head;
 	if (!env)
 	{
@@ -53,16 +53,10 @@ int	create_children(t_data *data, int *pipe_fd, pid_t *pid, int i)
 	if (i > 0)
 		previous_pipe = pipe_fd[0];
 	if (pipe(pipe_fd) == -1)
-	{
-		perror("Pipe");
-		return (0);
-	}
+		return (perror_return("Pipe", ERR));
 	pid[i] = fork();
 	if (pid[i] == -1)
-	{
-		perror("fork");
-		return (0);
-	}
+		return (perror_return("Fork", ERR));
 	if (pid[i] == 0)
 	{
 		close(pipe_fd[0]);
@@ -71,7 +65,7 @@ int	create_children(t_data *data, int *pipe_fd, pid_t *pid, int i)
 	if (previous_pipe != STDIN_FILENO)
 		close(previous_pipe);
 	close(pipe_fd[1]);
-	return (1);
+	return (OK);
 }
 
 int	loop_children(t_data *data, t_token *current, pid_t *pids)
@@ -83,10 +77,8 @@ int	loop_children(t_data *data, t_token *current, pid_t *pids)
 	while (current)
 	{
 		data->ls_token = current;
-		if (!create_children(data, pipe_fd, pids, i))
-		{
+		if (create_children(data, pipe_fd, pids, i) != OK)
 			return (ERR);
-		}
 		current = current->next;
 		i++;
 	}

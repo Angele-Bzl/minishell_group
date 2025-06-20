@@ -64,13 +64,13 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 	return (EXIT_SUCCESS);
 }
 
-char	**get_env_in_tab(t_env **node_env)
+char	**get_env_in_tab(t_env *node_env)
 {
 	char	**table_env;
 	t_env	*current;
 	int		i;
 
-	current = *node_env;
+	current = node_env;
 	table_env = malloc(sizeof (char *) * (ft_lstsize((t_list *)current) + 1));
 	if (!table_env)
 		return (NULL);

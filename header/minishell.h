@@ -98,15 +98,20 @@ char	*find_cmd(char **env, char *cmd);
 char	*ft_strtrim_improved(char *s1, char const *set);
 int		tablen(char **table);
 int		wait_for_pid(t_token *token, pid_t *pid);
-char	**get_env_in_tab(t_env **node_env);
+char	**get_env_in_tab(t_env *node_env);
 int		exec_single_cmd(t_data *data);
 int		count_cmds(t_token *token);
+/*clean.c*/
+void	close_free_data_pids(t_data *data, int fd0, int fd1, pid_t *pids);
+void	free_all_data(t_data *data);
+void	close_all(int fd0, int fd1);
+void	close_free_array_str(int fd0, int fd1, char **env, char *path);
 /*error_exec.c*/
 void	msg_exit(char *message, int fd, int exit_value);
 int	msg_return(char *message, int fd, int return_value);
+int	perror_return(char *message, int return_value);
+int	msg_return_close_all(int *fds, char *message, int fd, int return_value);
 /*children.c*/
-int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t pid);
-int	create_children(t_data *data, int *pipe_fd, pid_t *pid, int i);
 int	loop_children(t_data *data, t_token *current, pid_t *pids);
 /*input_output.c*/
 int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);

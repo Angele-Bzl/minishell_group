@@ -13,3 +13,15 @@ int	msg_return(char *message, int fd, int return_value)
 		ft_putendl_fd(message, fd);
 	return(return_value);
 }
+
+int	perror_return(char *message, int return_value)
+{
+	if (message)
+		perror(message);
+	return(return_value);
+}
+int	msg_return_close_all(int *fds, char *message, int fd, int return_value)
+{
+	close_all(fds[0], fds[1]);
+	return (msg_return(message, fd, return_value));
+}
