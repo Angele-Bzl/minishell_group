@@ -11,24 +11,26 @@ static int	find_and_store_all_rafters(t_data *data, t_parsing *parsing, char *pr
 			i++;
 		if (prompt[i] == '<' || prompt[i] == '>')
 		{
-			if (manage_rafters(data, parsing, &i, prompt) == ERR_MALLOC)
-				return (ERR_MALLOC);
+			if (manage_rafters(data, parsing, &i, prompt) == -1)
+				return (-1);
 			while (prompt[i] == ' ' || prompt[i] == '\t' || prompt[i] == '<' ||  prompt[i] == '>')
 				i++;
 		}
 	}
-	return (OK);
+	return (0);
 }
 
 static int	find_and_store_all_cmds(t_token *current, char *prompt, t_parsing *parsing)
 {
 	char	*clean_cmds;
 
-	clean_cmds = extract_clean_cmd(prompt);
+	clean_cmds = extract_clean_cmd(parsing, prompt);
 	if (!clean_cmds)
-		return (ERR_MALLOC);
+		return (-1);
 	current->cmd = split_whitespace_quotes(clean_cmds, ' ', parsing);
-	return (OK);
+	if (current->cmd == NULL)
+		return (-1);
+	return (0);
 }
 
 void	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeuds de ls_token
@@ -41,12 +43,11 @@ void	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeu
 	i = 0;
 	if (parsing->prompt_tab[i])
 	{
-        if (find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]) == ERR_MALLOC)
+        if (find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
 			return;
-        if (find_and_store_all_cmds(current, parsing->prompt_tab[i], parsing) == ERR_MALLOC)
+        if (find_and_store_all_cmds(current, parsing->prompt_tab[i], parsing) == -1)
 			return;
 		i++;
-		// printf("TOKEN data ls token cmd 0 = %s | address token = %p\n", data->ls_token->cmd[0], data->ls_token);
     }
 	while (parsing->prompt_tab[i])
 	{
@@ -58,12 +59,10 @@ void	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeu
 		}
 		token_lstadd_back(&current, new_token_node);
 		current = new_token_node;
-		if (find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]) == ERR_MALLOC)
+		if (find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
 			return;
-		if (find_and_store_all_cmds(current, parsing->prompt_tab[i], parsing) == ERR_MALLOC)
+		if (find_and_store_all_cmds(current, parsing->prompt_tab[i], parsing) == -1)
 			return;
 		i++;
-		// printf("TOKEN data ls token cmd 0 = %s | address token = %p\n", data->ls_token->cmd[0], data->ls_token);
 	}
-	return (OK);
 }

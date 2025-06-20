@@ -61,6 +61,7 @@ FILES_PARS  =   cmd_token_utils.c\
 				rafter_token.c\
 				rafter_token_utils.c\
 				skip_quote.c\
+				split_whitespace_quote.c\
 				tokenisation.c
 FILES_UTILS =   cutstr.c\
 				debug_print.c\

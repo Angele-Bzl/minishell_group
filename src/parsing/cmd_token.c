@@ -1,6 +1,6 @@
 # include "minishell.h"
 
-static int	skip_io(char *prompt, int i)
+int	skip_io(char *prompt, int i)
 {
 	i++;
 	if (prompt[i] == '<' || prompt[i] == '>')
@@ -74,7 +74,7 @@ static int	find_all_cmds_len(char *prompt)
 	return (len);
 }
 
-static char	*extract_current_cmd(char *prompt, int *i, int *j, char *clean_cmd)
+char	*extract_current_cmd(char *prompt, int *i, int *j, char *clean_cmd)
 {
 	char	quote;
 
@@ -95,29 +95,16 @@ static char	*extract_current_cmd(char *prompt, int *i, int *j, char *clean_cmd)
 	return (clean_cmd);
 }
 
-char	*extract_clean_cmd(char *prompt)
+char	*extract_clean_cmd(t_parsing *parsing, char *prompt)
 {
-	int		i;
-	int		j;
 	char	*clean_cmd;
 
-	i = 0;
-	j = 0;
 	clean_cmd = malloc(sizeof(char) * (find_all_cmds_len(prompt) + 1));
 	if (!clean_cmd)
-		return (NULL);
-	while (prompt[i])
 	{
-		while (ft_isspace(prompt[i]))
-			i++;
-		if (prompt[i] == '<' || prompt[i] == '>')				// on croise un io
-			i = skip_io(prompt, i);								// avancer jusqu'au prochain arg de de cmd.
-		extract_current_cmd(prompt, &i, &j, clean_cmd);
-		if (prompt[i] && prompt[i] != '<' && prompt[i] != '>')											// ajouter un espace avant le prochain argument
-			clean_cmd[j++] = ' ';
+		parsing->errcode = ERR_MALLOC;
+		return (NULL);
 	}
-	if (j > 0 && clean_cmd[j - 1] == ' ')
-		j--;
-	clean_cmd[j] = '\0';
+	find_all_cmds(clean_cmd, prompt);
 	return (clean_cmd);
 }

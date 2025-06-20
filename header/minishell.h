@@ -32,19 +32,6 @@ typedef enum e_parsing_error
 	ALL_OK,
 }	t_parsing_error;
 
-typedef enum e_error
-{
-	ERROR_MALLOC = -42,
-	ERROR_PROMPT = -1,
-	ALL_IS_OK,
-	ERR_CREAT,
-	ERR_ID,
-	ERR_EXEC,
-	ERR_PIPE,
-	ERR_RAFT,
-	ERR_SYNTAXE
-}	t_error;
-
 typedef enum e_rafter
 {
 	DEFAULT = -1,
@@ -135,10 +122,12 @@ int		exec_cd(char **cmd, t_env *list_env);
 int		exec_exit(t_token *cmds, t_env *ls_env);
 
 /*PARSING*/
-/*parsing.c*/
-void	ft_parsing(t_data *data, t_parsing *parsing);
-/*prompt_check.c*/
-int		prompt_check(char *prompt, t_parsing *parsing);
+/*cmd_token_utils.c*/
+void 	find_all_cmds(char *clean_cmd, char *prompt);
+/*cmd_token.c*/
+char	*extract_clean_cmd(t_parsing *parsing, char *prompt);
+int		skip_io(char *prompt, int i);
+char	*extract_current_cmd(char *prompt, int *i, int *j, char *clean_cmd);
 /*expand_var.c*/
 void	quote_check(char c, t_parsing *parsing);
 void	expand_var(t_parsing *parsing);
@@ -147,20 +136,6 @@ char	*extract_token_without_quotes(char *str, t_parsing *parsing);
 /*ft_coutpipe_utils.c*/
 int		prompt_begins_with_a_pipe(const char *s, int *i, t_parsing *parsing);
 int		parse_pipe_segments(char const *s, char c, int i);
-/*manage_dollar*/
-void	manage_dollar_sign(t_parsing *parsing);
-/*manage_dollar_utils*/
-char	*find_var_name(t_parsing *parsing);
-int		find_var_end(char *prompt, int p_index);
-char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
-/*pip_segmentation.c*/
-char	**pipe_segmentation(t_parsing *parsing, char c);
-/*skip_quote.c*/
-int		skip_quote(const char *str, int *i);
-/*tokenisation.c*/
-int		tokenisation(t_data *data, t_parsing *parsing);
-/*manage_quotes.c*/
-int		manage_quotes(char c, t_parsing *parsing);
 /*linked_list_token.c*/
 t_token	*token_lstnew(void);
 void	token_lstadd_back(t_token **lst, t_token *new);
@@ -169,24 +144,38 @@ t_infile	*infile_lstnew(void);
 void	infile_lstadd_back(t_infile **lst, t_infile *new);
 /*linked_list_outfile.c*/
 t_outfile	*outfile_lstnew(void);
-void	outfile_lstadd_back(t_outfile **lst, t_outfile *new);
-/*cmd_token_utils.c*/
-char	**split_whitespace_quotes(char const *s, char c, t_parsing *parsing);
-/*cmd_token.c*/
-char	*extract_clean_cmd(char *prompt);
-/*rafter_token.c*/
-int		manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt);
-/*rafter_token_utils.c*/
-char	*find_redir_file_name(char *prompt, int i);
+/*manage_dollar*/
+void	manage_dollar_sign(t_parsing *parsing);
+/*manage_dollar_utils*/
+char	*find_var_name(t_parsing *parsing);
+int		find_var_end(char *prompt, int p_index);
+char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
 /*manage_heredoc.c*/
 int 	here_doc(char *eof);
+/*manage_quotes.c*/
+int		manage_quotes(char c, t_parsing *parsing);
+/*parsing.c*/
+void	ft_parsing(t_data *data, t_parsing *parsing);
+/*pip_segmentation.c*/
+char	**pipe_segmentation(t_parsing *parsing, char c);
+/*prompt_check.c*/
+int		prompt_check(char *prompt, t_parsing *parsing);
+/*rafter_token_utils.c*/
+char	*find_redir_file_name(char *prompt, int i);
+/*rafter_token.c*/
+int		manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt);
+/*skip_quote.c*/
+int		skip_quote(const char *str, int *i);
+void	outfile_lstadd_back(t_outfile **lst, t_outfile *new);
+/*split_whitespace_quote.c*/
+char	**split_whitespace_quotes(char const *s, char c, t_parsing *parsing);
+/*tokenisation.c*/
+void	tokenisation(t_data *data, t_parsing *parsing);
 
 
 /*UTILS*/
 /*cutstr.c*/
 char	*ft_cutstr(char const *s, unsigned int start);
-/*print_err_message.c*/
-int		err_message(t_error error);
 /*debug_print.c*/
 void	print_env(t_env *env);
 void	print_prompt_tab(char **p_tab);
