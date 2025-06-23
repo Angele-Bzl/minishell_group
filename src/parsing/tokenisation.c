@@ -44,9 +44,9 @@ void	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeu
 	if (parsing->prompt_tab[i])
 	{
         if (find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
-			return;
+			return ;
         if (find_and_store_all_cmds(current, parsing->prompt_tab[i], parsing) == -1)
-			return;
+			return ;
 		i++;
     }
 	while (parsing->prompt_tab[i])
@@ -55,14 +55,14 @@ void	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeu
 		if (!new_token_node)
 		{
 			parsing->errcode = ERR_MALLOC;
-			return;
+			return ;
 		}
 		token_lstadd_back(&current, new_token_node);
 		current = new_token_node;
 		if (find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
-			return;
+			return ;
 		if (find_and_store_all_cmds(current, parsing->prompt_tab[i], parsing) == -1)
-			return;
+			return ;
 		i++;
 	}
 }
