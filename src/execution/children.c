@@ -8,7 +8,7 @@ int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t pid)
 
 	io_fd[0] = get_input(data->ls_token->ls_infile, previous_pipe);
 	io_fd[1] = get_output(data->ls_token->ls_outfile, pipe_fd[1], count_cmds(data->ls_token));
-	if (io_fd[0] == ERROR_SYSTEM || io_fd[1] == ERROR_SYSTEM)
+	if (io_fd[0] == ERR || io_fd[1] == ERR)
 	{
 		close_all(io_fd[0], io_fd[1]);
 		return (ERR);
@@ -17,18 +17,18 @@ int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t pid)
 	if (!env)
 	{
 		close_all(io_fd[0], io_fd[1]);
-		return (msg_return("Error: malloc", STDERR_FILENO, ERR));
+		return (msg_return(MALLOC, STDERR_FILENO, ERR));
 	}
 	path_cmd = find_cmd(env, data->ls_token->cmd[0]);
 	if (!path_cmd)
 	{
-		free(env);
+		free_array(env);
 		close_all(io_fd[0], io_fd[1]);
-		return (msg_return("Error: No path to the command.", STDERR_FILENO, ERR));
+		return (ERR);
 	}
 	else if (redirect_and_exec(data, io_fd, path_cmd, env) != OK)
 	{
-		free(env);
+		free_array(env);
 		free(path_cmd);
 		close_all(io_fd[0], io_fd[1]);
 		return (ERR);
@@ -56,7 +56,7 @@ int	create_children(t_data *data, int *pipe_fd, pid_t *pids, int i)
 		if (manage_child(data, previous_pipe, pipe_fd, pids[i]) != OK)
 		{
 			close_free_data_env_pids(data, previous_pipe, pipe_fd[1], pids);
-			exit(ERR);
+			exit(EXIT_FAILURE);
 		}
 	}
 	if (previous_pipe != STDIN_FILENO)

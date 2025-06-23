@@ -38,7 +38,8 @@ void	free_infile(t_token *ls_token)
 	while (current)
 	{
 		next = current->next;
-		free(current->value);
+		if (current->value)
+			free(current->value);
 		current = next;
 	}
 }
@@ -52,7 +53,8 @@ void	free_outfile(t_token *ls_token)
 	while (current)
 	{
 		next = current->next;
-		free(current->value);
+		if (current->value)
+			free(current->value);
 		current = next;
 	}
 }

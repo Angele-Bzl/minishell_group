@@ -65,7 +65,7 @@ static int	fill_pipe_segments(char **array, char const *prompt, char c, t_parsin
 	int pipe_seg;
 
 	pipe_seg = ft_countpipe(prompt, c, parsing);
-	while (i <= pipe_seg)
+	while (i <= pipe_seg) //<= ?
 	{
 		if (next_pipe_segment(c, &start, &end, parsing) == -1)				// errcode a deja ete update plus haut donc on travail avec -1
 			return (-1);
