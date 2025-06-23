@@ -53,28 +53,9 @@ int  env_init(char **env, t_data *data)
 
 static int	data_init(t_data *data)
 {
-	data->ls_token = malloc(sizeof(t_token)); //data init
+	data->ls_token = token_lstnew();
 	if (!data->ls_token)
 		return (0);
-	data->ls_token->next = NULL;
-	data->ls_token->cmd = NULL;
-	data->ls_token->ls_infile = malloc(sizeof(t_infile));
-	if (!data->ls_token->ls_infile)
-	{
-		free(data->ls_token);
-		return (0);
-	}
-	data->ls_token->ls_outfile = malloc(sizeof(t_outfile));
-	if (!data->ls_token->ls_outfile)
-	{
-		free(data->ls_token);
-		free(data->ls_token->ls_infile);
-		return (0);
-	}
-	data->ls_token->ls_infile->value = NULL;
-	data->ls_token->ls_outfile->value = NULL;
-	data->ls_token->ls_infile->redirection = DEFAULT;
-	data->ls_token->ls_outfile->redirection = DEFAULT;
 	data->pipe_nbr = 0;
 	return (1);
 }

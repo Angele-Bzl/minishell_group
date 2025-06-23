@@ -30,7 +30,7 @@ t_token	*token_lstnew(void)
 	return (new);
 }
 
-static t_token	*token_lstlast(t_token *lst)
+t_token	*token_lstlast(t_token *lst)
 {
     t_token  *last;
 

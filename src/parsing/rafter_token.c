@@ -3,9 +3,11 @@
 static int	update_infile(t_parsing *parsing, t_data *data, char *file_name, t_rafter redirection)
 {
 	t_infile	*new_in_node;
+	t_token		*current_token;
 	t_infile	*current;
 
-	current = data->ls_token->ls_infile;
+	current_token = token_lstlast(data->ls_token);
+	current = current_token->ls_infile;
 	if (current->next == NULL)
 	{
 		current->value = file_name;
@@ -29,9 +31,11 @@ static int	update_infile(t_parsing *parsing, t_data *data, char *file_name, t_ra
 static int	update_outfile(t_parsing *parsing, t_data *data, char *file_name, t_rafter redirection)
 {
 	t_outfile	*new_out_node;
+	t_token		*current_token;
 	t_outfile	*current;
 
-	current = data->ls_token->ls_outfile;
+	current_token = token_lstlast(data->ls_token);
+	current = current_token->ls_outfile;
 	if (current->next == NULL)
 	{
 		current->value = file_name;
@@ -52,29 +56,23 @@ static int	update_outfile(t_parsing *parsing, t_data *data, char *file_name, t_r
 	return (0);
 }
 
-static int manage_simple_rafter(t_data *data, t_parsing *parsing, int *i, char *file_name)
+static int manage_simple_rafter(t_data *data, t_parsing *parsing, char *file_name, char *rafter)
 {
-	char *prompt;
-
-	prompt = parsing->prompt_tab[*i];
-	if (prompt[*i] == '<' && prompt[*i + 1] != '<')
+	if (rafter[0] == '<' && rafter[1] != '<')
 		if (update_infile(parsing, data, file_name, SIMPLE_LEFT) == -1)
 			return (-1);
-	if (prompt[*i] == '>' && prompt[*i + 1] != '>' && parsing->outfile_issue == false)
+	if (rafter[0] == '>' && rafter[1] != '>' && parsing->outfile_issue == false)
 		if (update_outfile(parsing, data, file_name, SIMPLE_RIGHT) == -1)
 			return (-1);
 	return (0);
 }
 
-static int manage_double_rafter(t_data *data, t_parsing *parsing, int *i, char *file_name)
+static int manage_double_rafter(t_data *data, t_parsing *parsing, char *file_name, char *rafter)
 {
-	char *prompt;
-
-	prompt = parsing->prompt_tab[*i];
-	if (prompt[*i] == '<')
+	if (rafter[0] == '<')
 		if (update_infile(parsing, data, file_name, DOUBLE_LEFT) == -1)
 			return (-1);
-	if (prompt[*i] == '>' && parsing->outfile_issue == false)
+	if (rafter[0] == '>' && parsing->outfile_issue == false)
 		if (update_outfile(parsing, data, file_name, DOUBLE_RIGHT) == -1)
 			return (-1);
 	return (0);
@@ -90,12 +88,12 @@ int	manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt)
 		parsing->errcode = ERR_MALLOC;
 		return (-1);
 	}
-	if (manage_simple_rafter(data, parsing, i, file_name) == -1)
+	if (manage_simple_rafter(data, parsing, file_name, prompt + *i) == -1)
 		return (-1);
 	*i = *i + 1;
-	if (manage_double_rafter(data, parsing, i, file_name) == -1)
+	if (manage_double_rafter(data, parsing, file_name, prompt + *i) == -1)
 		return (-1);
-	while (prompt[*i] == ' ' || prompt[*i] == '\t')
-	*i = *i + 1;
+	while (ft_isspace(prompt[*i]))
+		*i = *i + 1;
 	return (0);
 }

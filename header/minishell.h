@@ -169,6 +169,7 @@ int		prompt_begins_with_a_pipe(const char *s, int *i, t_parsing *parsing);
 int		parse_pipe_segments(char const *s, char c, int i);
 /*linked_list_token.c*/
 t_token	*token_lstnew(void);
+t_token	*token_lstlast(t_token *lst);
 void	token_lstadd_back(t_token **lst, t_token *new);
 /*linked_list_infile.c*/
 t_infile	*infile_lstnew(void);
