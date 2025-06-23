@@ -23,6 +23,8 @@
 
 # include "../libft/libft.h"
 
+# define MALLOC "Error: malloc failed"
+
 /////////////////////////////////////////// enum
 
 typedef enum e_parsing_error

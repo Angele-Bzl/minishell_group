@@ -8,7 +8,7 @@ int main(int ac, char **av, char **env)
 	t_parsing   parsing;
 
 	if (!env_init(env, &data))
-		msg_exit("Error: malloc failed\n", STDERR_FILENO, ERR);
+		msg_exit(MALLOC, STDERR_FILENO, EXIT_FAILURE);
 	while (1)
 	{
 		struct_init(&data, &parsing);

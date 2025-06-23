@@ -1,32 +1,57 @@
 #include "minishell.h"
 
-static int	input_output_single_cmd(char *io_value[2], t_rafter redirection[2], int *io_fd, int *save_std_io)
+static int get_input_single_cmd(t_infile *ls_infile, int *save_std_io)
 {
+	int	input;
+	t_infile	*current;
+
 	save_std_io[0] = dup(STDIN_FILENO);
-	save_std_io[1] = dup(STDOUT_FILENO);
-	io_fd[0] = STDIN_FILENO;
-	io_fd[1] = STDOUT_FILENO;
-	if (io_value[0])
+	input = STDIN_FILENO;
+	if (ls_infile->value)
 	{
-		io_fd[0] = open(io_value[0], O_RDONLY);
-		if (redirection[1] == DOUBLE_LEFT)
-			unlink(io_value[0]);
-		if (io_fd[0] == -1)
-			return (perror_return(io_value[0], ERR));
-	}
-	if (io_value[1])
-	{
-		if (redirection[1] == SIMPLE_RIGHT)
-			io_fd[1] = open(io_value[1], O_WRONLY | O_TRUNC, 0644);
-		else if (redirection[1] == DOUBLE_RIGHT)
-			io_fd[1] = open(io_value[1], O_WRONLY | O_APPEND, 0644);
-		if (io_fd[1] == -1)
+		current = ls_infile;
+		while (current)
 		{
-			close(io_fd[0]);
-			return (perror_return(io_value[1], ERR));
+			if (current->redirection == SIMPLE_LEFT)
+				input = open(current->value, O_RDONLY);
+			if (current->redirection == DOUBLE_LEFT)
+				input = here_doc(current->value);
+			if (input == -1)
+				perror_return(ls_infile->value, ERROR_SYSTEM);
+			if (ls_infile->redirection == DOUBLE_LEFT)
+				unlink(ls_infile->value);
+			if (current->next)
+				close(input);
+			current = current->next;
 		}
 	}
-	return (OK);
+	return (input);
+}
+
+static int	get_output_single_cmd(t_outfile *ls_outfile, int *save_std_io)
+{
+	int	output;
+	t_infile	*current;
+
+	save_std_io[1] = dup(STDOUT_FILENO);
+	output = STDOUT_FILENO;
+	if (ls_outfile->value)
+	{
+		current = ls_outfile;
+		while (current)
+		{
+			if (current->redirection == SIMPLE_RIGHT)
+				output = open(current->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (current->redirection == DOUBLE_RIGHT)
+				output = open(current->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (output == -1)
+				perror_return(ls_outfile->value, ERROR_SYSTEM);
+			if (current->next)
+				close(output);
+			current = current->next;
+		}
+	}
+	return (output);
 }
 
 static int	reset_dup2(t_data *data, int *save_std_io)
@@ -45,7 +70,9 @@ int	exec_single_cmd(t_data *data)
 	int		save_std_io[2];
 	int		return_value;
 
-	if (input_output_single_cmd(data->ls_token->io_value, data->ls_token->io_redir, io_fd, save_std_io) != OK)
+	io_fd[0] = get_input_single_cmd(data->ls_token->ls_infile, save_std_io);
+	io_fd[1] = get_output_single_cmd(data->ls_token->ls_infile, save_std_io);
+	if (io_fd[0] == ERROR_SYSTEM || io_fd[1] == ERROR_SYSTEM)
 	{
 		close_free_data_env(data, io_fd[0], io_fd[1]);
 		exit(STDERR_FILENO);

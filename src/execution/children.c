@@ -8,7 +8,7 @@ int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t pid)
 
 	io_fd[0] = get_input(data->ls_token->ls_infile, previous_pipe);
 	io_fd[1] = get_output(data->ls_token->ls_outfile, pipe_fd[1], count_cmds(data->ls_token));
-	if (io_fd[0] == -1 || io_fd[1] == -1)
+	if (io_fd[0] == ERROR_SYSTEM || io_fd[1] == ERROR_SYSTEM)
 	{
 		close_all(io_fd[0], io_fd[1]);
 		return (ERR);
@@ -34,7 +34,7 @@ int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], pid_t pid)
 		return (ERR);
 	}
 	if (pid == 0)
-		return (42);
+		return (42); //si on arrive ici ça veut dire qu'on est passé par un builtin donc OK, mais on exit quand meme apres
 	return (OK);
 }
 
