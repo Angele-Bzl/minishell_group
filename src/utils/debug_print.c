@@ -74,10 +74,10 @@ void	print_tokens(t_data *data)
 	k = 0;
 	j = 0;
 	current = data->ls_token;
-	cur_in = data->ls_token->ls_infile;
-	cur_out = data->ls_token->ls_outfile;
 	while (current)
 	{
+		cur_in = current->ls_infile;
+		cur_out = current->ls_outfile;
 		printf("========= NODE (%d) =========\n\n", k);
 		if (current->cmd)
 		{
@@ -90,20 +90,20 @@ void	print_tokens(t_data *data)
 		else
 			printf("Cmd %d : NULL\n", i);
 		printf("\n");
-		printf("Infiles : ");
+		printf("INFILES :\n");
 		while(cur_in)
 		{
-			printf("in_node(%d)", j);
+			printf("in_node(%d)\n", j);
 			printf("redir: %d\n", cur_in->redirection);
 			printf("value: %s\n\n", cur_in->value);
 			cur_in = cur_in->next;
 			j++;
 		}
 		j = 0;
-		printf("Outfiles : ");
+		printf("OUTFILES :\n");
 		while(cur_out)
 		{
-			printf("in_node(%d)", j);
+			printf("out_node(%d)\n", j);
 			printf("redir: %d\n", cur_out->redirection);
 			printf("value: %s\n\n", cur_out->value);
 			cur_out = cur_out->next;

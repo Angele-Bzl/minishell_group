@@ -77,13 +77,13 @@ char	**get_env_in_tab(t_env *node_env)
 	i = 0;
 	while (current)
 	{
-		table_env[i] = ft_strdup((current)->line);
+		table_env[i] = ft_strdup(current->line);
 		if (!table_env[i])
 		{
 			free_array(table_env);
 			return (NULL);
 		}
-		current = (current)->next;
+		current = current->next;
 		i++;
 	}
 	table_env[i] = NULL;

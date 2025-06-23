@@ -27,7 +27,7 @@ static int	manage_no_env(t_env **current)
 }
 
 int  env_init(char **env, t_data *data)
-{ /*shlvl ? _ ?*/
+{ /*a securiser ! et free si soucis !*/
 	unsigned int	i;
 	t_env			*new_node;
 
@@ -53,17 +53,10 @@ int  env_init(char **env, t_data *data)
 
 static int	data_init(t_data *data)
 {
-	data->ls_token = malloc(sizeof(t_token)); //data init
+	data->ls_token = token_lstnew();
 	if (!data->ls_token)
 		return (0);
-	data->ls_token->next = NULL;
-	data->ls_token->cmd = NULL;
-	data->ls_token->ls_infile->value = NULL;
-	data->ls_token->ls_outfile->value = NULL;
-	data->ls_token->ls_infile->redirection = DEFAULT;
-	data->ls_token->ls_outfile->redirection = DEFAULT;
 	data->pipe_nbr = 0;
-
 	return (1);
 }
 
@@ -87,7 +80,7 @@ static void parsing_init(t_data *data, t_parsing *parsing)
 int	struct_init(t_data *data, t_parsing *parsing)
 {
 	if (data_init(data) == 0)
-		return (0);
+		return (ERR);
 	parsing_init(data, parsing);
-	return(1);
+	return (OK);
 }

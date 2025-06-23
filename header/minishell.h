@@ -23,7 +23,9 @@
 
 # include "../libft/libft.h"
 
-# define MALLOC "Error: malloc failed"
+# define MALLOC "Error: malloc failed."
+# define NO_FILE "Error: No such file or directory."
+# define NO_PATH "%s: No path to the command.\n"
 
 /////////////////////////////////////////// enum
 
@@ -128,15 +130,16 @@ void	close_free_data_env(t_data *data, int fd0, int fd1);
 void	close_free_array_str(int fd0, int fd1, char **env, char *path);
 /*error_exec.c*/
 void	msg_exit(char *message, int fd, int exit_value);
-int	msg_return(char *message, int fd, int return_value);
-int	perror_return(char *message, int return_value);
-int	msg_return_close_all(int *fds, char *message, int fd, int return_value);
+int		msg_return(char *message, int fd, int return_value);
+char	*msg_return_str(char *message, int fd, char *return_value);
+int		perror_return(char *message, int return_value);
+int		msg_return_close_all(int *fds, char *message, int fd, int return_value);
 /*children.c*/
-int	loop_children(t_data *data, t_token *current, pid_t *pids);
+int		loop_children(t_data *data, t_token *current, pid_t *pids);
 /*input_output.c*/
-int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
-int	get_input(t_infile *ls_infile, int previous_pipe);
-int	get_output(t_outfile *ls_outfile, int pipe_output, int count_cmd);
+int		redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
+int		get_input(t_infile *ls_infile, int previous_pipe);
+int		get_output(t_outfile *ls_outfile, int pipe_output, int count_cmd);
 /*BUILTINS*/
 int		cmd_is_builtin(char *path_cmd);
 int		exec_homemade_builtin(t_data *data);
@@ -166,6 +169,7 @@ int		prompt_begins_with_a_pipe(const char *s, int *i, t_parsing *parsing);
 int		parse_pipe_segments(char const *s, char c, int i);
 /*linked_list_token.c*/
 t_token	*token_lstnew(void);
+t_token	*token_lstlast(t_token *lst);
 void	token_lstadd_back(t_token **lst, t_token *new);
 /*linked_list_infile.c*/
 t_infile	*infile_lstnew(void);

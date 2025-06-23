@@ -11,13 +11,14 @@ int main(int ac, char **av, char **env)
 		msg_exit(MALLOC, STDERR_FILENO, EXIT_FAILURE);
 	while (1)
 	{
-		struct_init(&data, &parsing);
+		if (struct_init(&data, &parsing) != OK)
+			return (EXIT_FAILURE);
 		(&parsing)->prompt = readline("minishell> ");
 		if ((&parsing)->prompt)
 		{
 			add_history((&parsing)->prompt);
 			ft_parsing(&data, &parsing);
-			// print_tokens(&data);
+			print_tokens(&data);
 			if ((&parsing)->errcode == OK)
 			{
 				execution(&data);

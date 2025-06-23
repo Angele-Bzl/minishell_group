@@ -17,7 +17,7 @@ static int get_input_single_cmd(t_infile *ls_infile, int *save_std_io)
 			if (current->redirection == DOUBLE_LEFT)
 				input = here_doc(current->value);
 			if (input == -1)
-				perror_return(ls_infile->value, ERROR_SYSTEM);
+				perror_return(ls_infile->value, ERR);
 			if (ls_infile->redirection == DOUBLE_LEFT)
 				unlink(ls_infile->value);
 			if (current->next)
@@ -74,9 +74,11 @@ int	exec_single_cmd(t_data *data)
 	io_fd[1] = get_output_single_cmd(data->ls_token->ls_outfile, save_std_io);
 	if (io_fd[0] == ERROR_SYSTEM || io_fd[1] == ERROR_SYSTEM)
 	{
+		printf("iofd[0] = %d | iofd[1] = %d\n", io_fd[0], io_fd[1]);
 		close_free_data_env(data, io_fd[0], io_fd[1]);
 		exit(STDERR_FILENO);
 	}
+
 	return_value = redirect_and_exec(data, io_fd, NULL, NULL);
 	if (return_value != OK)
 	{

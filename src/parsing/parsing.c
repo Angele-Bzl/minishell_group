@@ -11,16 +11,11 @@ static void	errcode_check_in_parsing(t_parsing *parsing)
 		free_all(parsing);
 }
 
-static void	fill_prompt_tab(t_parsing *parsing)
-{
-	parsing->prompt_tab = pipe_segmentation(parsing, '|');		// créer le prompt_tab et print les erreurs
-}
-
 void	ft_parsing(t_data *data, t_parsing *parsing)
 {
 	parsing->errcode = prompt_check(parsing->prompt, parsing);					// check si le prompt a des quotes ouverte ou finit par un pipe. Ne pas gerer les cas de heredoc
 	if (parsing->errcode == ALL_OK)
-		fill_prompt_tab(parsing);
+		parsing->prompt_tab = pipe_segmentation(parsing, '|');
 	if (parsing->errcode == ALL_OK)
 		expand_var(parsing);							// si mauvais, expand et on free
 	if (parsing->errcode == ALL_OK)

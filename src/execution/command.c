@@ -12,7 +12,8 @@ static int	find_path_in_env(char **env)
 		i++;
 	}
 	// ft_putendl_fd("Error: No such file or directory", STDERR_FILENO);
-	return (-1);
+	return (ERR);
+	// return (msg_return("Error: No such file or directory", STDERR_FILENO, ERR));
 }
 
 static void	fill_tab_null(char **table, int len)
@@ -39,19 +40,19 @@ static int	init_hyp_path(char **hyp_path, char *cmd, char **env_path)
 		if (!path_w_backslash)
 		{
 			free_array(hyp_path);
-			return (0);
+			return (ERR);
 		}
 		hyp_path[i] = ft_strjoin(path_w_backslash, cmd);
 		if (!hyp_path[i])
 		{
 			free(path_w_backslash);
 			free_array(hyp_path);
-			return (0);
+			return (ERR);
 		}
 		free(path_w_backslash);
 		i++;
 	}
-	return (1);
+	return (OK);
 }
 
 static char	*check_if_cmd_exists(char **hypothetical_path_cmd, char **path)
@@ -90,21 +91,35 @@ char	*find_cmd(char **env, char *cmd)
 	if (ft_strchr(cmd, '/'))
 		return (cmd);
 	i = find_path_in_env(env);
-	if (i == -1)
-		return (NULL);
+	if (i == ERR)
+		return (msg_return_str(NO_FILE, STDERR_FILENO, NULL));
 	env_path = ft_split(env[i], ':');
 	if (!env_path)
-		return (NULL);
+		return (msg_return_str(MALLOC, STDERR_FILENO, NULL));
 	env_path[0] = ft_strtrim_improved(env_path[0], "PATH=");
 	if (!env_path[0])
-		return (free_array(env_path));
+	{
+		free_array(env_path);
+		return (msg_return_str(MALLOC, STDERR_FILENO, NULL));
+	}
 	hypothetical_path_cmd = malloc(sizeof (char *) * tablen(env_path));
 	if (!hypothetical_path_cmd)
-		return (free_array(env_path));
+	{
+		free_array(env_path);
+		return (msg_return_str(MALLOC, STDERR_FILENO, NULL));
+	}
 	fill_tab_null(hypothetical_path_cmd, tablen(env_path));
-	if (init_hyp_path(hypothetical_path_cmd, cmd, env_path) == 0)
-		return (free_array(env_path));
+	if (init_hyp_path(hypothetical_path_cmd, cmd, env_path) != OK)
+	{
+		free_array(env_path);
+		return (msg_return_str(MALLOC, STDERR_FILENO, NULL));
+	}
 	path_cmd = check_if_cmd_exists(hypothetical_path_cmd, env_path);
 	free_array(env_path);
+	if (!path_cmd)
+	{
+		ft_printf_err(NO_PATH, cmd);
+		// return (msg_return(NO_PATH, STDERR_FILENO, NULL));
+	}
 	return (path_cmd);
 }
