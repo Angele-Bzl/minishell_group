@@ -31,7 +31,7 @@ static int get_input_single_cmd(t_infile *ls_infile, int *save_std_io)
 static int	get_output_single_cmd(t_outfile *ls_outfile, int *save_std_io)
 {
 	int	output;
-	t_infile	*current;
+	t_outfile	*current;
 
 	save_std_io[1] = dup(STDOUT_FILENO);
 	output = STDOUT_FILENO;
@@ -71,7 +71,7 @@ int	exec_single_cmd(t_data *data)
 	int		return_value;
 
 	io_fd[0] = get_input_single_cmd(data->ls_token->ls_infile, save_std_io);
-	io_fd[1] = get_output_single_cmd(data->ls_token->ls_infile, save_std_io);
+	io_fd[1] = get_output_single_cmd(data->ls_token->ls_outfile, save_std_io);
 	if (io_fd[0] == ERROR_SYSTEM || io_fd[1] == ERROR_SYSTEM)
 	{
 		close_free_data_env(data, io_fd[0], io_fd[1]);

@@ -45,7 +45,7 @@ int	get_input(t_infile *ls_infile, int previous_pipe)
 int	get_output(t_outfile *ls_outfile, int pipe_output, int count_cmd)
 {
 	int	output;
-	t_infile	*current;
+	t_outfile	*current;
 
 	if (count_cmd == 1)
 	{
