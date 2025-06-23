@@ -70,7 +70,6 @@ static int	fill_pipe_segments(char **array, char const *prompt, char c, t_parsin
 		if (next_pipe_segment(c, &start, &end, parsing) == -1)				// errcode a deja ete update plus haut donc on travail avec -1
 			return (-1);
 		array[i] = ft_substr(prompt, start, end - start);
-		printf("(fill pipe segments) array[%d] = %s\n", i, array[i]);
 		if (free_split_on_failure(array, i, parsing) == -1)			// errcode a deja ete update plus haut donc on travail avec -1
 			return (-1);
 		i++;
