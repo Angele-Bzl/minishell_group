@@ -4,14 +4,12 @@ static int	update_infile(t_parsing *parsing, t_data *data, char *file_name, t_ra
 {
 	t_infile	*new_in_node;
 	t_token		*current_token;
-	t_infile	*current;
 
 	current_token = token_lstlast(data->ls_token);
-	current = current_token->ls_infile;
-	if (current->next == NULL)
+	if (current_token->ls_infile && current_token->ls_infile->value == NULL)
 	{
-		current->value = file_name;
-		current->redirection = redirection;
+		current_token->ls_infile->value = file_name;
+		current_token->ls_infile->redirection = redirection;
 	}
 	else
 	{
@@ -21,9 +19,9 @@ static int	update_infile(t_parsing *parsing, t_data *data, char *file_name, t_ra
 			parsing->errcode = ERR_MALLOC;
 			return (-1);
 		}
-		infile_lstadd_back(&current, new_in_node);
-		current->value = file_name;
-		current->redirection = redirection;
+		new_in_node->value = file_name;
+		new_in_node->redirection = redirection;
+		infile_lstadd_back(&current_token->ls_infile, new_in_node);
 	}
 	return (0);
 }
@@ -32,14 +30,12 @@ static int	update_outfile(t_parsing *parsing, t_data *data, char *file_name, t_r
 {
 	t_outfile	*new_out_node;
 	t_token		*current_token;
-	t_outfile	*current;
 
 	current_token = token_lstlast(data->ls_token);
-	current = current_token->ls_outfile;
-	if (current->next == NULL)
+	if (current_token->ls_outfile && current_token->ls_outfile->value == NULL)
 	{
-		current->value = file_name;
-		current->redirection = redirection;
+		current_token->ls_outfile->value = file_name;
+		current_token->ls_outfile->redirection = redirection;
 	}
 	else
 	{
@@ -49,9 +45,9 @@ static int	update_outfile(t_parsing *parsing, t_data *data, char *file_name, t_r
 			parsing->errcode = ERR_MALLOC;
 			return (-1);
 		}
-		outfile_lstadd_back(&current, new_out_node);
-		current->value = file_name;
-		current->redirection = redirection;
+		new_out_node->value = file_name;
+		new_out_node->redirection = redirection;
+		outfile_lstadd_back(&current_token->ls_outfile, new_out_node);
 	}
 	return (0);
 }
