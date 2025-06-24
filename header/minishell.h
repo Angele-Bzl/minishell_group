@@ -136,7 +136,7 @@ char	*msg_return_str(char *message, int fd, char *return_value);
 int		perror_return(char *message, int return_value);
 int		msg_return_close_all(int *fds, char *message, int fd, int return_value);
 /*children.c*/
-int		loop_children(t_data *data, t_token *current, pid_t *pids);
+int		loop_children(t_data *data, pid_t *pids);
 /*input_output.c*/
 int		redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
 int		get_input(t_infile *ls_infile, int previous_pipe);
@@ -214,7 +214,7 @@ void	print_env(t_env *env);
 void	print_prompt_tab(char **p_tab);
 void	print_tokens(t_data *data);
 /*free_minishell.c*/
-void	free_all(t_parsing *parsing);
+void	free_parsing(t_parsing *parsing);
 /*free_utils.c*/
 char	*free_array(char **array);
 void	free_env(t_env *env);

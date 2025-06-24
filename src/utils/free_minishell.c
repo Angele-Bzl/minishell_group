@@ -12,7 +12,7 @@ void	free_data(t_data *data)									// ne pas free env maintenant
 	free_token(data->ls_token);
 }
 
-void	free_all(t_parsing *parsing)
+void	free_parsing(t_parsing *parsing)
 {
 	if (parsing->prompt)
 	free(parsing->prompt);
@@ -25,7 +25,7 @@ void	free_all(t_parsing *parsing)
 void	close_free_maybe_exit(t_parsing *parsing, int exitcode)
 {
 	//close_all(parsing->data);
-	free_all(parsing);
+	free_parsing(parsing);
 	if (exitcode)
 	{
 	if (parsing->data->ls_env)

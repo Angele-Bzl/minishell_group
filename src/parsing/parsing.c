@@ -4,11 +4,11 @@ static void	errcode_check_in_parsing(t_parsing *parsing)
 {
 	if (parsing->errcode == ERR_MALLOC)											// on free + quitte le prog
 	{
-		free_all(parsing);
+		free_parsing(parsing);
 		exit(EXIT_FAILURE);
 	}
 	if (parsing->errcode == ERR_PROMPT)											// on free + continue avec new prompt
-		free_all(parsing);
+		free_parsing(parsing);
 }
 
 void	ft_parsing(t_data *data, t_parsing *parsing)

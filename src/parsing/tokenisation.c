@@ -28,6 +28,7 @@ static int	find_and_store_all_cmds(t_token *current, char *prompt, t_parsing *pa
 	if (!clean_cmds)
 		return (-1);
 	current->cmd = split_whitespace_quotes(clean_cmds, ' ', parsing);
+	free(clean_cmds);
 	if (current->cmd == NULL)
 		return (-1);
 	return (0);

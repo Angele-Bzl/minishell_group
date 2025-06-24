@@ -65,28 +65,28 @@ static int	fill_split_array(char **array, char const *s, char c, t_parsing *pars
 {
 	int		start;
 	int		end;
-	int		limit;
+	int		i;
 
-	limit = 0;
+	i = 0;
 	end = 0;
-	while (limit < ft_countword(s, c))
+	while (i < ft_countword(s, c))
 	{
 		if (get_next_word_bounds(s, c, &start, &end))
 			return (0);
-		array[limit] = ft_substr(s, start, (end - start));
-		if (array[limit] == NULL)
+		array[i] = ft_substr(s, start, (end - start));
+		if (array[i] == NULL)
 		{
 			parsing->errcode = ERR_MALLOC;
 			return (-1);
 		}
-		array[limit] = extract_token_without_quotes(array[limit], parsing);
-		if (array[limit] == NULL)
+		array[i] = extract_token_without_quotes(array[i], parsing);
+		if (array[i] == NULL)
 			return (-1);
-		if (free_split_on_failure(parsing, array, limit) == -1)
+		if (free_split_on_failure(parsing, array, i) == -1)
 			return (-1);
-		limit++;
+		i++;
 	}
-	array[limit] = NULL;
+	array[i] = NULL;
 	return (0);
 }
 
