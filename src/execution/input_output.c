@@ -32,7 +32,7 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 
 int	get_input(t_infile *ls_infile, int previous_pipe)
 {
-	int	input;
+	int		input;
 	t_infile	*current;
 
 	input = previous_pipe;
@@ -46,9 +46,9 @@ int	get_input(t_infile *ls_infile, int previous_pipe)
 			if (current->redirection == DOUBLE_LEFT)
 				input = here_doc(current->value);
 			if (input == -1)
-				perror_return(ls_infile->value, ERR);
-			if (ls_infile->redirection == DOUBLE_LEFT)
-				unlink(ls_infile->value);
+				perror_return(current->value, ERR);
+			if (current->redirection == DOUBLE_LEFT)
+				unlink(current->value);
 			if (current->next)
 				close(input);
 			current = current->next;
@@ -60,7 +60,7 @@ int	get_input(t_infile *ls_infile, int previous_pipe)
 
 int	get_output(t_outfile *ls_outfile, int pipe_output, int count_cmd)
 {
-	int	output;
+	int			output;
 	t_outfile	*current;
 
 	output = pipe_output;
@@ -81,7 +81,7 @@ int	get_output(t_outfile *ls_outfile, int pipe_output, int count_cmd)
 			if (current->redirection == DOUBLE_RIGHT)
 				output = open(current->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (output == -1)
-				perror_return(ls_outfile->value, ERR);
+				perror_return(current->value, ERR);
 			if (current->next)
 				close(output);
 			current = current->next;

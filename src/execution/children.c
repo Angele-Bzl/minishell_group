@@ -47,6 +47,7 @@ int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
 		close(pipe_fd[0]);
 		return_value = manage_child(data, previous_pipe, pipe_fd, current);
 		close_free_token_env_pids(data, previous_pipe, pipe_fd[1], pids);
+		printf("test\n");
 		exit(return_value);
 	}
 	if (previous_pipe != STDIN_FILENO)

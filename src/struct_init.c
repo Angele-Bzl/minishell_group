@@ -55,9 +55,9 @@ static int	data_init(t_data *data)
 {
 	data->ls_token = token_lstnew();
 	if (!data->ls_token)
-		return (0);
+		return (ERR);
 	data->pipe_nbr = 0;
-	return (1);
+	return (OK);
 }
 
 static void parsing_init(t_data *data, t_parsing *parsing)
@@ -79,7 +79,7 @@ static void parsing_init(t_data *data, t_parsing *parsing)
 
 int	struct_init(t_data *data, t_parsing *parsing)
 {
-	if (data_init(data) == 0)
+	if (data_init(data) == ERR)
 		return (ERR);
 	parsing_init(data, parsing);
 	return (OK);

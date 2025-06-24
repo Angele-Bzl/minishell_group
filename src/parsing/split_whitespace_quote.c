@@ -66,6 +66,7 @@ static int	fill_split_array(char **array, char const *s, char c, t_parsing *pars
 	int		start;
 	int		end;
 	int		i;
+	char	*tmp;
 
 	i = 0;
 	end = 0;
@@ -73,13 +74,14 @@ static int	fill_split_array(char **array, char const *s, char c, t_parsing *pars
 	{
 		if (get_next_word_bounds(s, c, &start, &end))
 			return (0);
-		array[i] = ft_substr(s, start, (end - start));
-		if (array[i] == NULL)
+		tmp = ft_substr(s, start, (end - start));
+		if (tmp == NULL)
 		{
 			parsing->errcode = ERR_MALLOC;
 			return (-1);
 		}
-		array[i] = extract_token_without_quotes(array[i], parsing);
+		array[i] = extract_token_without_quotes(tmp, parsing);
+		free(tmp);
 		if (array[i] == NULL)
 			return (-1);
 		if (free_split_on_failure(parsing, array, i) == -1)

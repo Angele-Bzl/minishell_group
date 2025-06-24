@@ -16,7 +16,7 @@ t_token	*token_lstnew(void)
 	new->ls_infile->next = NULL;
 	new->ls_infile->redirection = DEFAULT;
 	new->ls_infile->value = NULL;
-	new->ls_outfile = malloc(sizeof(t_infile));
+	new->ls_outfile = malloc(sizeof(t_outfile));
 	if (!new->ls_outfile)
 	{
 		free(new);

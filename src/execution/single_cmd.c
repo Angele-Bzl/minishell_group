@@ -78,12 +78,11 @@ int	exec_single_cmd(t_data *data)
 		close_free_token_env(data, io_fd[0], io_fd[1]);
 		exit(STDERR_FILENO);
 	}
-
 	return_value = redirect_and_exec(data->ls_token, io_fd, data);
 	if (return_value != OK)
 	{
 		close_free_token_env(data, io_fd[0], io_fd[1]);
-		if (return_value == ERROR_PROMPT)
+		if (return_value == ERROR_PROMPT) // possible ?
 			return (ERR);
 		else if (return_value == ERROR_SYSTEM)
 			exit(STDERR_FILENO);

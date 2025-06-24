@@ -11,7 +11,6 @@ int	execution(t_data *data)
 	pids = malloc(sizeof(pid_t) * count_cmds(data->ls_token));
 	if (!pids)
 		msg_exit(MALLOC, STDERR_FILENO, EXIT_FAILURE);
-	// current = head;
 	if (loop_children(data, pids) == ERR)
 		return (ERR);
 	wait_for_pid(data->ls_token, pids);
