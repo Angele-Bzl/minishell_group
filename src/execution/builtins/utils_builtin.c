@@ -19,22 +19,22 @@ int	cmd_is_builtin(char *path_cmd)
 	return (0);
 }
 
-int	exec_homemade_builtin(t_data *data)
+int	exec_homemade_builtin(t_data *data, t_token *current)
 {
-	if (!ft_strncmp(data->ls_token->cmd[0], "echo\0", 5))
-		exec_echo(data->ls_token->cmd);
-	if (!ft_strncmp(data->ls_token->cmd[0], "cd\0", 3))
-		return (exec_cd(data->ls_token->cmd, data->ls_env));
-	if (!ft_strncmp(data->ls_token->cmd[0], "pwd\0", 4))
+	if (!ft_strncmp(current->cmd[0], "echo\0", 5))
+		exec_echo(current->cmd);
+	if (!ft_strncmp(current->cmd[0], "cd\0", 3))
+		return (exec_cd(current->cmd, data->ls_env));
+	if (!ft_strncmp(current->cmd[0], "pwd\0", 4))
 		exec_pwd();
-	if (!ft_strncmp(data->ls_token->cmd[0], "export\0", 7))
+	if (!ft_strncmp(current->cmd[0], "export\0", 7))
 		return (exec_export(data->ls_env, data->ls_token->cmd));
-	if (!ft_strncmp(data->ls_token->cmd[0], "unset\0", 6))
+	if (!ft_strncmp(current->cmd[0], "unset\0", 6))
 		exec_unset(&data->ls_env, data->ls_token->cmd);
-	if (!ft_strncmp(data->ls_token->cmd[0], "env\0", 4))
+	if (!ft_strncmp(current->cmd[0], "env\0", 4))
 		exec_env(data->ls_env);
-	if (!ft_strncmp(data->ls_token->cmd[0], "exit\0", 5))
-		exec_exit(data, data->ls_token);
+	if (!ft_strncmp(current->cmd[0], "exit\0", 5))
+		exec_exit(data, current);
 	return (OK);
 }
 

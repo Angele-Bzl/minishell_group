@@ -79,7 +79,7 @@ int	exec_single_cmd(t_data *data)
 		exit(STDERR_FILENO);
 	}
 
-	return_value = redirect_and_exec(data, io_fd, NULL, NULL);
+	return_value = redirect_and_exec(data->ls_token, io_fd, data);
 	if (return_value != OK)
 	{
 		close_free_token_env(data, io_fd[0], io_fd[1]);
