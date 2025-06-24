@@ -1,15 +1,16 @@
 #include "minishell.h"
 
-int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
+int	redirect_and_exec(t_token *current, int *io_fd, char *path_cmd, char **env)
 {
+	printf("iofd0 = %d | iofd1 = %d\n", io_fd[0], io_fd[1]);
 	if (dup2(io_fd[0], STDIN_FILENO) == -1)
 		return (perror_return("dup2", ERR));
 	if (dup2(io_fd[1], STDOUT_FILENO) == -1)
 		return (perror_return("dup2", ERR));
 	close_all(io_fd[0], io_fd[1]);
-	if (cmd_is_builtin(data->ls_token->cmd[0]))
+	if (cmd_is_builtin(current->cmd[0]))
 		return (exec_homemade_builtin(data));
-	if (execve(path_cmd, data->ls_token->cmd, env) == -1)
+	if (execve(path_cmd, current->cmd, env) == -1)
 		return (msg_return("Error: execve failed", STDERR_FILENO, ERR));
 	return (OK);
 }

@@ -18,7 +18,7 @@ int main(int ac, char **av, char **env)
 		{
 			add_history(parsing.prompt);
 			ft_parsing(&data, &parsing);
-			// print_tokens(&data);
+			print_tokens(&data);
 			// free_token_env(&data);
 			// free_parsing(&parsing);
 			// exit(0);

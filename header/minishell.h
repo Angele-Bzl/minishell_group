@@ -113,7 +113,7 @@ typedef struct s_parsing
 /*EXEC*/
 /*execution.c*/
 int		execution(t_data *data);
-int		redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
+int		redirect_and_exec(t_token *current, int *io_fd, char *path_cmd, char **env);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd);
 /*utils_exec.c*/
@@ -138,7 +138,7 @@ int		msg_return_close_all(int *fds, char *message, int fd, int return_value);
 /*children.c*/
 int		loop_children(t_data *data, pid_t *pids);
 /*input_output.c*/
-int		redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
+int		redirect_and_exec(t_token *current, int *io_fd, char *path_cmd, char **env);
 int		get_input(t_infile *ls_infile, int previous_pipe);
 int		get_output(t_outfile *ls_outfile, int pipe_output, int count_cmd);
 /*BUILTINS*/
