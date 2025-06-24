@@ -45,7 +45,7 @@ static int	get_output_single_cmd(t_outfile *ls_outfile, int *save_std_io)
 			if (current->redirection == DOUBLE_RIGHT)
 				output = open(current->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (output == -1)
-				perror_return(ls_outfile->value, ERROR_SYSTEM);
+				perror_return(ls_outfile->value, ERR);
 			if (current->next)
 				close(output);
 			current = current->next;
