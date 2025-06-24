@@ -40,6 +40,7 @@ void	free_infile(t_token *ls_token)
 		next = current->next;
 		if (current->value)
 			free(current->value);
+		free(current);
 		current = next;
 	}
 }
@@ -55,6 +56,7 @@ void	free_outfile(t_token *ls_token)
 		next = current->next;
 		if (current->value)
 			free(current->value);
+		free(current);
 		current = next;
 	}
 }

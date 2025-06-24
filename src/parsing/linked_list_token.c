@@ -19,8 +19,8 @@ t_token	*token_lstnew(void)
 	new->ls_outfile = malloc(sizeof(t_outfile));
 	if (!new->ls_outfile)
 	{
-		free(new);
 		free(new->ls_infile);
+		free(new);
 		return (NULL);
 	}
 	new->ls_outfile->next = NULL;
