@@ -26,6 +26,7 @@
 # define MALLOC "Error: malloc failed."
 # define NO_FILE "Error: No such file or directory."
 # define NO_PATH "%s: No path to the command.\n"
+# define IS_BUILTIN 42
 
 /////////////////////////////////////////// enum
 
@@ -123,10 +124,10 @@ char	**get_env_in_tab(t_env *node_env);
 int		exec_single_cmd(t_data *data);
 int		count_cmds(t_token *token);
 /*clean.c*/
-void	close_free_data_env_pids(t_data *data, int fd0, int fd1, pid_t *pids);
-void	free_data_env(t_data *data);
+void	close_free_token_env_pids(t_data *data, int fd0, int fd1, pid_t *pids);
+void	free_token_env(t_data *data);
 void	close_all(int fd0, int fd1);
-void	close_free_data_env(t_data *data, int fd0, int fd1);
+void	close_free_token_env(t_data *data, int fd0, int fd1);
 void	close_free_array_str(int fd0, int fd1, char **env, char *path);
 /*error_exec.c*/
 void	msg_exit(char *message, int fd, int exit_value);

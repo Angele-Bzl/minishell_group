@@ -75,14 +75,14 @@ int	exec_single_cmd(t_data *data)
 	if (io_fd[0] == ERR || io_fd[1] == ERR)
 	{
 		printf("iofd[0] = %d | iofd[1] = %d\n", io_fd[0], io_fd[1]);
-		close_free_data_env(data, io_fd[0], io_fd[1]);
+		close_free_token_env(data, io_fd[0], io_fd[1]);
 		exit(STDERR_FILENO);
 	}
 
 	return_value = redirect_and_exec(data, io_fd, NULL, NULL);
 	if (return_value != OK)
 	{
-		close_free_data_env(data, io_fd[0], io_fd[1]);
+		close_free_token_env(data, io_fd[0], io_fd[1]);
 		if (return_value == ERROR_PROMPT)
 			return (ERR);
 		else if (return_value == ERROR_SYSTEM)
@@ -90,7 +90,7 @@ int	exec_single_cmd(t_data *data)
 	}
 	if (reset_dup2(data, save_std_io) != OK)
 	{
-		close_free_data_env(data, io_fd[0], io_fd[1]);
+		close_free_token_env(data, io_fd[0], io_fd[1]);
 		exit(STDERR_FILENO);
 	}
 	return (OK);

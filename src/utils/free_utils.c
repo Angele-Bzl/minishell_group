@@ -71,7 +71,10 @@ void	free_token(t_token *token)
 		{
 			i = 0;
 			while (token->cmd[i])
-				free(token->cmd[i++]);
+			{
+				free(token->cmd[i]);
+				i++;
+			}
 			free(token->cmd);
 		}
 		if (token->ls_infile)
