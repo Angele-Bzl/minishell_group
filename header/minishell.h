@@ -26,6 +26,7 @@
 # define MALLOC "Error: malloc failed."
 # define NO_FILE "Error: No such file or directory."
 # define NO_PATH "%s: No path to the command.\n"
+# define IS_BUILTIN 42
 
 /////////////////////////////////////////// enum
 
@@ -61,26 +62,19 @@ typedef struct s_env
 	char			*line;
 }	t_env;
 
-typedef struct s_infile
+typedef struct s_file
 {
-	struct s_infile		*next;
+	struct s_file		*next;
 	char				*value;
 	t_rafter			redirection;
-}	t_infile;
-
-typedef struct s_outfile
-{
-	struct s_outfile	*next;
-	char				*value;
-	t_rafter			redirection;
-}	t_outfile;
+}	t_file;
 
 typedef struct s_token
 {
 	struct s_token	*next;
 	char			**cmd;
-	t_infile		*ls_infile;
-	t_outfile		*ls_outfile;
+	t_file		*ls_infile;
+	t_file		*ls_outfile;
 }	t_token;
 
 typedef struct s_data
@@ -112,7 +106,6 @@ typedef struct s_parsing
 /*EXEC*/
 /*execution.c*/
 int		execution(t_data *data);
-int		redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd);
 /*utils_exec.c*/
@@ -123,10 +116,10 @@ char	**get_env_in_tab(t_env *node_env);
 int		exec_single_cmd(t_data *data);
 int		count_cmds(t_token *token);
 /*clean.c*/
-void	close_free_data_env_pids(t_data *data, int fd0, int fd1, pid_t *pids);
-void	free_data_env(t_data *data);
+void	close_free_token_env_pids(t_data *data, int fd0, int fd1, pid_t *pids);
+void	free_token_env(t_data *data);
 void	close_all(int fd0, int fd1);
-void	close_free_data_env(t_data *data, int fd0, int fd1);
+void	close_free_token_env(t_data *data, int fd0, int fd1);
 void	close_free_array_str(int fd0, int fd1, char **env, char *path);
 /*error_exec.c*/
 void	msg_exit(char *message, int fd, int exit_value);
@@ -135,14 +128,14 @@ char	*msg_return_str(char *message, int fd, char *return_value);
 int		perror_return(char *message, int return_value);
 int		msg_return_close_all(int *fds, char *message, int fd, int return_value);
 /*children.c*/
-int		loop_children(t_data *data, t_token *current, pid_t *pids);
+int		loop_children(t_data *data, pid_t *pids);
 /*input_output.c*/
-int		redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env);
-int		get_input(t_infile *ls_infile, int previous_pipe);
-int		get_output(t_outfile *ls_outfile, int pipe_output, int count_cmd);
+int		redirect_and_exec(t_token *current, int *io_fd, t_data *data);
+int		get_input(t_file *ls_infile, int previous_pipe);
+int		get_output(t_file *ls_outfile, int pipe_output, int count_cmd);
 /*BUILTINS*/
 int		cmd_is_builtin(char *path_cmd);
-int		exec_homemade_builtin(t_data *data);
+int		exec_homemade_builtin(t_data *data, t_token *current);
 int		var_cmp(char *s1, char *s2);
 void	exec_echo(char **cmd);
 int		exec_export(t_env *ls_env, char **cmds);
@@ -171,11 +164,9 @@ int		parse_pipe_segments(char const *s, char c, int i);
 t_token	*token_lstnew(void);
 t_token	*token_lstlast(t_token *lst);
 void	token_lstadd_back(t_token **lst, t_token *new);
-/*linked_list_infile.c*/
-t_infile	*infile_lstnew(void);
-void	infile_lstadd_back(t_infile **lst, t_infile *new);
-/*linked_list_outfile.c*/
-t_outfile	*outfile_lstnew(void);
+/*linked_list_file.c*/
+t_file	*file_lstnew(void);
+void	file_lstadd_back(t_file **lst, t_file *new);
 /*manage_dollar*/
 void	manage_dollar_sign(t_parsing *parsing);
 /*manage_dollar_utils*/
@@ -195,10 +186,9 @@ int		prompt_check(char *prompt, t_parsing *parsing);
 /*rafter_token_utils.c*/
 char	*find_redir_file_name(char *prompt, int i);
 /*rafter_token.c*/
-int		manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt);
+int		manage_rafters(t_data *data, int *i, char *prompt);
 /*skip_quote.c*/
 int		skip_quote(const char *str, int *i);
-void	outfile_lstadd_back(t_outfile **lst, t_outfile *new);
 /*split_whitespace_quote.c*/
 char	**split_whitespace_quotes(char const *s, char c, t_parsing *parsing);
 /*tokenisation.c*/
@@ -213,7 +203,7 @@ void	print_env(t_env *env);
 void	print_prompt_tab(char **p_tab);
 void	print_tokens(t_data *data);
 /*free_minishell.c*/
-void	free_all(t_parsing *parsing);
+void	free_parsing(t_parsing *parsing);
 /*free_utils.c*/
 char	*free_array(char **array);
 void	free_env(t_env *env);

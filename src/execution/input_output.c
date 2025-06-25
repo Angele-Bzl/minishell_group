@@ -1,23 +1,39 @@
 #include "minishell.h"
 
-int	redirect_and_exec(t_data *data, int *io_fd, char *path_cmd, char **env)
+int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 {
+	char	**env;
+	char	*path_cmd;
+
 	if (dup2(io_fd[0], STDIN_FILENO) == -1)
 		return (perror_return("dup2", ERR));
 	if (dup2(io_fd[1], STDOUT_FILENO) == -1)
 		return (perror_return("dup2", ERR));
 	close_all(io_fd[0], io_fd[1]);
-	if (cmd_is_builtin(data->ls_token->cmd[0]))
-		return (exec_homemade_builtin(data));
-	if (execve(path_cmd, data->ls_token->cmd, env) == -1)
+	if (cmd_is_builtin(current->cmd[0]))
+		return (exec_homemade_builtin(data, current));
+	env = get_env_in_tab(data->ls_env);
+	if (!env)
+		return (msg_return(MALLOC, STDERR_FILENO, EXIT_FAILURE));
+	path_cmd = find_cmd(env, current->cmd[0]);
+	if (!path_cmd)
+	{
+		free_array(env);
+		return (EXIT_FAILURE);
+	}
+	if (execve(path_cmd, current->cmd, env) == -1)
+	{
+		free_array(env);
+		free(path_cmd);
 		return (msg_return("Error: execve failed", STDERR_FILENO, ERR));
+	}
 	return (OK);
 }
 
-int	get_input(t_infile *ls_infile, int previous_pipe)
+int	get_input(t_file *ls_infile, int previous_pipe)
 {
-	int	input;
-	t_infile	*current;
+	int		input;
+	t_file	*current;
 
 	input = previous_pipe;
 	if (ls_infile->value)
@@ -30,9 +46,9 @@ int	get_input(t_infile *ls_infile, int previous_pipe)
 			if (current->redirection == DOUBLE_LEFT)
 				input = here_doc(current->value);
 			if (input == -1)
-				perror_return(ls_infile->value, ERR);
-			if (ls_infile->redirection == DOUBLE_LEFT)
-				unlink(ls_infile->value);
+				perror_return(current->value, ERR);
+			if (current->redirection == DOUBLE_LEFT)
+				unlink(current->value);
 			if (current->next)
 				close(input);
 			current = current->next;
@@ -42,11 +58,12 @@ int	get_input(t_infile *ls_infile, int previous_pipe)
 	return (input);
 }
 
-int	get_output(t_outfile *ls_outfile, int pipe_output, int count_cmd)
+int	get_output(t_file *ls_outfile, int pipe_output, int count_cmd)
 {
-	int	output;
-	t_outfile	*current;
+	int			output;
+	t_file	*current;
 
+	output = pipe_output;
 	if (count_cmd == 1)
 	{
 		close(pipe_output);
@@ -64,7 +81,7 @@ int	get_output(t_outfile *ls_outfile, int pipe_output, int count_cmd)
 			if (current->redirection == DOUBLE_RIGHT)
 				output = open(current->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (output == -1)
-				perror_return(ls_outfile->value, ERR);
+				perror_return(current->value, ERR);
 			if (current->next)
 				close(output);
 			current = current->next;

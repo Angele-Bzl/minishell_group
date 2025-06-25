@@ -52,8 +52,7 @@ FILES_PARS  =   cmd_token_utils.c\
 				expand_var.c\
 				extract_token_without_quotes.c\
 				ft_countpipe_utils.c\
-				linked_list_infile.c\
-				linked_list_outfile.c\
+				linked_list_file.c\
 				linked_list_token.c\
 				manage_dollar_utils.c\
 				manage_heredoc.c\

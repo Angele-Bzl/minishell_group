@@ -3,21 +3,16 @@
 int	execution(t_data *data)
 {
 	pid_t	*pids;
-	t_token	*head;
-	t_token	*current;
 
-	head = data->ls_token;
-	if (!head->cmd || !head->cmd[0])
+	if (!data->ls_token->cmd || !data->ls_token->cmd[0])
 		return (OK);
-	if (!head->next && cmd_is_builtin(head->cmd[0]))
+	if (!data->ls_token->next && cmd_is_builtin(data->ls_token->cmd[0]))
 		return (exec_single_cmd(data));
-	pids = malloc(sizeof(pid_t) * count_cmds(head));
+	pids = malloc(sizeof(pid_t) * count_cmds(data->ls_token));
 	if (!pids)
 		msg_exit(MALLOC, STDERR_FILENO, EXIT_FAILURE);
-	current = head;
-	if (loop_children(data, current, pids) == ERR)
+	if (loop_children(data, pids) == ERR)
 		return (ERR);
-	data->ls_token = head;
-	wait_for_pid(head, pids);
+	wait_for_pid(data->ls_token, pids);
 	return (OK);
 }

@@ -13,16 +13,16 @@ int main(int ac, char **av, char **env)
 	{
 		if (struct_init(&data, &parsing) != OK)
 			return (EXIT_FAILURE);
-		(&parsing)->prompt = readline("minishell> ");
-		if ((&parsing)->prompt)
+		parsing.prompt = readline("minishell> ");
+		if (parsing.prompt && parsing.prompt[0])
 		{
-			add_history((&parsing)->prompt);
+			add_history(parsing.prompt);
 			ft_parsing(&data, &parsing);
 			print_tokens(&data);
-			if ((&parsing)->errcode == OK)
+			if (parsing.errcode == OK)
 			{
 				execution(&data);
-				free_token((&data)->ls_token);
+				free_token(data.ls_token);
 			}
 		}
 	}
