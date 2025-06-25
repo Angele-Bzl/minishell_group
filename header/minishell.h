@@ -62,26 +62,19 @@ typedef struct s_env
 	char			*line;
 }	t_env;
 
-typedef struct s_infile
+typedef struct s_file
 {
-	struct s_infile		*next;
+	struct s_file		*next;
 	char				*value;
 	t_rafter			redirection;
-}	t_infile;
-
-typedef struct s_outfile
-{
-	struct s_outfile	*next;
-	char				*value;
-	t_rafter			redirection;
-}	t_outfile;
+}	t_file;
 
 typedef struct s_token
 {
 	struct s_token	*next;
 	char			**cmd;
-	t_infile		*ls_infile;
-	t_outfile		*ls_outfile;
+	t_file		*ls_infile;
+	t_file		*ls_outfile;
 }	t_token;
 
 typedef struct s_data
@@ -138,8 +131,8 @@ int		msg_return_close_all(int *fds, char *message, int fd, int return_value);
 int		loop_children(t_data *data, pid_t *pids);
 /*input_output.c*/
 int		redirect_and_exec(t_token *current, int *io_fd, t_data *data);
-int		get_input(t_infile *ls_infile, int previous_pipe);
-int		get_output(t_outfile *ls_outfile, int pipe_output, int count_cmd);
+int		get_input(t_file *ls_infile, int previous_pipe);
+int		get_output(t_file *ls_outfile, int pipe_output, int count_cmd);
 /*BUILTINS*/
 int		cmd_is_builtin(char *path_cmd);
 int		exec_homemade_builtin(t_data *data, t_token *current);
@@ -171,11 +164,9 @@ int		parse_pipe_segments(char const *s, char c, int i);
 t_token	*token_lstnew(void);
 t_token	*token_lstlast(t_token *lst);
 void	token_lstadd_back(t_token **lst, t_token *new);
-/*linked_list_infile.c*/
-t_infile	*infile_lstnew(void);
-void	infile_lstadd_back(t_infile **lst, t_infile *new);
-/*linked_list_outfile.c*/
-t_outfile	*outfile_lstnew(void);
+/*linked_list_file.c*/
+t_file	*file_lstnew(void);
+void	file_lstadd_back(t_file **lst, t_file *new);
 /*manage_dollar*/
 void	manage_dollar_sign(t_parsing *parsing);
 /*manage_dollar_utils*/
@@ -195,10 +186,9 @@ int		prompt_check(char *prompt, t_parsing *parsing);
 /*rafter_token_utils.c*/
 char	*find_redir_file_name(char *prompt, int i);
 /*rafter_token.c*/
-int		manage_rafters(t_data *data, t_parsing *parsing, int *i, char *prompt);
+int		manage_rafters(t_data *data, int *i, char *prompt);
 /*skip_quote.c*/
 int		skip_quote(const char *str, int *i);
-void	outfile_lstadd_back(t_outfile **lst, t_outfile *new);
 /*split_whitespace_quote.c*/
 char	**split_whitespace_quotes(char const *s, char c, t_parsing *parsing);
 /*tokenisation.c*/

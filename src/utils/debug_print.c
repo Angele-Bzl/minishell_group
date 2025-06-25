@@ -67,8 +67,8 @@ void	print_tokens(t_data *data)
 	int 		k;
 	int			j;
 	t_token		*current;
-	t_infile	*cur_in;
-	t_outfile	*cur_out;
+	t_file	*cur_in;
+	t_file	*cur_out;
 
 	k = 0;
 	current = data->ls_token;
@@ -79,17 +79,14 @@ void	print_tokens(t_data *data)
 		printf("========= NODE (%d) =========\n\n", k);
 		if (current->cmd)
 		{
-			printf("Cmd address : %p\n", current->cmd);
 			i = 0;
 			while (current->cmd[i])
 			{
 				printf("Cmd %d : %s\n", i, current->cmd[i]);
-				printf("Cmd address %d : %p\n", i, current->cmd[i]);
 				i++;
 			}
 		}
 		else
-			printf("Cmd %d : NULL\n", i);
 		printf("\n");
 		printf("INFILES :\n");
 		j = 0;

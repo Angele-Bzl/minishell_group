@@ -30,10 +30,10 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 	return (OK);
 }
 
-int	get_input(t_infile *ls_infile, int previous_pipe)
+int	get_input(t_file *ls_infile, int previous_pipe)
 {
 	int		input;
-	t_infile	*current;
+	t_file	*current;
 
 	input = previous_pipe;
 	if (ls_infile->value)
@@ -58,10 +58,10 @@ int	get_input(t_infile *ls_infile, int previous_pipe)
 	return (input);
 }
 
-int	get_output(t_outfile *ls_outfile, int pipe_output, int count_cmd)
+int	get_output(t_file *ls_outfile, int pipe_output, int count_cmd)
 {
 	int			output;
-	t_outfile	*current;
+	t_file	*current;
 
 	output = pipe_output;
 	if (count_cmd == 1)

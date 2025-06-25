@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-static int get_input_single_cmd(t_infile *ls_infile, int *save_std_io)
+static int get_input_single_cmd(t_file *ls_infile, int *save_std_io)
 {
 	int	input;
-	t_infile	*current;
+	t_file	*current;
 
 	save_std_io[0] = dup(STDIN_FILENO);
 	input = STDIN_FILENO;
@@ -28,10 +28,10 @@ static int get_input_single_cmd(t_infile *ls_infile, int *save_std_io)
 	return (input);
 }
 
-static int	get_output_single_cmd(t_outfile *ls_outfile, int *save_std_io)
+static int	get_output_single_cmd(t_file *ls_outfile, int *save_std_io)
 {
 	int	output;
-	t_outfile	*current;
+	t_file	*current;
 
 	save_std_io[1] = dup(STDOUT_FILENO);
 	output = STDOUT_FILENO;

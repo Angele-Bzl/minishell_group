@@ -1,10 +1,10 @@
 # include "minishell.h"
 
-t_infile	*infile_lstnew(void)
+t_file	*file_lstnew(void)
 {
-	t_infile	*new;
+	t_file	*new;
 
-	new = malloc(sizeof (t_infile));
+	new = malloc(sizeof (t_file));
 	if (!new)
 		return (NULL);
 	new->value = NULL;
@@ -12,9 +12,9 @@ t_infile	*infile_lstnew(void)
 	return (new);
 }
 
-static t_infile	*infile_lstlast(t_infile *lst)
+static t_file	*file_lstlast(t_file *lst)
 {
-    t_infile  *last;
+    t_file  *last;
 
 	if (!lst)
 		return (NULL);
@@ -26,13 +26,13 @@ static t_infile	*infile_lstlast(t_infile *lst)
 	return (last);
 }
 
-void	infile_lstadd_back(t_infile **lst, t_infile *new)
+void	file_lstadd_back(t_file **lst, t_file *new)
 {
-	t_infile	*current;
+	t_file	*current;
 
 	if (!lst)
 		return ;
-	current = infile_lstlast(*lst);
+	current = file_lstlast(*lst);
 	if (current)
         current->next = new;
 	else
