@@ -21,6 +21,7 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 		free_array(env);
 		return (EXIT_FAILURE);
 	}
+	// ft_printf_err("pathcmd = %s\ninput = %d\noutput = %d\n", path_cmd, io_fd[0], io_fd[1]);
 	if (execve(path_cmd, current->cmd, env) == -1)
 	{
 		free_array(env);
@@ -46,21 +47,22 @@ int	get_input(t_file *ls_infile, int previous_pipe)
 			if (current->redirection == DOUBLE_LEFT)
 				input = here_doc(current->value);
 			if (input == -1)
-				perror_return(current->value, ERR);
+				return (perror_return(current->value, ERR));
 			if (current->redirection == DOUBLE_LEFT)
 				unlink(current->value);
 			if (current->next)
 				close(input);
 			current = current->next;
 		}
-		close(previous_pipe);
+		if (previous_pipe != STDIN_FILENO)
+			close(previous_pipe);
 	}
 	return (input);
 }
 
 int	get_output(t_file *ls_outfile, int pipe_output, int count_cmd)
 {
-	int			output;
+	int		output;
 	t_file	*current;
 
 	output = pipe_output;
@@ -81,7 +83,7 @@ int	get_output(t_file *ls_outfile, int pipe_output, int count_cmd)
 			if (current->redirection == DOUBLE_RIGHT)
 				output = open(current->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (output == -1)
-				perror_return(current->value, ERR);
+				return (perror_return(current->value, ERR));
 			if (current->next)
 				close(output);
 			current = current->next;

@@ -17,7 +17,7 @@ static int get_input_single_cmd(t_file *ls_infile, int *save_std_io)
 			if (current->redirection == DOUBLE_LEFT)
 				input = here_doc(current->value);
 			if (input == -1)
-				perror_return(ls_infile->value, ERR);
+				return (perror_return(ls_infile->value, ERR));
 			if (ls_infile->redirection == DOUBLE_LEFT)
 				unlink(ls_infile->value);
 			if (current->next)
@@ -45,7 +45,7 @@ static int	get_output_single_cmd(t_file *ls_outfile, int *save_std_io)
 			if (current->redirection == DOUBLE_RIGHT)
 				output = open(current->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (output == -1)
-				perror_return(ls_outfile->value, ERR);
+				return (perror_return(ls_outfile->value, ERR));
 			if (current->next)
 				close(output);
 			current = current->next;
