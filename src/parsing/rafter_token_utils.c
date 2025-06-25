@@ -8,7 +8,7 @@ char	*extract_file_name(char *prompt, int i)					// trouver le debut/fin du nom 
 	char	*file_name;
 
 	start = i;
-	while (!ft_isspace(prompt[i]) && prompt[i] != '\0')
+	while (!ft_isspace(prompt[i]) && prompt[i] != '\0' && prompt[i] != '>' && prompt[i] != '<')
 		i++;
 	end = i;
 	len = end - start;

@@ -50,7 +50,7 @@ int	manage_rafters(t_data *data, int *i, char *prompt)
 		return (-1);
 	if (check_rafter(data, file_name, prompt, *i) == -1)
 		return (-1);
-	if (prompt[*i + 1] == '<' || prompt[*i + 1] == '>')
+	if (prompt[*i + 1] == '<' || prompt[*i + 1] == '>') //pas sûr parce que <> ou ><
 		*i = *i + 1;
 	while (ft_isspace(prompt[*i]))
 		*i = *i + 1;

@@ -21,7 +21,6 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 		free_array(env);
 		return (EXIT_FAILURE);
 	}
-	// ft_printf_err("pathcmd = %s\ninput = %d\noutput = %d\n", path_cmd, io_fd[0], io_fd[1]);
 	if (execve(path_cmd, current->cmd, env) == -1)
 	{
 		free_array(env);
