@@ -101,8 +101,12 @@ typedef struct s_parsing
 	t_data	*data;
 }	t_parsing;
 
-//////////////////////////////////////// functions
+//////////////////////////////////////// global variable
 
+extern int g_sig_state;
+
+//////////////////////////////////////// functions
+void test_signal(void);
 /*EXEC*/
 /*execution.c*/
 int		execution(t_data *data);
@@ -215,5 +219,7 @@ int		ft_isspace(char c);
 /*struct_init.c*/
 int		struct_init(t_data *data, t_parsing *parsing);
 int		env_init(char **env, t_data *data);
+/*signals.c*/
+void	init_signals(void);
 
 #endif

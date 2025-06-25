@@ -72,6 +72,7 @@ FILES_UTILS =   cutstr.c\
 				free_utils.c\
 				ft_isspace.c
 FILES		=	struct_init.c\
+				signals.c\
 				main.c\
 				$(addprefix $(DIR_PARS)/,$(FILES_PARS))\
                 $(addprefix $(DIR_UTILS)/, $(FILES_UTILS))\
