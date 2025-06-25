@@ -72,9 +72,8 @@ int	exec_single_cmd(t_data *data)
 
 	io_fd[0] = get_input_single_cmd(data->ls_token->ls_infile, save_std_io);
 	io_fd[1] = get_output_single_cmd(data->ls_token->ls_outfile, save_std_io);
-	if (io_fd[0] == ERROR_SYSTEM || io_fd[1] == ERROR_SYSTEM)
+	if (io_fd[0] == ERR || io_fd[1] == ERR)
 	{
-		printf("iofd[0] = %d | iofd[1] = %d\n", io_fd[0], io_fd[1]);
 		close_free_token_env(data, io_fd[0], io_fd[1]);
 		exit(STDERR_FILENO);
 	}

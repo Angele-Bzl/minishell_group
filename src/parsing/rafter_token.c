@@ -6,13 +6,11 @@ static int	update_file(t_file *ls_file, char *file_name, t_rafter redirection)
 
 	if (ls_file && ls_file->value == NULL)
 	{
-		printf("if\n");
 		ls_file->value = file_name;
 		ls_file->redirection = redirection;
 	}
 	else
 	{
-		printf("else\n");
 		new_in_node = file_lstnew();
 		if (!new_in_node)
 			return (-1);
@@ -27,7 +25,6 @@ static int check_rafter(t_data *data, char *file_name, char *prompt, int i)
 {
 	t_token *current;
 
-	printf("check rafter\n");
 	current = token_lstlast(data->ls_token);
 	if (prompt[i] == '<' && prompt[i + 1] != '<')
 		if (update_file(current->ls_infile, file_name, SIMPLE_LEFT) == -1)
