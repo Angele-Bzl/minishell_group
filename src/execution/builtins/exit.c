@@ -28,11 +28,13 @@ unsigned long long	ft_atoull(const char *str, int *minus)
 	return (result);
 }
 
-static int	exit_no_arg(t_data *data)
+static int	exit_no_arg(t_data *data, int *io_fd)
 {
 	free_token(data->ls_token);
 	free_env(data->ls_env);
-	exit(0);
+	(void)io_fd;
+	// close_all(io_fd[0], io_fd[1]);
+	exit(OK);
 }
 
 int	str_is_digit(char *arg)
@@ -78,12 +80,14 @@ static long long	check_valid_arg(char *arg)
 	return (arg_ull * minus);
 }
 
-static int	exit_arg(t_data *data, long long exit_code)
+static int	exit_arg(t_data *data, int *io_fd, long long exit_code)
 {
 	int	exit_255;
 
 	free_token(data->ls_token);
 	free_env(data->ls_env);
+	(void)io_fd;
+	// close_all(io_fd[0], io_fd[1]);
 	exit_255 = exit_code % 256;
 	if (exit_255 < 0)
 	{
@@ -92,7 +96,7 @@ static int	exit_arg(t_data *data, long long exit_code)
 	exit(exit_255);
 }
 
-int	exec_exit(t_data *data, t_token *cmds)
+int	exec_exit(t_data *data, t_token *cmds, int *io_fd)
 {
 	long long	exit_code;
 
@@ -103,13 +107,13 @@ int	exec_exit(t_data *data, t_token *cmds)
 	}
 	if (!cmds->cmd[1])
 	{
-		exit_no_arg(data);
+		exit_no_arg(data, io_fd);
 	}
 	exit_code = check_valid_arg(cmds->cmd[1]);
 	if (exit_code == -1)
 	{
 		return (0);
 	}
-	exit_arg(data, exit_code);
+	exit_arg(data, io_fd, exit_code);
 	return (1);
 }

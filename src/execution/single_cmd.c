@@ -59,6 +59,7 @@ static int	reset_dup2(t_data *data, int *save_std_io)
 		return (perror_return("dup2", ERR));
 	if (dup2(save_std_io[1], STDOUT_FILENO) == -1)
 		return (perror_return("dup2", ERR));
+	close_all(save_std_io[0], save_std_io[1]);
 	return (OK);
 }
 
@@ -75,10 +76,13 @@ int	exec_single_cmd(t_data *data)
 		close_free_token_env(data, io_fd[0], io_fd[1]);
 		exit(STDERR_FILENO);
 	}
+	if (!ft_strncmp(data->ls_token->cmd[0], "exit\0", 5))
+		close_all(save_std_io[0], save_std_io[1]);
 	return_value = redirect_and_exec(data->ls_token, io_fd, data);
 	if (return_value != OK)
 	{
 		close_free_token_env(data, io_fd[0], io_fd[1]);
+		close_all(save_std_io[0], save_std_io[1]);
 		if (return_value == ERROR_PROMPT) // possible ?
 			return (ERR);
 		else if (return_value == ERROR_SYSTEM)
@@ -87,7 +91,9 @@ int	exec_single_cmd(t_data *data)
 	if (reset_dup2(data, save_std_io) != OK)
 	{
 		close_free_token_env(data, io_fd[0], io_fd[1]);
+		close_all(save_std_io[0], save_std_io[1]);
 		exit(STDERR_FILENO);
 	}
+	close_all(io_fd[0], io_fd[1]);
 	return (OK);
 }

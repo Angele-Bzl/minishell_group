@@ -11,7 +11,7 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 		return (perror_return("dup2", ERR));
 	close_all(io_fd[0], io_fd[1]);
 	if (cmd_is_builtin(current->cmd[0]))
-		return (exec_homemade_builtin(data, current));
+		return (exec_homemade_builtin(data, current, io_fd));
 	env = get_env_in_tab(data->ls_env);
 	if (!env)
 		return (msg_return(MALLOC, STDERR_FILENO, EXIT_FAILURE));
@@ -30,12 +30,12 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 	return (OK);
 }
 
-int	get_input(t_file *ls_infile, int previous_pipe)
+int	get_input(t_file *ls_infile, int previous_output)
 {
 	int		input;
 	t_file	*current;
 
-	input = previous_pipe;
+	input = previous_output;
 	if (ls_infile->value)
 	{
 		current = ls_infile;
@@ -51,8 +51,8 @@ int	get_input(t_file *ls_infile, int previous_pipe)
 				close(input);
 			current = current->next;
 		}
-		if (previous_pipe != STDIN_FILENO)
-			close(previous_pipe);
+		if (previous_output != STDIN_FILENO)
+			close(previous_output);
 	}
 	return (input);
 }
