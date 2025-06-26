@@ -37,6 +37,7 @@ FILES_EXEC  =   execution.c\
 				children.c\
 				input_output.c\
 				clean.c\
+				manage_heredoc.c\
 				$(addprefix $(DIR_BUILTINS)/, $(FILES_BUILT))
 
 FILES_BUILT	=	utils_builtin.c\
@@ -55,7 +56,6 @@ FILES_PARS  =   cmd_token_utils.c\
 				linked_list_file.c\
 				linked_list_token.c\
 				manage_dollar_utils.c\
-				manage_heredoc.c\
 				manage_dollar.c\
                 manage_quotes.c\
 				parsing.c\

@@ -33,10 +33,11 @@ int here_doc(char *eof)
         return (0);
     readline_heredoc(fd, eof);
     close (fd);
+
 	/*read*/
-    // fd = open(".infile.tmp", O_RDONLY);
-    // if (fd == -1)
-    //     return (0);
-    // unlink(".infile.tmp");
+    fd = open(".infile.tmp", O_RDONLY);
+    if (fd == -1)
+        return (0);
+    unlink(".infile.tmp");
     return (fd);
 }

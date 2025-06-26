@@ -47,8 +47,6 @@ int	get_input(t_file *ls_infile, int previous_pipe)
 				input = here_doc(current->value);
 			if (input == -1)
 				return (perror_return(current->value, ERR));
-			if (current->redirection == DOUBLE_LEFT)
-				unlink(current->value);
 			if (current->next)
 				close(input);
 			current = current->next;

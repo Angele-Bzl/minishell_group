@@ -18,8 +18,6 @@ static int get_input_single_cmd(t_file *ls_infile, int *save_std_io)
 				input = here_doc(current->value);
 			if (input == -1)
 				return (perror_return(ls_infile->value, ERR));
-			if (ls_infile->redirection == DOUBLE_LEFT)
-				unlink(ls_infile->value);
 			if (current->next)
 				close(input);
 			current = current->next;
