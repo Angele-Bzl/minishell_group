@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], t_token *current)
+int	manage_child(t_data *data, int prev_out, int pipe_fd[2], t_token *current)
 {
 	int		io_fd[2];
 
-	io_fd[0] = get_input(current->ls_infile, previous_pipe);
+	io_fd[0] = get_input(current->ls_infile, prev_out);
 	io_fd[1] = get_output(current->ls_outfile, pipe_fd[1], count_cmds(current));
 	if (io_fd[0] == ERR || io_fd[1] == ERR)
 	{
@@ -16,20 +16,20 @@ int	manage_child(t_data *data, int previous_pipe, int pipe_fd[2], t_token *curre
 		close_all(io_fd[0], io_fd[1]);
 		return (EXIT_FAILURE);
 	}
-	return (IS_BUILTIN); //si on arrive ici ça veut dire qu'on est passé par un builtin donc OK, mais on exit quand meme apres
+	return (IS_BUILTIN);
 }
 
 int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
 {
-	int	previous_pipe;
-	int	return_value;
+	int			previous_output;
+	int			return_value;
 	static int	i = 0;
 
-	previous_pipe = pipe_fd[0];
+	previous_output = pipe_fd[0];
 	if (count_cmds(data->ls_token) - count_cmds(current) == 0)
 	{
 		i = 0;
-		previous_pipe = STDIN_FILENO;
+		previous_output = STDIN_FILENO;
 	}
 	if (pipe(pipe_fd) == -1)
 	{
@@ -45,12 +45,12 @@ int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
 	if (pids[i] == 0)
 	{
 		close(pipe_fd[0]);
-		return_value = manage_child(data, previous_pipe, pipe_fd, current);
-		close_free_token_env_pids(data, previous_pipe, pipe_fd[1], pids);
+		return_value = manage_child(data, previous_output, pipe_fd, current);
+		close_free_token_env_pids(data, previous_output, pipe_fd[1], pids);
 		exit(return_value);
 	}
-	if (previous_pipe != STDIN_FILENO)
-		close(previous_pipe);
+	if (previous_output != STDIN_FILENO)
+		close(previous_output);
 	close(pipe_fd[1]);
 	i++;
 	return (OK);

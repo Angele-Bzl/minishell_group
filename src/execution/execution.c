@@ -13,6 +13,11 @@ int	execution(t_data *data)
 		msg_exit(MALLOC, STDERR_FILENO, EXIT_FAILURE);
 	if (loop_children(data, pids) == ERR)
 		return (ERR);
-	wait_for_pid(data->ls_token, pids);
+	if (wait_for_pid(data->ls_token, pids) == ERR)
+	{
+		free(pids);
+		exit(EXIT_FAILURE);
+	}
+	free(pids);
 	return (OK);
 }

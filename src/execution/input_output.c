@@ -5,21 +5,19 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 	char	**env;
 	char	*path_cmd;
 
-	if (dup2(io_fd[0], STDIN_FILENO) == -1)
-		return (perror_return("dup2", ERR));
-	if (dup2(io_fd[1], STDOUT_FILENO) == -1)
-		return (perror_return("dup2", ERR));
+	if (dup2(io_fd[0], 0) == -1 || dup2(io_fd[1], 1) == -1)
+		return (perror_return("dup2", ERROR_SYSTEM));
 	close_all(io_fd[0], io_fd[1]);
 	if (cmd_is_builtin(current->cmd[0]))
 		return (exec_homemade_builtin(data, current));
 	env = get_env_in_tab(data->ls_env);
 	if (!env)
-		return (msg_return(MALLOC, STDERR_FILENO, EXIT_FAILURE));
+		return (msg_return(MALLOC, STDERR_FILENO, ERR));
 	path_cmd = find_cmd(env, current->cmd[0]);
 	if (!path_cmd)
 	{
 		free_array(env);
-		return (EXIT_FAILURE);
+		return (ERR);
 	}
 	if (execve(path_cmd, current->cmd, env) == -1)
 	{
@@ -30,12 +28,12 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 	return (OK);
 }
 
-int	get_input(t_file *ls_infile, int previous_pipe)
+int	get_input(t_file *ls_infile, int previous_output)
 {
 	int		input;
 	t_file	*current;
 
-	input = previous_pipe;
+	input = previous_output;
 	if (ls_infile->value)
 	{
 		current = ls_infile;
@@ -46,22 +44,21 @@ int	get_input(t_file *ls_infile, int previous_pipe)
 			if (current->redirection == DOUBLE_LEFT)
 				input = here_doc(current->value);
 			if (input == -1)
-				perror_return(current->value, ERR);
-			if (current->redirection == DOUBLE_LEFT)
-				unlink(current->value);
+				return (perror_return(current->value, ERR));
 			if (current->next)
 				close(input);
 			current = current->next;
 		}
-		close(previous_pipe);
+		if (previous_output != STDIN_FILENO)
+			close(previous_output);
 	}
 	return (input);
 }
 
 int	get_output(t_file *ls_outfile, int pipe_output, int count_cmd)
 {
-	int			output;
-	t_file	*current;
+	int		output;
+	t_file	*curr;
 
 	output = pipe_output;
 	if (count_cmd == 1)
@@ -73,18 +70,18 @@ int	get_output(t_file *ls_outfile, int pipe_output, int count_cmd)
 	{
 		if (count_cmd != 1)
 			close(pipe_output);
-		current = ls_outfile;
-		while (current)
+		curr = ls_outfile;
+		while (curr)
 		{
-			if (current->redirection == SIMPLE_RIGHT)
-				output = open(current->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (current->redirection == DOUBLE_RIGHT)
-				output = open(current->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (curr->redirection == SIMPLE_RIGHT)
+				output = open(curr->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (curr->redirection == DOUBLE_RIGHT)
+				output = open(curr->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (output == -1)
-				perror_return(current->value, ERR);
-			if (current->next)
+				return (perror_return(curr->value, ERR));
+			if (curr->next)
 				close(output);
-			current = current->next;
+			curr = curr->next;
 		}
 	}
 	return (output);

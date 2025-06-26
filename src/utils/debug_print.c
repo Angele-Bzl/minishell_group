@@ -86,7 +86,6 @@ void	print_tokens(t_data *data)
 				i++;
 			}
 		}
-		else
 		printf("\n");
 		printf("INFILES :\n");
 		j = 0;

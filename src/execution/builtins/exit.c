@@ -1,38 +1,11 @@
 #include "minishell.h"
 #include <limits.h>
 
-static void	go_to_num(const char *str, int *i, int *minus)
-{
-	if (str[*i] == '+')
-		*i = *i + 1;
-	else if (str[*i] == '-')
-	{
-		*minus = -1;
-		*i = *i + 1;
-	}
-}
-
-unsigned long long	ft_atoull(const char *str, int *minus)
-{
-	unsigned long long	result;
-	int					i;
-
-	i = 0;
-	result = 0;
-	go_to_num(str, &i, minus);
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		result = (result * 10) + (str[i] - 48);
-		i++;
-	}
-	return (result);
-}
-
 static int	exit_no_arg(t_data *data)
 {
 	free_token(data->ls_token);
 	free_env(data->ls_env);
-	exit(0);
+	exit(OK);
 }
 
 int	str_is_digit(char *arg)

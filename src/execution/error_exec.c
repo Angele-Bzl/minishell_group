@@ -14,10 +14,10 @@ int	msg_return(char *message, int fd, int return_value)
 	return (return_value);
 }
 
-char	*msg_return_str(char *message, int fd, char *return_value)
+char	*msg_return_str(char *message, char *arg, char *return_value)
 {
 	if (message)
-		ft_putendl_fd(message, fd);
+		ft_printf_err(message, arg);
 	return (return_value);
 }
 

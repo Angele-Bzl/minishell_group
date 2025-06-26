@@ -24,8 +24,12 @@
 # include "../libft/libft.h"
 
 # define MALLOC "Error: malloc failed."
-# define NO_FILE "Error: No such file or directory."
-# define NO_PATH "%s: No path to the command.\n"
+# define NO_FILE "Error: no such file or directory."
+# define NO_CMD "%s: command not found.\n"
+# define NO_PATH "Error: no path to the command."
+# define ERR_PWD "Error: update_pwd failed"
+# define ERR_OLDPWD "Error: update_oldpwd failed"
+# define TMP ".infile.tmp"
 # define IS_BUILTIN 42
 
 /////////////////////////////////////////// enum
@@ -128,7 +132,7 @@ void	close_free_array_str(int fd0, int fd1, char **env, char *path);
 /*error_exec.c*/
 void	msg_exit(char *message, int fd, int exit_value);
 int		msg_return(char *message, int fd, int return_value);
-char	*msg_return_str(char *message, int fd, char *return_value);
+char	*msg_return_str(char *message, char *arg, char *return_value);
 int		perror_return(char *message, int return_value);
 int		msg_return_close_all(int *fds, char *message, int fd, int return_value);
 /*children.c*/
@@ -148,6 +152,8 @@ void	exec_env(t_env *ls_env);
 void	exec_unset(t_env **ls_env, char **cmds);
 int		exec_cd(char **cmd, t_env *list_env);
 int		exec_exit(t_data *data, t_token *cmds);
+/*atoull.c*/
+unsigned long long	ft_atoull(const char *str, int *minus);
 
 /*PARSING*/
 /*cmd_token_utils.c*/
@@ -188,9 +194,9 @@ char	**pipe_segmentation(t_parsing *parsing, char c);
 /*prompt_check.c*/
 int		prompt_check(char *prompt, t_parsing *parsing);
 /*rafter_token_utils.c*/
-char	*find_redir_file_name(char *prompt, int i);
+char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing);
 /*rafter_token.c*/
-int		manage_rafters(t_data *data, int *i, char *prompt);
+int		manage_rafters(t_data *data, int *i, char *prompt, t_parsing *parsing);
 /*skip_quote.c*/
 int		skip_quote(const char *str, int *i);
 /*split_whitespace_quote.c*/
