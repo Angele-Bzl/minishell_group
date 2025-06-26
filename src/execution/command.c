@@ -11,9 +11,7 @@ static int	find_path_in_env(char **env)
 			return (i);
 		i++;
 	}
-	// ft_putendl_fd("Error: No such file or directory", STDERR_FILENO);
 	return (ERR);
-	// return (msg_return("Error: No such file or directory", STDERR_FILENO, ERR));
 }
 
 static void	fill_tab_null(char **table, int len)
@@ -117,9 +115,6 @@ char	*find_cmd(char **env, char *cmd)
 	path_cmd = check_if_cmd_exists(hypothetical_path_cmd, env_path);
 	free_array(env_path);
 	if (!path_cmd)
-	{
-		ft_printf_err(NO_PATH, cmd);
-		// return (msg_return(NO_PATH, STDERR_FILENO, NULL));
-	}
+		return (msg_return(NO_PATH, STDERR_FILENO, NULL));
 	return (path_cmd);
 }

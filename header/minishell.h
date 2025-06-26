@@ -26,6 +26,9 @@
 # define MALLOC "Error: malloc failed."
 # define NO_FILE "Error: No such file or directory."
 # define NO_PATH "%s: No path to the command.\n"
+# define ERR_PWD "Error: update_pwd failed"
+# define ERR_OLDPWD "Error: update_oldpwd failed"
+# define TMP ".infile.tmp"
 # define IS_BUILTIN 42
 
 /////////////////////////////////////////// enum
@@ -135,7 +138,7 @@ int		get_input(t_file *ls_infile, int previous_pipe);
 int		get_output(t_file *ls_outfile, int pipe_output, int count_cmd);
 /*BUILTINS*/
 int		cmd_is_builtin(char *path_cmd);
-int		exec_homemade_builtin(t_data *data, t_token *current, int *io_fd);
+int		exec_homemade_builtin(t_data *data, t_token *current);
 int		var_cmp(char *s1, char *s2);
 void	exec_echo(char **cmd);
 int		exec_export(t_env *ls_env, char **cmds);
@@ -143,7 +146,9 @@ int		exec_pwd(void);
 void	exec_env(t_env *ls_env);
 void	exec_unset(t_env **ls_env, char **cmds);
 int		exec_cd(char **cmd, t_env *list_env);
-int		exec_exit(t_data *data, t_token *cmds, int *io_fd);
+int		exec_exit(t_data *data, t_token *cmds);
+/*atoull.c*/
+unsigned long long	ft_atoull(const char *str, int *minus);
 
 /*PARSING*/
 /*cmd_token_utils.c*/

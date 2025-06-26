@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-int	manage_child(t_data *data, int previous_output, int pipe_fd[2], t_token *current)
+int	manage_child(t_data *data, int prev_out, int pipe_fd[2], t_token *current)
 {
 	int		io_fd[2];
 
-	io_fd[0] = get_input(current->ls_infile, previous_output);
+	io_fd[0] = get_input(current->ls_infile, prev_out);
 	io_fd[1] = get_output(current->ls_outfile, pipe_fd[1], count_cmds(current));
 	if (io_fd[0] == ERR || io_fd[1] == ERR)
 	{
@@ -21,8 +21,8 @@ int	manage_child(t_data *data, int previous_output, int pipe_fd[2], t_token *cur
 
 int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
 {
-	int	previous_output;
-	int	return_value;
+	int			previous_output;
+	int			return_value;
 	static int	i = 0;
 
 	previous_output = pipe_fd[0];

@@ -38,6 +38,7 @@ FILES_EXEC  =   execution.c\
 				input_output.c\
 				clean.c\
 				manage_heredoc.c\
+				atoull.c\
 				$(addprefix $(DIR_BUILTINS)/, $(FILES_BUILT))
 
 FILES_BUILT	=	utils_builtin.c\

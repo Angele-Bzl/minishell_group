@@ -1,39 +1,10 @@
 #include "minishell.h"
 #include <limits.h>
 
-static void	go_to_num(const char *str, int *i, int *minus)
-{
-	if (str[*i] == '+')
-		*i = *i + 1;
-	else if (str[*i] == '-')
-	{
-		*minus = -1;
-		*i = *i + 1;
-	}
-}
-
-unsigned long long	ft_atoull(const char *str, int *minus)
-{
-	unsigned long long	result;
-	int					i;
-
-	i = 0;
-	result = 0;
-	go_to_num(str, &i, minus);
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		result = (result * 10) + (str[i] - 48);
-		i++;
-	}
-	return (result);
-}
-
-static int	exit_no_arg(t_data *data, int *io_fd)
+static int	exit_no_arg(t_data *data)
 {
 	free_token(data->ls_token);
 	free_env(data->ls_env);
-	(void)io_fd;
-	// close_all(io_fd[0], io_fd[1]);
 	exit(OK);
 }
 
@@ -80,14 +51,12 @@ static long long	check_valid_arg(char *arg)
 	return (arg_ull * minus);
 }
 
-static int	exit_arg(t_data *data, int *io_fd, long long exit_code)
+static int	exit_arg(t_data *data, long long exit_code)
 {
 	int	exit_255;
 
 	free_token(data->ls_token);
 	free_env(data->ls_env);
-	(void)io_fd;
-	// close_all(io_fd[0], io_fd[1]);
 	exit_255 = exit_code % 256;
 	if (exit_255 < 0)
 	{
@@ -96,7 +65,7 @@ static int	exit_arg(t_data *data, int *io_fd, long long exit_code)
 	exit(exit_255);
 }
 
-int	exec_exit(t_data *data, t_token *cmds, int *io_fd)
+int	exec_exit(t_data *data, t_token *cmds)
 {
 	long long	exit_code;
 
@@ -107,13 +76,13 @@ int	exec_exit(t_data *data, t_token *cmds, int *io_fd)
 	}
 	if (!cmds->cmd[1])
 	{
-		exit_no_arg(data, io_fd);
+		exit_no_arg(data);
 	}
 	exit_code = check_valid_arg(cmds->cmd[1]);
 	if (exit_code == -1)
 	{
 		return (0);
 	}
-	exit_arg(data, io_fd, exit_code);
+	exit_arg(data, exit_code);
 	return (1);
 }

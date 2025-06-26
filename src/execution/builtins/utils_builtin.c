@@ -19,7 +19,7 @@ int	cmd_is_builtin(char *path_cmd)
 	return (0);
 }
 
-int	exec_homemade_builtin(t_data *data, t_token *current, int *io_fd)
+int	exec_homemade_builtin(t_data *data, t_token *current)
 {
 	if (!ft_strncmp(current->cmd[0], "echo\0", 5))
 		exec_echo(current->cmd);
@@ -34,7 +34,7 @@ int	exec_homemade_builtin(t_data *data, t_token *current, int *io_fd)
 	if (!ft_strncmp(current->cmd[0], "env\0", 4))
 		exec_env(data->ls_env);
 	if (!ft_strncmp(current->cmd[0], "exit\0", 5))
-		exec_exit(data, current, io_fd);
+		exec_exit(data, current);
 	return (OK);
 }
 

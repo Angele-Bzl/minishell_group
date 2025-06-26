@@ -7,7 +7,7 @@ static void	update_ls_env_head(t_env **ls_env, t_env **current)
 	*current = *ls_env;
 }
 
-static void	update_pointers_and_free(t_env *previous, t_env **ls_env, t_env *current)
+static void	update_pointers(t_env *previous, t_env **ls_env, t_env *current)
 {
 	if (previous == NULL)
 		update_ls_env_head(ls_env, &current);
@@ -33,7 +33,7 @@ void	exec_unset(t_env **ls_env, char **cmds)
 		{
 			if (!ft_strncmp(current->line, cmds[i], ft_strlen(cmds[i])))
 			{
-				update_pointers_and_free(previous, ls_env, current);
+				update_pointers(previous, ls_env, current);
 				return ;
 			}
 			i++;
