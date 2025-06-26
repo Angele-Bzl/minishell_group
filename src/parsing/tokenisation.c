@@ -12,10 +12,7 @@ static int	find_and_store_all_rafters(t_data *data, t_parsing *parsing, char *pr
 		if (prompt[i] == '<' || prompt[i] == '>')
 		{
 			if (manage_rafters(data, &i, prompt, parsing) == -1)
-			{
-				// parsing->errcode = ERR_MALLOC; //ca peut aussi etre une error de syntaxe
 				return (-1);
-			}
 			while (ft_isspace(prompt[i]) || prompt[i] == '<' ||  prompt[i] == '>')
 				i++;
 		}

@@ -27,6 +27,7 @@ t_token	*token_lstnew(void)
 	new->ls_outfile->redirection = DEFAULT;
 	new->ls_outfile->value = NULL;
 	new->next = NULL;
+	new->cmd = NULL;
 	return (new);
 }
 

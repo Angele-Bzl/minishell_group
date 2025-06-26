@@ -9,6 +9,8 @@ static void	errcode_check_in_parsing(t_parsing *parsing)
 	}
 	if (parsing->errcode == ERR_PROMPT)											// on free + continue avec new prompt
 		free_parsing(parsing);
+	if (parsing->errcode == ALL_OK)
+		free_array(parsing->prompt_tab);
 }
 
 void	ft_parsing(t_data *data, t_parsing *parsing)
@@ -21,7 +23,6 @@ void	ft_parsing(t_data *data, t_parsing *parsing)
 	if (parsing->errcode == ALL_OK)
 		tokenisation(data, parsing);
 	errcode_check_in_parsing(parsing);
-	free_array(parsing->prompt_tab);
 }
 
 // si result = MALLOC_ERROR(-42), on exit après free.
