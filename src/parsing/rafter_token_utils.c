@@ -25,23 +25,26 @@ char	*extract_file_name(char *prompt, int i)					// trouver le debut/fin du nom 
 	return (file_name);
 }
 
-char	*find_redir_file_name(char *prompt, int i)				// on avance jusqu'au début du nom pour l'extraire.
+char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing)				// on avance jusqu'au début du nom pour l'extraire.
 {
 	char	*file_name;
 
 	i++;
-	if (prompt[i] == '<' || prompt[i] == '>')
+	if (prompt[i] == prompt[i - 1])
 		i++;
 	while (ft_isspace(prompt[i]))
 		i++;
 	if (prompt[i] == '<' || prompt[i] == '>')
 	{
-		printf("bash: syntax error near unexpected token '%c'\n", prompt[i]);
-		return (NULL);
+		ft_printf_err("bash: syntax error near unexpected token '%c'\n", prompt[i]);
+		parsing->errcode = ERR_PROMPT;
+		return (NULL); //error syntax
 	}
 	file_name = extract_file_name(prompt, i);
 	if (!file_name)
-		return (NULL);
+	{
+		parsing->errcode = ERR_MALLOC;
+		return (NULL); //error malloc
+	}
 	return (file_name);
 }
-

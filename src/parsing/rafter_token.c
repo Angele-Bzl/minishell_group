@@ -41,15 +41,19 @@ static int check_rafter(t_data *data, char *file_name, char *prompt, int i)
 	return (0);
 }
 
-int	manage_rafters(t_data *data, int *i, char *prompt)
+int	manage_rafters(t_data *data, int *i, char *prompt, t_parsing *parsing)
 {
 	char	*file_name;
 
-	file_name = find_redir_file_name(prompt, *i);
+	file_name = find_redir_file_name(prompt, *i, parsing);
 	if (file_name == NULL)
 		return (-1);
 	if (check_rafter(data, file_name, prompt, *i) == -1)
+	{
+		parsing->errcode = ERR_MALLOC;
 		return (-1);
+	}
+	// if (prompt[*i] == prompt[*i + 1])
 	if (prompt[*i + 1] == '<' || prompt[*i + 1] == '>') //pas sûr parce que <> ou ><
 		*i = *i + 1;
 	while (ft_isspace(prompt[*i]))

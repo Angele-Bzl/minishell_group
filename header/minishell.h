@@ -184,9 +184,9 @@ char	**pipe_segmentation(t_parsing *parsing, char c);
 /*prompt_check.c*/
 int		prompt_check(char *prompt, t_parsing *parsing);
 /*rafter_token_utils.c*/
-char	*find_redir_file_name(char *prompt, int i);
+char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing);
 /*rafter_token.c*/
-int		manage_rafters(t_data *data, int *i, char *prompt);
+int		manage_rafters(t_data *data, int *i, char *prompt, t_parsing *parsing);
 /*skip_quote.c*/
 int		skip_quote(const char *str, int *i);
 /*split_whitespace_quote.c*/
