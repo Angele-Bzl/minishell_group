@@ -21,6 +21,7 @@ int main(int ac, char **av, char **env)
 			// print_tokens(&data);
 			if (parsing.errcode == OK)
 			{
+				printf("exec\n");
 				execution(&data);
 				free_token(data.ls_token);
 			}

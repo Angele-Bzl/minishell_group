@@ -50,10 +50,7 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 	while (current)
 	{
 		if (waitpid(pid[i], &status, 0) == -1)
-		{
-			perror("waitpid");
-			exit(EXIT_FAILURE);
-		}
+			return (perror_return("waitpid", ERR));
 		i++;
 		current = current->next;
 	}
