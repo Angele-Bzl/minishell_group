@@ -5,7 +5,7 @@ static int	find_path_in_env(char **env)
 	int	i;
 
 	i = 0;
-	while (env[i])
+	while (env && env[i])
 	{
 		if (ft_strnstr(env[i], "PATH=", 5))
 			return (i);
@@ -90,31 +90,31 @@ char	*find_cmd(char **env, char *cmd)
 		return (cmd);
 	i = find_path_in_env(env);
 	if (i == ERR)
-		return (msg_return_str(NO_FILE, STDERR_FILENO, NULL));
+		return (msg_return_str(NO_FILE, NULL, NULL));
 	env_path = ft_split(env[i], ':');
 	if (!env_path)
-		return (msg_return_str(MALLOC, STDERR_FILENO, NULL));
+		return (msg_return_str(MALLOC,NULL, NULL));
 	env_path[0] = ft_strtrim_improved(env_path[0], "PATH=");
 	if (!env_path[0])
 	{
 		free_array(env_path);
-		return (msg_return_str(MALLOC, STDERR_FILENO, NULL));
+		return (msg_return_str(MALLOC, NULL, NULL));
 	}
 	hypothetical_path_cmd = malloc(sizeof (char *) * tablen(env_path));
 	if (!hypothetical_path_cmd)
 	{
 		free_array(env_path);
-		return (msg_return_str(MALLOC, STDERR_FILENO, NULL));
+		return (msg_return_str(MALLOC, NULL, NULL));
 	}
 	fill_tab_null(hypothetical_path_cmd, tablen(env_path));
 	if (init_hyp_path(hypothetical_path_cmd, cmd, env_path) != OK)
 	{
 		free_array(env_path);
-		return (msg_return_str(MALLOC, STDERR_FILENO, NULL));
+		return (msg_return_str(MALLOC, NULL, NULL));
 	}
 	path_cmd = check_if_cmd_exists(hypothetical_path_cmd, env_path);
 	free_array(env_path);
 	if (!path_cmd)
-		return (msg_return(NO_PATH, STDERR_FILENO, NULL));
+		return (msg_return_str(NO_CMD, cmd, NULL));
 	return (path_cmd);
 }

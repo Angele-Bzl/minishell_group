@@ -24,8 +24,9 @@
 # include "../libft/libft.h"
 
 # define MALLOC "Error: malloc failed."
-# define NO_FILE "Error: No such file or directory."
-# define NO_PATH "%s: No path to the command.\n"
+# define NO_FILE "Error: no such file or directory."
+# define NO_CMD "%s: command not found.\n"
+# define NO_PATH "Error: no path to the command."
 # define ERR_PWD "Error: update_pwd failed"
 # define ERR_OLDPWD "Error: update_oldpwd failed"
 # define TMP ".infile.tmp"
@@ -127,7 +128,7 @@ void	close_free_array_str(int fd0, int fd1, char **env, char *path);
 /*error_exec.c*/
 void	msg_exit(char *message, int fd, int exit_value);
 int		msg_return(char *message, int fd, int return_value);
-char	*msg_return_str(char *message, int fd, char *return_value);
+char	*msg_return_str(char *message, char *arg, char *return_value);
 int		perror_return(char *message, int return_value);
 int		msg_return_close_all(int *fds, char *message, int fd, int return_value);
 /*children.c*/
