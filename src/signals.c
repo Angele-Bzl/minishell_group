@@ -4,7 +4,7 @@ int g_sig_state = 0;
 
 void	handle_sigint(int sig)
 {
-	printf("%d\n", g_sig_state);
+	// printf("%d\n", g_sig_state);
 	(void)sig;
 	if (g_sig_state == 0)
 	{
