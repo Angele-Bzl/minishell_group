@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 // void	close_all(t_data *data)
 // {
@@ -24,7 +24,6 @@ void	free_parsing(t_parsing *parsing)
 
 void	close_free_maybe_exit(t_parsing *parsing, int exitcode)
 {
-	//close_all(parsing->data);
 	free_parsing(parsing);
 	if (exitcode)
 	{

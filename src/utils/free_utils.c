@@ -18,7 +18,7 @@ char	*free_array(char **array)
 
 void	free_env(t_env *env)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	while (env)
 	{

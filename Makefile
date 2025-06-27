@@ -31,6 +31,7 @@ LFLAGS		=	-lreadline -lncurses
 #####################################################
 FILES_EXEC  =   execution.c\
 				command.c\
+				utils_cmd.c\
 				utils_exec.c\
 				single_cmd.c\
 				error_exec.c\
