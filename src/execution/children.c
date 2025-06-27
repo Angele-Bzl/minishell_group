@@ -19,23 +19,33 @@ int	manage_child(t_data *data, int prev_out, int pipe_fd[2], t_token *current)
 	return (IS_BUILTIN);
 }
 
-int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
+static int	set_up_pipe(int *i, int *pipe_fd, t_token *token, t_token *current)
 {
-	int				previous_output;
-	int				return_value;
-	static size_t	i = 0;
+	int	previous_output;
 
 	previous_output = pipe_fd[0];
-	if (count_cmds(data->ls_token) - count_cmds(current) == 0)
+	if (count_cmds(token) - count_cmds(current) == 0)
 	{
-		i = 0;
+		*i = 0;
 		previous_output = STDIN_FILENO;
 	}
 	if (pipe(pipe_fd) == -1)
 	{
-		i++;
-		return (perror_return("Pipe", ERR));
+		*i = *i + 1;
+		return (ERR);
 	}
+	return (previous_output);
+}
+
+int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
+{
+	int			previous_output;
+	int			return_value;
+	static int	i = 0;
+
+	previous_output = set_up_pipe(&i, pipe_fd, data->ls_token, current);
+	if (previous_output == ERR)
+		perror_return("Pipe", ERR);
 	pids[i] = fork();
 	if (pids[i] == -1)
 	{
@@ -58,7 +68,7 @@ int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
 
 int	loop_children(t_data *data, pid_t *pids)
 {
-	int	pipe_fd[2];
+	int		pipe_fd[2];
 	t_token	*current;
 
 	current = data->ls_token;

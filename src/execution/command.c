@@ -1,31 +1,5 @@
 #include "minishell.h"
 
-static size_t	find_path_in_env(char **env)
-{
-	size_t	i;
-
-	i = 0;
-	while (env && env[i])
-	{
-		if (ft_strnstr(env[i], "PATH=", 5))
-			return (i);
-		i++;
-	}
-	return (ERR);
-}
-
-static void	fill_tab_null(char **table, size_t len)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < len)
-	{
-		table[i] = NULL;
-		i++;
-	}
-}
-
 static int	init_hyp_path(char **hyp_path, char *cmd, char **env_path)
 {
 	char	*path_w_backslash;
@@ -77,13 +51,13 @@ static char	*check_if_cmd_exists(char **hypothetical_path_cmd, char **path)
 	return (real_path);
 }
 
-static char *return_err_cmd_malloc(char **env_path)
+static char	*return_err_cmd_malloc(char **env_path)
 {
 	free_array(env_path);
 	return (msg_return_str(MALLOC, NULL, NULL));
 }
 
-static char **hypothetical_path(char **env_path, char *cmd)
+static char	**hypothetical_path(char **env_path, char *cmd)
 {
 	char	**hypothetical_path_cmd;
 
@@ -110,7 +84,7 @@ char	*find_cmd(char **env, char *cmd)
 		return (msg_return_str(NO_FILE, NULL, NULL));
 	env_path = ft_split(env[i], ':');
 	if (!env_path)
-		return (msg_return_str(MALLOC,NULL, NULL));
+		return (msg_return_str(MALLOC, NULL, NULL));
 	env_path[0] = ft_strtrim_improved(env_path[0], "PATH=");
 	if (!env_path[0])
 		return_err_cmd_malloc(env_path);

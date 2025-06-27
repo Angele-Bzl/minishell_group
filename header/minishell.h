@@ -113,6 +113,9 @@ typedef struct s_parsing
 int		execution(t_data *data);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd);
+/*itils_cmd.c*/
+size_t	find_path_in_env(char **env);
+void	fill_tab_null(char **table, size_t len);
 /*utils_exec.c*/
 char	*ft_strtrim_improved(char *s1, char const *set);
 size_t	tablen(char **table);
@@ -131,6 +134,7 @@ void	msg_exit(char *message, char *arg, int exit_value);
 int		msg_return(char *message, char *arg, int return_value);
 char	*msg_return_str(char *message, char *arg, char *return_value);
 int		perror_return(char *message, int return_value);
+int	end_single_cmd(t_data *data, int *io_fd, int *save, int return_val);
 /*children.c*/
 int		loop_children(t_data *data, pid_t *pids);
 /*input_output.c*/
