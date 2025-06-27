@@ -78,8 +78,8 @@ typedef struct s_token
 {
 	struct s_token	*next;
 	char			**cmd;
-	t_file		*ls_infile;
-	t_file		*ls_outfile;
+	t_file			*ls_infile;
+	t_file			*ls_outfile;
 }	t_token;
 
 typedef struct s_data
@@ -91,19 +91,19 @@ typedef struct s_data
 
 typedef struct s_parsing
 {
-	int		pipe_seg;
-	int		p_index;
-	int		word_length;
-	char	skip;
-	char	*prompt;
-	char	*old_prompt;
-	char	**prompt_tab;
-	bool	dollar;
-	bool	simple_quote;
-	bool	double_quote;
-	bool	outfile_issue;
+	int				pipe_seg;
+	int				p_index;
+	int				word_length;
+	char			skip;
+	char			*prompt;
+	char			*old_prompt;
+	char			**prompt_tab;
+	bool			dollar;
+	bool			simple_quote;
+	bool			double_quote;
+	bool			outfile_issue;
 	t_parsing_error	errcode;
-	t_data	*data;
+	t_data			*data;
 }	t_parsing;
 
 //////////////////////////////////////// functions
@@ -115,11 +115,11 @@ int		execution(t_data *data);
 char	*find_cmd(char **env, char *cmd);
 /*utils_exec.c*/
 char	*ft_strtrim_improved(char *s1, char const *set);
-int		tablen(char **table);
+size_t	tablen(char **table);
 int		wait_for_pid(t_token *token, pid_t *pid);
 char	**get_env_in_tab(t_env *node_env);
 int		exec_single_cmd(t_data *data);
-int		count_cmds(t_token *token);
+size_t	count_cmds(t_token *token);
 /*clean.c*/
 void	close_free_token_env_pids(t_data *data, int fd0, int fd1, pid_t *pids);
 void	free_token_env(t_data *data);

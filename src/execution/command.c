@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-static int	find_path_in_env(char **env)
+static size_t	find_path_in_env(char **env)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (env && env[i])
@@ -14,9 +14,9 @@ static int	find_path_in_env(char **env)
 	return (ERR);
 }
 
-static void	fill_tab_null(char **table, int len)
+static void	fill_tab_null(char **table, size_t len)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (i < len)
@@ -29,7 +29,7 @@ static void	fill_tab_null(char **table, int len)
 static int	init_hyp_path(char **hyp_path, char *cmd, char **env_path)
 {
 	char	*path_w_backslash;
-	int		i;
+	size_t	i;
 
 	i = 0;
 	while (env_path[i])
@@ -55,19 +55,19 @@ static int	init_hyp_path(char **hyp_path, char *cmd, char **env_path)
 
 static char	*check_if_cmd_exists(char **hypothetical_path_cmd, char **path)
 {
-	int		i;
+	size_t	i;
 	char	*real_path;
 	bool	found;
 
 	i = 0;
-	found = 0;
+	found = false;
 	real_path = NULL;
 	while (path[i])
 	{
 		if (!access(hypothetical_path_cmd[i], X_OK) && !found)
 		{
 			real_path = ft_strdup(hypothetical_path_cmd[i]);
-			found = 1;
+			found = true;
 		}
 		free(hypothetical_path_cmd[i]);
 		i++;

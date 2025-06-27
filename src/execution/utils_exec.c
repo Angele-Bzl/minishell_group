@@ -28,9 +28,9 @@ char	*ft_strtrim_improved(char *s1, char const *set)
 	return (result);
 }
 
-int	tablen(char **table)
+size_t	tablen(char **table)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (table[i])
@@ -40,7 +40,7 @@ int	tablen(char **table)
 
 int	wait_for_pid(t_token *token, pid_t *pid)
 {
-	int		i;
+	size_t	i;
 	int		status;
 	t_token	*current;
 
@@ -65,7 +65,7 @@ char	**get_env_in_tab(t_env *node_env)
 {
 	char	**table_env;
 	t_env	*current;
-	int		i;
+	size_t	i;
 
 	current = node_env;
 	table_env = malloc(sizeof (char *) * (ft_lstsize((t_list *)current) + 1));
@@ -87,9 +87,9 @@ char	**get_env_in_tab(t_env *node_env)
 	return (table_env);
 }
 
-int	count_cmds(t_token *token)
+size_t	count_cmds(t_token *token)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (token)

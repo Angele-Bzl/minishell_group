@@ -21,9 +21,9 @@ int	manage_child(t_data *data, int prev_out, int pipe_fd[2], t_token *current)
 
 int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
 {
-	int			previous_output;
-	int			return_value;
-	static int	i = 0;
+	int				previous_output;
+	int				return_value;
+	static size_t	i = 0;
 
 	previous_output = pipe_fd[0];
 	if (count_cmds(data->ls_token) - count_cmds(current) == 0)
