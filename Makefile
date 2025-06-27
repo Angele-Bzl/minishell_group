@@ -71,7 +71,8 @@ FILES_UTILS =   cutstr.c\
 				debug_print.c\
 				free_minishell.c\
 				free_utils.c\
-				ft_isspace.c
+				ft_isspace.c\
+				main_utils.c
 FILES		=	struct_init.c\
 				signals.c\
 				main.c\

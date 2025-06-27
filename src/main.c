@@ -2,31 +2,24 @@
 
 int main(int ac, char **av, char **env)
 {
-	(void)ac;
-	(void)av;			// les deplacer dans un check, no args needed
 	t_data      data;
 	t_parsing   parsing;
 
+	ignore_ac_av(ac, av);
 	if (!env_init(env, &data))
 		msg_exit(MALLOC, STDERR_FILENO, EXIT_FAILURE);
-	// init_signals();
+	set_signals_exec();
 	while (1)
 	{
-		g_sig_state = 0;
 		if (struct_init(&data, &parsing) != OK)
 			return (EXIT_FAILURE);
+		set_signals_exec();
 		parsing.prompt = readline("minishell> ");
+		set_signals_exec();
+		if (!parsing.prompt)
+			process_empty_prompt(&parsing);
 		if (parsing.prompt && parsing.prompt[0])
-		{
-			add_history(parsing.prompt);
-			ft_parsing(&data, &parsing);
-			// print_tokens(&data);
-			if (parsing.errcode == OK)
-			{
-				execution(&data);
-				free_token(data.ls_token);
-			}
-		}
+			parse_and_execute(&parsing, &data);
 	}
 	return (OK);
 }

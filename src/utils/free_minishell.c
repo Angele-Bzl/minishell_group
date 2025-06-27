@@ -1,11 +1,5 @@
 # include "minishell.h"
 
-// void	close_all(t_data *data)
-// {
-// 	/*est-ce qu'on closerais pas dans l'exec avant l'appel de la fonction ?*/
-// 	/*a moins d'avoir les fd en question en paramettre*/
-// }
-
 void	free_data(t_data *data)									// ne pas free env maintenant
 {
 	if (data->ls_token)

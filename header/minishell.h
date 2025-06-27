@@ -105,10 +105,6 @@ typedef struct s_parsing
 	t_data	*data;
 }	t_parsing;
 
-//////////////////////////////////////// global variable
-
-extern int g_sig_state;
-
 //////////////////////////////////////// functions
 void test_signal(void);
 /*EXEC*/
@@ -214,18 +210,24 @@ void	print_prompt_tab(char **p_tab);
 void	print_tokens(t_data *data);
 /*free_minishell.c*/
 void	free_parsing(t_parsing *parsing);
+void	close_free_maybe_exit(t_parsing *parsing, int exitcode);
 /*free_utils.c*/
 char	*free_array(char **array);
 void	free_env(t_env *env);
 void	free_token(t_token *token);
 /*ft_isspace.c*/
 int		ft_isspace(char c);
+/*main_utils.c*/
+void	ignore_ac_av(int ac, char **av);
+void	parse_and_execute(t_parsing *parsing, t_data *data);
+void	process_empty_prompt(t_parsing *parsing);
 
 /*MAIN*/
 /*struct_init.c*/
 int		struct_init(t_data *data, t_parsing *parsing);
 int		env_init(char **env, t_data *data);
 /*signals.c*/
-void	init_signals(void);
+void	set_signals_exec(void);
+void	set_signals_prompt(void);
 
 #endif
