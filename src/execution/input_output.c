@@ -12,7 +12,7 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 		return (exec_homemade_builtin(data, current));
 	env = get_env_in_tab(data->ls_env);
 	if (!env)
-		return (msg_return(MALLOC, STDERR_FILENO, ERR));
+		return (msg_return(MALLOC, NULL, ERR));
 	path_cmd = find_cmd(env, current->cmd[0]);
 	if (!path_cmd)
 	{
@@ -23,7 +23,7 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 	{
 		free_array(env);
 		free(path_cmd);
-		return (msg_return("Error: execve failed", STDERR_FILENO, ERR));
+		return (msg_return(ERR_EXECVE, NULL, ERR));
 	}
 	return (OK);
 }

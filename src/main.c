@@ -8,7 +8,7 @@ int main(int ac, char **av, char **env)
 	t_parsing   parsing;
 
 	if (!env_init(env, &data))
-		msg_exit(MALLOC, STDERR_FILENO, EXIT_FAILURE);
+		msg_exit(MALLOC, NULL, EXIT_FAILURE);
 	while (1)
 	{
 		if (struct_init(&data, &parsing) != OK)
