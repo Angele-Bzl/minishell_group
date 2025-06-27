@@ -77,7 +77,7 @@ char	*find_cmd(char **env, char *cmd)
 	char	*path_cmd;
 	int		i;
 
-	if (cmd_is_builtin(cmd) || ft_strchr(cmd, '/'))
+	if (!cmd || cmd_is_builtin(cmd) || ft_strchr(cmd, '/')) //la premier condition doit etre dans strchr
 		return (cmd);
 	i = find_path_in_env(env);
 	if (i == ERR)
