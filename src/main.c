@@ -18,7 +18,7 @@ int main(int ac, char **av, char **env)
 		{
 			add_history(parsing.prompt);
 			ft_parsing(&data, &parsing);
-			// print_tokens(&data);
+			// print_tokens(&data); // attention ! peut faire segfault le code parfois
 			if (parsing.errcode == OK)
 			{
 				execution(&data);

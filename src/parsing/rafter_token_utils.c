@@ -34,7 +34,7 @@ char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing)				// on ava
 		i++;
 	while (ft_isspace(prompt[i]))
 		i++;
-	if (prompt[i] == '<' || prompt[i] == '>')
+	if (prompt[i] == '<' || prompt[i] == '>' || prompt[i] == '\0')
 	{
 		ft_printf_err("minishell: syntax error near unexpected token '%c'\n", prompt[i]);
 		parsing->errcode = ERR_PROMPT;
