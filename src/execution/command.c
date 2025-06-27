@@ -77,6 +77,25 @@ static char	*check_if_cmd_exists(char **hypothetical_path_cmd, char **path)
 	return (real_path);
 }
 
+static char *return_err_cmd_malloc(char **env_path)
+{
+	free_array(env_path);
+	return (msg_return_str(MALLOC, NULL, NULL));
+}
+
+static char **hypothetical_path(char **env_path, char *cmd)
+{
+	char	**hypothetical_path_cmd;
+
+	hypothetical_path_cmd = malloc(sizeof (char *) * tablen(env_path));
+	if (!hypothetical_path_cmd)
+		return (NULL);
+	fill_tab_null(hypothetical_path_cmd, tablen(env_path));
+	if (init_hyp_path(hypothetical_path_cmd, cmd, env_path) == ERR)
+		return (NULL);
+	return (hypothetical_path_cmd);
+}
+
 char	*find_cmd(char **env, char *cmd)
 {
 	char	**env_path;
@@ -84,9 +103,7 @@ char	*find_cmd(char **env, char *cmd)
 	char	*path_cmd;
 	int		i;
 
-	if (cmd_is_builtin(cmd))
-		return (cmd);
-	if (ft_strchr(cmd, '/'))
+	if (cmd_is_builtin(cmd) || ft_strchr(cmd, '/'))
 		return (cmd);
 	i = find_path_in_env(env);
 	if (i == ERR)
@@ -96,22 +113,10 @@ char	*find_cmd(char **env, char *cmd)
 		return (msg_return_str(MALLOC,NULL, NULL));
 	env_path[0] = ft_strtrim_improved(env_path[0], "PATH=");
 	if (!env_path[0])
-	{
-		free_array(env_path);
-		return (msg_return_str(MALLOC, NULL, NULL));
-	}
-	hypothetical_path_cmd = malloc(sizeof (char *) * tablen(env_path));
-	if (!hypothetical_path_cmd)
-	{
-		free_array(env_path);
-		return (msg_return_str(MALLOC, NULL, NULL));
-	}
-	fill_tab_null(hypothetical_path_cmd, tablen(env_path));
-	if (init_hyp_path(hypothetical_path_cmd, cmd, env_path) != OK)
-	{
-		free_array(env_path);
-		return (msg_return_str(MALLOC, NULL, NULL));
-	}
+		return_err_cmd_malloc(env_path);
+	hypothetical_path_cmd = hypothetical_path(env_path, cmd);
+	if (hypothetical_path_cmd == NULL)
+		return_err_cmd_malloc(env_path);
 	path_cmd = check_if_cmd_exists(hypothetical_path_cmd, env_path);
 	free_array(env_path);
 	if (!path_cmd)

@@ -62,6 +62,17 @@ static int	reset_dup2(int *save_std_io)
 	return (OK);
 }
 
+static int	ext_ret_sngle_cmd(t_data *data, int *io_fd, int *save, int return_val)
+{
+	close_free_token_env(data, io_fd[0], io_fd[1]);
+	close_all(save[0], save[1]);
+	if (return_val == ERROR_PROMPT)
+		return (ERR);
+	else if (return_val == ERROR_SYSTEM)
+		exit(STDERR_FILENO);
+	return (OK);
+}
+
 int	exec_single_cmd(t_data *data)
 {
 	int		io_fd[2];
@@ -71,28 +82,14 @@ int	exec_single_cmd(t_data *data)
 	io_fd[0] = get_input_single_cmd(data->ls_token->ls_infile, save_std_io);
 	io_fd[1] = get_output_single_cmd(data->ls_token->ls_outfile, save_std_io);
 	if (io_fd[0] == ERR || io_fd[1] == ERR)
-	{
-		close_free_token_env(data, io_fd[0], io_fd[1]);
-		exit(STDERR_FILENO);
-	}
+		ext_ret_sngle_cmd(data,io_fd, save_std_io, ERROR_SYSTEM);
 	if (!ft_strncmp(data->ls_token->cmd[0], "exit\0", 5))
 		close_all(save_std_io[0], save_std_io[1]);
 	return_value = redirect_and_exec(data->ls_token, io_fd, data);
 	if (return_value != OK)
-	{
-		close_free_token_env(data, io_fd[0], io_fd[1]);
-		close_all(save_std_io[0], save_std_io[1]);
-		if (return_value == ERROR_PROMPT)
-			return (ERR);
-		else if (return_value == ERROR_SYSTEM)
-			exit(STDERR_FILENO);
-	}
+		ext_ret_sngle_cmd(data, io_fd, save_std_io, return_value);
 	if (reset_dup2(save_std_io) == ERR)
-	{
-		close_free_token_env(data, io_fd[0], io_fd[1]);
-		close_all(save_std_io[0], save_std_io[1]);
-		exit(STDERR_FILENO);
-	}
+		ext_ret_sngle_cmd(data, io_fd, save_std_io, ERROR_SYSTEM);
 	close_all(io_fd[0], io_fd[1]);
 	return (OK);
 }

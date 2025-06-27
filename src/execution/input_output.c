@@ -55,6 +55,12 @@ int	get_input(t_file *ls_infile, int previous_output)
 	return (input);
 }
 
+static int	output_is_std(int pipe_output)
+{
+	close(pipe_output);
+	return (STDOUT_FILENO);
+}
+
 int	get_output(t_file *ls_outfile, int pipe_output, int count_cmd)
 {
 	int		output;
@@ -62,10 +68,7 @@ int	get_output(t_file *ls_outfile, int pipe_output, int count_cmd)
 
 	output = pipe_output;
 	if (count_cmd == 1)
-	{
-		close(pipe_output);
-		output = STDOUT_FILENO;
-	}
+		output = output_is_std(pipe_output);
 	if (ls_outfile->value)
 	{
 		if (count_cmd != 1)
