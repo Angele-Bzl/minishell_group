@@ -19,8 +19,5 @@ void	parse_and_execute(t_parsing *parsing, t_data *data)
 	ft_parsing(data, parsing);
 	// print_tokens(&data);
 	if (parsing->errcode == OK)
-	{
 		execution(data);
-		free_token(data->ls_token);
-	}
 }

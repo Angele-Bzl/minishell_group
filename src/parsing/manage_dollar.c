@@ -19,11 +19,15 @@ static char *find_var_content(char *variable, t_data *data, t_parsing *parsing)
 	free(variable);
 	var_len = (ft_strlen(var));
 	env_var = search_and_fill_content_with_env(tmp, var, var_len);
-	result = ft_cutstr(env_var, ft_strlen(var) + 1);
-	if (!result)
+	result = NULL;
+	if (env_var)
 	{
-		parsing->errcode = ERR_MALLOC;
-		return (NULL); 											//fail malloc
+		result = ft_cutstr(env_var, ft_strlen(var) + 1);
+		if (!result)
+		{
+			parsing->errcode = ERR_MALLOC;
+			return (NULL); 											//fail malloc
+		}
 	}
 	free(var);
 	return (result);

@@ -36,11 +36,11 @@ static int	update_pwd(t_env *list_env, int var_length)
 			free(current->line);
 			pwd = getcwd(NULL, 0);
 			if (!pwd)
-				return (msg_return(ERR_PWD, STDERR_FILENO, 0));
+				return (msg_return(ERR_PWD, NULL, 0));
 			current->line = ft_strjoin("PWD=", pwd);
 			free(pwd);
 			if (!current->line)
-				return (msg_return(ERR_PWD, STDERR_FILENO, 0));
+				return (msg_return(ERR_PWD, NULL, 0));
 			break ;
 		}
 		current = current->next;
@@ -80,7 +80,7 @@ static int	update_oldpwd(t_env *ls_env)
 	current = ls_env;
 	pwd = get_var_pwd(current, ls_env);
 	if (!pwd)
-		return (msg_return(ERR_OLDPWD, STDERR_FILENO, 0));
+		return (msg_return(ERR_OLDPWD, NULL, 0));
 	while (current)
 	{
 		if (!ft_strncmp(current->line, "OLDPWD=", 7))
@@ -89,7 +89,7 @@ static int	update_oldpwd(t_env *ls_env)
 			current->line = ft_strjoin("OLDPWD=", pwd);
 			free(pwd);
 			if (!current->line)
-				return (msg_return(ERR_OLDPWD, STDERR_FILENO, 0));
+				return (msg_return(ERR_OLDPWD, NULL, 0));
 			break ;
 		}
 		current = current->next;

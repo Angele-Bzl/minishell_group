@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 void	free_data(t_data *data)									// ne pas free env maintenant
 {
@@ -14,6 +14,7 @@ void	free_parsing(t_parsing *parsing)
 		free_array(parsing->prompt_tab);
 	if (parsing->data)
 		free_data(parsing->data);
+	parsing->prompt = NULL;
 }
 
 void	close_free_maybe_exit(t_parsing *parsing, int exitcode)

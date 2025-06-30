@@ -45,20 +45,20 @@ static int	dollar_remaining(char *str, t_parsing *parsing)
 	return (0);
 }
 
-void	expand_var(t_parsing *parsing)										// partie expand, "go!". checker si on est dans une quote.
+void	expand_var(t_parsing *parsing)		// partie expand, "go!". checker si on est dans une quote.
 {
 	parsing->pipe_seg = 0;
 	parsing->p_index = 0;
-	while (parsing->prompt_tab[parsing->pipe_seg])										// tant qu'on a un seg_pipe
+	while (parsing->prompt_tab[parsing->pipe_seg])		// tant qu'on a un seg_pipe
 	{
-		while (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index])				// tant qu'on a des charactères dans le seg_pipe actuel
+		while (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index])// tant qu'on a des charactères dans le seg_pipe actuel
 		{
 			quote_check(parsing->prompt_tab[parsing->pipe_seg][parsing->p_index], parsing);
 			if (is_expandable(parsing->prompt_tab[parsing->pipe_seg][parsing->p_index],
 				parsing->prompt_tab[parsing->pipe_seg][parsing->p_index + 1], parsing))
 			{
 				manage_dollar_sign(parsing);
-				if (parsing->errcode != ALL_OK)									// créer un nouveau prompt avec le contenu de la var croisée
+				if (parsing->errcode != ALL_OK || !parsing->prompt_tab[parsing->pipe_seg][parsing->p_index])
 					return;
 			}
 			parsing->p_index++;

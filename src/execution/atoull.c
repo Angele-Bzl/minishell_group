@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	go_to_num(const char *str, int *i, int *minus)
+static void	go_to_num(const char *str, size_t *i, int *minus)
 {
 	if (str[*i] == '+')
 		*i = *i + 1;
@@ -14,7 +14,7 @@ static void	go_to_num(const char *str, int *i, int *minus)
 unsigned long long	ft_atoull(const char *str, int *minus)
 {
 	unsigned long long	result;
-	int					i;
+	size_t				i;
 
 	i = 0;
 	result = 0;

@@ -23,12 +23,13 @@
 
 # include "../libft/libft.h"
 
-# define MALLOC "Error: malloc failed."
-# define NO_FILE "Error: no such file or directory."
+# define MALLOC "Error: malloc failed.\n"
+# define NO_FILE "Error: no such file or directory.\n"
 # define NO_CMD "%s: command not found.\n"
-# define NO_PATH "Error: no path to the command."
-# define ERR_PWD "Error: update_pwd failed"
-# define ERR_OLDPWD "Error: update_oldpwd failed"
+# define NO_PATH "Error: no path to the command.\n"
+# define ERR_PWD "Error: update_pwd failed\n"
+# define ERR_OLDPWD "Error: update_oldpwd failed\n"
+# define ERR_EXECVE "Error: execve failed\n"
 # define TMP ".infile.tmp"
 # define IS_BUILTIN 42
 
@@ -77,8 +78,8 @@ typedef struct s_token
 {
 	struct s_token	*next;
 	char			**cmd;
-	t_file		*ls_infile;
-	t_file		*ls_outfile;
+	t_file			*ls_infile;
+	t_file			*ls_outfile;
 }	t_token;
 
 typedef struct s_data
@@ -90,19 +91,19 @@ typedef struct s_data
 
 typedef struct s_parsing
 {
-	int		pipe_seg;
-	int		p_index;
-	int		word_length;
-	char	skip;
-	char	*prompt;
-	char	*old_prompt;
-	char	**prompt_tab;
-	bool	dollar;
-	bool	simple_quote;
-	bool	double_quote;
-	bool	outfile_issue;
+	int				pipe_seg;
+	int				p_index;
+	int				word_length;
+	char			skip;
+	char			*prompt;
+	char			*old_prompt;
+	char			**prompt_tab;
+	bool			dollar;
+	bool			simple_quote;
+	bool			double_quote;
+	bool			outfile_issue;
 	t_parsing_error	errcode;
-	t_data	*data;
+	t_data			*data;
 }	t_parsing;
 
 //////////////////////////////////////// functions
@@ -112,13 +113,16 @@ void test_signal(void);
 int		execution(t_data *data);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd);
+/*itils_cmd.c*/
+size_t	find_path_in_env(char **env);
+void	fill_tab_null(char **table, size_t len);
 /*utils_exec.c*/
 char	*ft_strtrim_improved(char *s1, char const *set);
-int		tablen(char **table);
+size_t	tablen(char **table);
 int		wait_for_pid(t_token *token, pid_t *pid);
 char	**get_env_in_tab(t_env *node_env);
 int		exec_single_builtin(t_data *data);
-int		count_cmds(t_token *token);
+size_t	count_cmds(t_token *token);
 /*clean.c*/
 void	close_free_token_env_pids(t_data *data, int fd0, int fd1, pid_t *pids);
 void	free_token_env(t_data *data);
@@ -126,11 +130,11 @@ void	close_all(int fd0, int fd1);
 void	close_free_token_env(t_data *data, int fd0, int fd1);
 void	close_free_array_str(int fd0, int fd1, char **env, char *path);
 /*error_exec.c*/
-void	msg_exit(char *message, int fd, int exit_value);
-int		msg_return(char *message, int fd, int return_value);
+void	msg_exit(char *message, char *arg, int exit_value);
+int		msg_return(char *message, char *arg, int return_value);
 char	*msg_return_str(char *message, char *arg, char *return_value);
 int		perror_return(char *message, int return_value);
-int		msg_return_close_all(int *fds, char *message, int fd, int return_value);
+int	end_single_cmd(t_data *data, int *io_fd, int *save, int return_val);
 /*children.c*/
 int		loop_children(t_data *data, pid_t *pids);
 /*input_output.c*/

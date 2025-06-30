@@ -2,6 +2,8 @@
 
 int	cmd_is_builtin(char *path_cmd)
 {
+	if (!path_cmd)
+		return (0);
 	if (!ft_strncmp(path_cmd, "echo\0", 5))
 		return (1);
 	if (!ft_strncmp(path_cmd, "cd\0", 3))
@@ -40,7 +42,7 @@ int	exec_homemade_builtin(t_data *data, t_token *current)
 
 int	var_cmp(char *s1, char *s2)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (s1[i] != '=')

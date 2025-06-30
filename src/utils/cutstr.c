@@ -2,12 +2,12 @@
 
 char	*ft_cutstr(char const *s, unsigned int start)
 {
-	char	*result;
-	int	    i;
-	int		len;
+	char		*result;
+	size_t		i;
+	size_t		len;
 
 	i = 0;
-	len = (int)ft_strlen(s) - start;
+	len = ft_strlen(s) - start;
 	result = malloc(len + 1);
 	if (!result)
 		return (NULL);

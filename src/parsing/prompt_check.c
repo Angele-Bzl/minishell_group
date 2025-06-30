@@ -45,7 +45,7 @@ static int	quote_count(char *prompt, t_parsing *parsing)				// si le nbr de quot
 			double_quote++;
 		i++;
 	}
-	if (single_quote%2 == 1 || double_quote%2 == 1)
+	if (single_quote % 2 == 1 || double_quote % 2 == 1)
 	{
 		printf("syntaxe error : open quote\n");
 		return (ERR_PROMPT);

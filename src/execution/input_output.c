@@ -12,7 +12,7 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 		return (exec_homemade_builtin(data, current));
 	env = get_env_in_tab(data->ls_env);
 	if (!env)
-		return (msg_return(MALLOC, STDERR_FILENO, ERR));
+		return (msg_return(MALLOC, NULL, ERR));
 	path_cmd = find_cmd(env, current->cmd[0]);
 	if (!path_cmd)
 	{
@@ -23,7 +23,7 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 	{
 		free_array(env);
 		free(path_cmd);
-		return (msg_return("Error: execve failed", STDERR_FILENO, ERR));
+		return (msg_return(ERR_EXECVE, NULL, ERR));
 	}
 	return (OK);
 }
@@ -55,6 +55,12 @@ int	get_input(t_file *ls_infile, int previous_output)
 	return (input);
 }
 
+static int	output_is_std(int pipe_output)
+{
+	close(pipe_output);
+	return (STDOUT_FILENO);
+}
+
 int	get_output(t_file *ls_outfile, int pipe_output, int count_cmd)
 {
 	int		output;
@@ -62,10 +68,7 @@ int	get_output(t_file *ls_outfile, int pipe_output, int count_cmd)
 
 	output = pipe_output;
 	if (count_cmd == 1)
-	{
-		close(pipe_output);
-		output = STDOUT_FILENO;
-	}
+		output = output_is_std(pipe_output);
 	if (ls_outfile->value)
 	{
 		if (count_cmd != 1)
