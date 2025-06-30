@@ -23,13 +23,14 @@ static void	init_newprompt(int signal)
 	(void)signal;
 	write(1, "\n", 1);
 	rl_on_new_line();
-	rl_redisplay();
+	rl_replace_line("", 0);
 }
 
 void	set_signals_exec(void)
 {
 	struct sigaction	sa;
 
+	printf("exec\n");
 	ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = &init_newprompt;
 	sigaction(SIGINT, &sa, NULL);
@@ -51,7 +52,7 @@ void	set_signals_child(void)
 	struct sigaction	sa;
 
 	ft_memset(&sa, 0, sizeof(sa));
-	sa.sa_handler = NULL;
+	sa.sa_handler = SIG_DFL;
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
 }

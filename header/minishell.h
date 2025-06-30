@@ -117,7 +117,7 @@ char	*ft_strtrim_improved(char *s1, char const *set);
 int		tablen(char **table);
 int		wait_for_pid(t_token *token, pid_t *pid);
 char	**get_env_in_tab(t_env *node_env);
-int		exec_single_cmd(t_data *data);
+int		exec_single_builtin(t_data *data);
 int		count_cmds(t_token *token);
 /*clean.c*/
 void	close_free_token_env_pids(t_data *data, int fd0, int fd1, pid_t *pids);
@@ -229,5 +229,6 @@ int		env_init(char **env, t_data *data);
 /*signals.c*/
 void	set_signals_exec(void);
 void	set_signals_prompt(void);
+void	set_signals_child(void);
 
 #endif
