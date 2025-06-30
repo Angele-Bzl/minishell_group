@@ -231,8 +231,9 @@ void	process_empty_prompt(t_parsing *parsing);
 int		struct_init(t_data *data, t_parsing *parsing);
 int		env_init(char **env, t_data *data);
 /*signals.c*/
-void	set_signals_exec(void);
-void	set_signals_prompt(void);
-void	set_signals_child(void);
+void	set_exec_signals(void);
+void	set_prompt_signals(void);
+void	set_default_signals(void);
+void	set_heredoc_signals(void);
 
 #endif

@@ -11,11 +11,13 @@ int	manage_child(t_data *data, int prev_out, int pipe_fd[2], t_token *current)
 		close_all(io_fd[0], io_fd[1]);
 		return (EXIT_FAILURE);
 	}
+	// set_exec_signals();
 	if (redirect_and_exec(current, io_fd, data) != OK)
 	{
 		close_all(io_fd[0], io_fd[1]);
 		return (EXIT_FAILURE);
 	}
+
 	return (IS_BUILTIN);
 }
 
