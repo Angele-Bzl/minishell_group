@@ -21,8 +21,12 @@ int	main(int ac, char **av, char **env)
 			// printf("EXEC\n");
 			// print_tokens(&data); // attention ! peut faire segfault le code parfois
 			if (parsing.errcode == OK)
+			{
 				execution(&data);
+			}
 		}
+		// else
+		// 	free_token(data.ls_token);
 		if (parsing.prompt)
 			free(parsing.prompt);
 	}
