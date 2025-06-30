@@ -37,7 +37,6 @@ int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
 		return (perror_return("Pipe", ERR));
 	}
 	set_signals_exec();
-	printf("children cmd\n");
 	pids[i] = fork();
 	if (pids[i] == -1)
 	{
