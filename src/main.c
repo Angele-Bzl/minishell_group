@@ -23,7 +23,8 @@ int	main(int ac, char **av, char **env)
 			if (parsing.errcode == OK)
 				execution(&data);
 		}
-		free(parsing.prompt);
+		if (parsing.prompt)
+			free(parsing.prompt);
 	}
 	return (OK);
 }

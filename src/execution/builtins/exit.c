@@ -5,6 +5,7 @@ static int	exit_no_arg(t_data *data)
 {
 	free_token(data->ls_token);
 	free_env(data->ls_env);
+	ft_printf_err("exit\n");
 	exit(OK);
 }
 
@@ -62,6 +63,7 @@ static int	exit_arg(t_data *data, long long exit_code)
 	{
 		exit_255 += 256;
 	}
+	ft_printf_err("exit\n");
 	exit(exit_255);
 }
 

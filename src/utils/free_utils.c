@@ -10,9 +10,11 @@ char	*free_array(char **array)
 	while (array[i])
 	{
 		free(array[i]);
+		array[i] = NULL;
 		i++;
 	}
 	free(array);
+	array = NULL;
 	return (NULL);
 }
 
@@ -24,7 +26,9 @@ void	free_env(t_env *env)
 	{
 		tmp = env->next;
 		free(env->line);
+		env->line = NULL;
 		free(env);
+		env = NULL;
 		env = tmp;
 	}
 }
@@ -39,7 +43,10 @@ void	free_files(t_token *ls_token)
 	{
 		next = current->next;
 		if (current->value)
+		{
 			free(current->value);
+			current->value = NULL;
+		}
 		free(current);
 		current = next;
 	}
@@ -48,7 +55,10 @@ void	free_files(t_token *ls_token)
 	{
 		next = current->next;
 		if (current->value)
+		{
 			free(current->value);
+			current->value = NULL;
+		}
 		free(current);
 		current = next;
 	}
