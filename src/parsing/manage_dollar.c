@@ -16,7 +16,6 @@ static char *find_var_content(char *variable, t_data *data, t_parsing *parsing)
 		parsing->errcode = ERR_MALLOC;
 		return (NULL); 											//fail malloc
 	}
-	free(variable);
 	var_len = (ft_strlen(var));
 	env_var = search_and_fill_content_with_env(tmp, var, var_len);
 	result = NULL;
@@ -59,26 +58,30 @@ static char	*prompt_with_content(char *content, int start, t_parsing *parsing)
 	while (parsing->old_prompt[i]) 												// recopier la fin du prompt
 		new_prompt[j++] = parsing->old_prompt[i++];
 	free(parsing->old_prompt);
+	parsing->old_prompt = NULL;
 		new_prompt[j] = '\0';
 	return (new_prompt);
 }
 
-static void	init_variable_and_content(t_parsing *parsing, char **variable, char **content)
+static void	init_variable_and_content(t_parsing *parsing, char **content)
 {
-	*variable = find_var_name(parsing);
+	char	*variable;
+
+	variable = find_var_name(parsing);
 	if (!*variable)
 	{
 		parsing->errcode = ERR_MALLOC;
 		return;
 	}
-	*content = find_var_content(*variable, parsing->data, parsing); 					// trouver le contenue de la variable, check fail
-	if (!*content)																		// on continue en remplaçant par rien
+	*content = find_var_content(variable, parsing->data, parsing); // trouver le contenue de la variable, check fail
+	free(variable);
+	if (!*content)											// on continue en remplaçant par rien
 	{
 		*content = malloc(1);
 		if (!*content)
 		{
 		parsing->errcode = ERR_MALLOC;
-		return; 														// fail malloc
+		return; 									// fail malloc
 		}
 		*content[0] = '\0';
 	}
@@ -103,13 +106,12 @@ static void	fill_new_prompt(t_parsing *parsing, char *content)
 void manage_dollar_sign(t_parsing *parsing)
 {
 	char	*content;
-	char	*variable;
 
 	if (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index] == '?')
 	{
 		// handle '?'
 	}
-	init_variable_and_content(parsing, &variable, &content);
+	init_variable_and_content(parsing, &content);
 	if (parsing->errcode == ALL_OK)
 		fill_new_prompt(parsing, content);
 }
