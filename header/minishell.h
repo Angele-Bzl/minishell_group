@@ -35,6 +35,13 @@
 
 /////////////////////////////////////////// enum
 
+typedef enum e_mode
+{
+	PROMPT,
+	EXEC,
+	HEREDOC,
+}	t_mode;
+
 typedef enum e_parsing_error
 {
 	ERR_MALLOC = -42,
@@ -104,6 +111,7 @@ typedef struct s_parsing
 	bool			outfile_issue;
 	t_parsing_error	errcode;
 	t_data			*data;
+	t_mode			mode;
 }	t_parsing;
 
 //////////////////////////////////////// functions
@@ -231,8 +239,7 @@ void	process_empty_prompt(t_parsing *parsing);
 int		struct_init(t_data *data, t_parsing *parsing);
 int		env_init(char **env, t_data *data);
 /*signals.c*/
-void	set_signals_exec(void);
-void	set_signals_prompt(void);
-void	set_signals_child(void);
+void	set_signals_by_mode(t_mode mode);
+void	heredoc_handler(int signal);
 
 #endif
