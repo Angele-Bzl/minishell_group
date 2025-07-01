@@ -76,11 +76,8 @@ int	exec_export(t_env *ls_env, char **cmds)
 				if (!var_update(current, cmds[i]))
 					return (ERROR_SYSTEM);
 			}
-			else
-			{
-				if (!var_new(ls_env, cmds[i]))
-					return (ERROR_SYSTEM);
-			}
+			else if (!var_new(ls_env, cmds[i]))
+				return (ERROR_SYSTEM);
 		}
 		i++;
 	}
