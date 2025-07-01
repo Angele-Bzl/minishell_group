@@ -57,9 +57,7 @@ static char	*prompt_with_content(char *content, int start, t_parsing *parsing)
 	i = end;
 	while (parsing->old_prompt[i]) 												// recopier la fin du prompt
 		new_prompt[j++] = parsing->old_prompt[i++];
-	free(parsing->old_prompt);
-	parsing->old_prompt = NULL;
-		new_prompt[j] = '\0';
+	new_prompt[j] = '\0';
 	return (new_prompt);
 }
 
@@ -95,6 +93,8 @@ static void	fill_new_prompt(t_parsing *parsing, char *content)
 	parsing->old_prompt = parsing->prompt_tab[parsing->pipe_seg];
 	parsing->prompt_tab[parsing->pipe_seg] = NULL;
 	parsing->prompt_tab[parsing->pipe_seg] = prompt_with_content(content, start, parsing);	// retirer la variable et rajouter contenu
+	free(parsing->old_prompt);
+	parsing->old_prompt = NULL;
 	if (!parsing->prompt_tab[parsing->pipe_seg])
 	{
 		parsing->errcode = ERR_MALLOC;
@@ -114,4 +114,5 @@ void manage_dollar_sign(t_parsing *parsing)
 	init_variable_and_content(parsing, &content);
 	if (parsing->errcode == ALL_OK)
 		fill_new_prompt(parsing, content);
+	free(content);
 }
