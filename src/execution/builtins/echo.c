@@ -46,7 +46,10 @@ void	exec_echo(char **cmd)
 		if (cmd[i][0] == '-')
 			manage_dash(&new_line, &dash, cmd, i);
 		else
+		{
 			print_arg(cmd, i);
+			dash = true;
+		}
 		i++;
 	}
 	if (new_line == true)
