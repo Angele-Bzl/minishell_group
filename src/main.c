@@ -18,8 +18,10 @@ int	main(int ac, char **av, char **env)
 			process_empty_prompt(&parsing);
 		if (parsing.prompt && parsing.prompt[0])
 			parse_and_execute(&parsing, &data);
+		if (parsing.prompt)
+			free(parsing.prompt);
+		if (data.ls_token)
+			free_token(data.ls_token);
 	}
-	if (parsing.prompt)
-		free(parsing.prompt);
 	return (OK);
 }

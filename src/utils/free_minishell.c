@@ -10,6 +10,8 @@ void	free_parsing(t_parsing *parsing)
 {
 	if (parsing->prompt)
 		free(parsing->prompt);
+	// if (parsing->old_prompt)
+	// 	free(parsing->old_prompt);
 	if (parsing->prompt_tab)
 		free_array(parsing->prompt_tab);
 	if (parsing->data)
