@@ -58,7 +58,8 @@ static char	*prompt_with_content(char *content, int start, t_parsing *parsing)
 	i = end;
 	while (parsing->old_prompt[i]) 												// recopier la fin du prompt
 		new_prompt[j++] = parsing->old_prompt[i++];
-	new_prompt[j] = '\0';
+	free(parsing->old_prompt);
+		new_prompt[j] = '\0';
 	return (new_prompt);
 }
 
@@ -89,7 +90,6 @@ static void	fill_new_prompt(t_parsing *parsing, char *content)
 
 	start = parsing->p_index;
 	parsing->old_prompt = parsing->prompt_tab[parsing->pipe_seg];
-	// free(parsing->prompt_tab[parsing->pipe_seg]);
 	parsing->prompt_tab[parsing->pipe_seg] = NULL;
 	parsing->prompt_tab[parsing->pipe_seg] = prompt_with_content(content, start, parsing);	// retirer la variable et rajouter contenu
 	if (!parsing->prompt_tab[parsing->pipe_seg])

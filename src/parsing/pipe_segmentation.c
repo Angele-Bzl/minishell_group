@@ -22,7 +22,7 @@ static int	next_pipe_segment(char c, int *start, int *end, t_parsing *parsing)
 	while (parsing->prompt[*end] != c && parsing->prompt[*end] != '\0')
 	{
 		if (parsing->prompt[*end] == '\"' || parsing->prompt[*end] == '\'')
-			skip_quote(parsing->prompt, end);												// si s[i] = quote, on continue jusqu'a la prochaine
+			skip_quote(parsing->prompt, end);		// si s[i] = quote, on continue jusqu'a la prochaine
 		*end = *end + 1;
 	}
 	return (0);
@@ -67,11 +67,12 @@ static int	fill_pipe_segments(char **array, char const *prompt, char c, t_parsin
 	pipe_seg = ft_countpipe(prompt, c, parsing);
 	while (i <= pipe_seg) //<= ?
 	{
-		if (next_pipe_segment(c, &start, &end, parsing) == -1)				// errcode a deja ete update plus haut donc on travail avec -1
+		if (next_pipe_segment(c, &start, &end, parsing) == -1)// errcode a deja ete update plus haut donc on travail avec -1
 			return (-1);
 		array[i] = ft_substr(prompt, start, end - start);
-		if (free_split_on_failure(array, i, parsing) == -1)			// errcode a deja ete update plus haut donc on travail avec -1
+		if (free_split_on_failure(array, i, parsing) == -1)// errcode a deja ete update plus haut donc on travail avec -1
 			return (-1);
+		// ou alors : if !array[i] -> free_array(array) , parsign errcode MALLOC, return 1 ? La fonction freesplitonfailure me parait overkill
 		i++;
 	}
 	array[i] = NULL;
@@ -94,7 +95,7 @@ char	**pipe_segmentation(t_parsing *parsing, char c)
 		parsing->errcode = ERR_MALLOC;
 		return (NULL);
 	}
-	if (fill_pipe_segments(array, prompt, c, parsing) == -1)						// errcode a deja ete update plus haut donc on travail avec -1
+	if (fill_pipe_segments(array, prompt, c, parsing) == -1)// errcode a deja ete update plus haut donc on travail avec -1
 		return (NULL);
 	return (array);
 }
