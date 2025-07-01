@@ -18,15 +18,6 @@ static void	prompt_handler(int signal)
 	rl_redisplay();
 }
 
-static void	heredoc_handler(int signal)
-{
-	if (signal == SIGINT)
-		printf("sigint\n");
-	if (signal == SIGQUIT)
-		printf("sigquit\n");
-	ioctl(STDIN_FILENO, TIOCSTI, "\n");
-}
-
 static void	exec_handler(int signal)
 {
 	if (signal == SIGINT)
@@ -41,7 +32,6 @@ void	set_exec_signals(void)
 {
 	struct sigaction	sa;
 
-	printf("exec\n");
 	ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = &exec_handler;
 	sigaction(SIGINT, &sa, NULL);
@@ -72,7 +62,6 @@ void	set_heredoc_signals(void)
 {
 	struct sigaction	sa;
 
-	set_default_signals();
 	ignore_sigquit();
 	ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = &heredoc_handler;

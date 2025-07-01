@@ -141,6 +141,10 @@ int		loop_children(t_data *data, pid_t *pids);
 int		redirect_and_exec(t_token *current, int *io_fd, t_data *data);
 int		get_input(t_file *ls_infile, int previous_pipe);
 int		get_output(t_file *ls_outfile, int pipe_output, int count_cmd);
+/*manage_heredoc.c*/
+int 	here_doc(char *eof);
+void	heredoc_handler(int signal);
+
 /*BUILTINS*/
 int		cmd_is_builtin(char *path_cmd);
 int		exec_homemade_builtin(t_data *data, t_token *current);
@@ -183,8 +187,6 @@ void	manage_dollar_sign(t_parsing *parsing);
 char	*find_var_name(t_parsing *parsing);
 int		find_var_end(char *prompt, int p_index);
 char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
-/*manage_heredoc.c*/
-int 	here_doc(char *eof);
 /*manage_quotes.c*/
 int		manage_quotes(char c, t_parsing *parsing);
 /*parsing.c*/
@@ -225,6 +227,7 @@ int		ft_isspace(char c);
 void	ignore_ac_av(int ac, char **av);
 void	parse_and_execute(t_parsing *parsing, t_data *data);
 void	process_empty_prompt(t_parsing *parsing);
+int		takes_a_value(void);
 
 /*MAIN*/
 /*struct_init.c*/

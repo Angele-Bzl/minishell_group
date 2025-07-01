@@ -1,5 +1,16 @@
 #include "minishell.h"
 
+volatile sig_atomic_t	g_sigint = 0;
+
+void	heredoc_handler(int signal)
+{
+	if (signal == SIGINT)
+	{
+		g_sigint = 1;
+		rl_done = 1;
+	}
+}
+
 static void	readline_heredoc(int fd, char *eof)
 {
 	char	*input;
@@ -8,20 +19,27 @@ static void	readline_heredoc(int fd, char *eof)
 	while (1)
 	{
 		input = readline("> ");
+		if (g_sigint)
+		{
+			g_sigint = 0;
+			free(input);
+			break;
+		}
 		if (!input)
 		{
-			// Ctrl+D : EOF
 			ft_printf_err("bash: warning: heredoc delimited by end_of_file (wanted `%s')\n", eof);
-			break ;
+			break;
 		}
 		if (!ft_strncmp(input, eof, ft_strlen(eof)))
 			break ;
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
-		free(input);
+		if (input)
+			free(input);
 		input = NULL;
 	}
-	free(input);
+	if (input)
+		free(input);
 	input = NULL;
 }
 
@@ -29,6 +47,7 @@ int	here_doc(char *eof)
 {
 	int	fd;
 
+	set_default_signals();
 	set_heredoc_signals();
 	fd = open(TMP, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
