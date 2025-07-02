@@ -51,9 +51,4 @@ void	set_signals_by_mode(t_mode mode)
 		sa.sa_handler = &heredoc_handler;
 		sigaction(SIGINT, &sa, NULL);
 	}
-	if (mode == DEFAULT_MODE)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-	}
 }

@@ -40,7 +40,6 @@ typedef enum e_mode
 	PROMPT_MODE,
 	EXEC_MODE,
 	HEREDOC_MODE,
-	DEFAULT_MODE,
 }	t_mode;
 
 typedef enum e_parsing_error

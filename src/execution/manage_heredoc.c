@@ -22,7 +22,6 @@ static void	readline_heredoc(int fd, char *eof)
 		if (g_sigint)
 		{
 			g_sigint = 0;
-			free(input);
 			break;
 		}
 		if (!input)

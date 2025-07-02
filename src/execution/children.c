@@ -46,6 +46,8 @@ int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
 	previous_output = set_up_pipe(&i, pipe_fd, data->ls_token, current);
 	if (previous_output == ERR)
 		perror_return("Pipe", ERR);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	pids[i] = fork();
 	if (pids[i] == -1)
 	{
@@ -54,7 +56,6 @@ int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
 	}
 	if (pids[i] == 0)
 	{
-		set_signals_by_mode(DEFAULT_MODE);
 		close(pipe_fd[0]);
 		return_value = manage_child(data, previous_output, pipe_fd, current);
 		close_free_token_env_pids(data, previous_output, pipe_fd[1], pids);
