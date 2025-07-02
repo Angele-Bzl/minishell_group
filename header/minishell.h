@@ -23,10 +23,10 @@
 
 # include "../libft/libft.h"
 
-# define MALLOC "Error: malloc failed.\n"
-# define NO_FILE "Error: no such file or directory.\n"
-# define NO_CMD "%s: command not found.\n"
-# define NO_PATH "Error: no path to the command.\n"
+# define MALLOC "Error: malloc failed\n"
+# define NO_FILE "minishell: no such file or directory\n"
+# define NO_CMD "minishell: %s: command not found\n"
+# define NO_PATH "Error: no path to the command\n"
 # define ERR_PWD "Error: update_pwd failed\n"
 # define ERR_OLDPWD "Error: update_oldpwd failed\n"
 # define ERR_EXECVE "Error: execve failed\n"

@@ -38,13 +38,13 @@ char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing)				// on ava
 	{
 		ft_printf_err("minishell: syntax error near unexpected token '%c'\n", prompt[i]);
 		parsing->errcode = ERR_PROMPT;
-		return (NULL); //error syntax
+		return (NULL);
 	}
 	file_name = extract_file_name(prompt, i);
 	if (!file_name)
 	{
 		parsing->errcode = ERR_MALLOC;
-		return (NULL); //error malloc
+		return (NULL);
 	}
 	return (file_name);
 }
