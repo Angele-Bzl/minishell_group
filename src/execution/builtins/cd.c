@@ -104,10 +104,7 @@ static int	update_oldpwd(t_env *ls_env)
 int	exec_cd(char **cmd, t_env *list_env)
 {
 	if (cmd[2])
-	{
-		ft_putendl_fd("Error: too many arguments", STDERR_FILENO);
-		return (ERROR_PROMPT);
-	}
+		return (msg_return("Error: too many arguments", NULL, ERROR_PROMPT));
 	if (chdir(cmd[1]) == -1)
 	{
 		perror("Error chdir");
