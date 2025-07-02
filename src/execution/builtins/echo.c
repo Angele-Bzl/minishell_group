@@ -13,7 +13,6 @@ static void	manage_dash(bool *new_line, bool *dash, char **cmd, int i)
 		*new_line = false;
 	else
 	{
-		printf("%s", cmd[i]);
 		if (cmd[i + 1])
 			printf(" ");
 		*dash = true;
