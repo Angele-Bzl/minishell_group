@@ -22,8 +22,8 @@ int	main(int ac, char **av, char **env)
 			parse_and_execute(&parsing, &data);
 		if (parsing.prompt)
 			free(parsing.prompt);
-		if (data.ls_token)
-			free_token(data.ls_token);
+		// if (data.ls_token)
+		// 	free_token(data.ls_token);
 	}
 	return (OK);
 }

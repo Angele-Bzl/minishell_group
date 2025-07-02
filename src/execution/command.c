@@ -93,7 +93,7 @@ char	*find_cmd(char **env, char *cmd)
 		return_err_cmd_malloc(env_path);
 	path_cmd = check_if_cmd_exists(hypothetical_path_cmd, env_path);
 	free_array(env_path);
-	if (!path_cmd)
+	if (!path_cmd || !cmd[0])
 		return (msg_return_str(NO_CMD, cmd, NULL));
 	return (path_cmd);
 }

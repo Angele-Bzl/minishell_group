@@ -13,7 +13,6 @@ static void	manage_dash(bool *new_line, bool *dash, char **cmd, int i)
 		*new_line = false;
 	else
 	{
-		printf("%s", cmd[i]);
 		if (cmd[i + 1])
 			printf(" ");
 		*dash = true;
@@ -46,7 +45,10 @@ void	exec_echo(char **cmd)
 		if (cmd[i][0] == '-')
 			manage_dash(&new_line, &dash, cmd, i);
 		else
+		{
 			print_arg(cmd, i);
+			dash = true;
+		}
 		i++;
 	}
 	if (new_line == true)
