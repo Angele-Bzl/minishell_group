@@ -4,7 +4,7 @@ static void	ignore_sigquit(void)
 {
 	struct sigaction	sa;
 
-	ft_memset(&sa, 0, sizeof(sa));
+	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
 }
@@ -32,27 +32,28 @@ void	set_signals_by_mode(t_mode mode)
 {
 	struct sigaction	sa;
 
-	ft_memset(&sa, 0, sizeof(sa));
-
-	if (mode == PROMPT)
+	ft_bzero(&sa, sizeof(sa));
+	if (mode == PROMPT_MODE)
 	{
 		ignore_sigquit();
-		ft_bzero(&sa, sizeof(sa));
 		sa.sa_handler = &prompt_handler;
 		sigaction(SIGINT, &sa, NULL);
 	}
-	else if (mode == EXEC)
+	if (mode == EXEC_MODE)
 	{
-		ft_bzero(&sa, sizeof(sa));
 		sa.sa_handler = &exec_handler;
 		sigaction(SIGINT, &sa, NULL);
 		sigaction(SIGQUIT, &sa, NULL);
 	}
-	else if (mode == HEREDOC)
+	if (mode == HEREDOC_MODE)
 	{
 		ignore_sigquit();
-		ft_bzero(&sa, sizeof(sa));
 		sa.sa_handler = &heredoc_handler;
 		sigaction(SIGINT, &sa, NULL);
+	}
+	if (mode == DEFAULT_MODE)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 	}
 }

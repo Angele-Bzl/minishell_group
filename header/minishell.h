@@ -37,9 +37,10 @@
 
 typedef enum e_mode
 {
-	PROMPT,
-	EXEC,
-	HEREDOC,
+	PROMPT_MODE,
+	EXEC_MODE,
+	HEREDOC_MODE,
+	DEFAULT_MODE,
 }	t_mode;
 
 typedef enum e_parsing_error
@@ -93,6 +94,7 @@ typedef struct s_data
 {
 	t_env	*ls_env;
 	t_token	*ls_token;
+	t_mode	mode;
 	int		pipe_nbr;
 }	t_data;
 
@@ -111,7 +113,6 @@ typedef struct s_parsing
 	bool			outfile_issue;
 	t_parsing_error	errcode;
 	t_data			*data;
-	t_mode			mode;
 }	t_parsing;
 
 //////////////////////////////////////// functions
@@ -149,6 +150,8 @@ int		loop_children(t_data *data, pid_t *pids);
 int		redirect_and_exec(t_token *current, int *io_fd, t_data *data);
 int		get_input(t_file *ls_infile, int previous_pipe);
 int		get_output(t_file *ls_outfile, int pipe_output, int count_cmd);
+/*manage_heredoc.c*/
+int 	here_doc(char *eof);
 /*BUILTINS*/
 int		cmd_is_builtin(char *path_cmd);
 int		exec_homemade_builtin(t_data *data, t_token *current);
@@ -191,8 +194,6 @@ void	manage_dollar_sign(t_parsing *parsing);
 char	*find_var_name(t_parsing *parsing);
 int		find_var_end(char *prompt, int p_index);
 char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
-/*manage_heredoc.c*/
-int 	here_doc(char *eof);
 /*manage_quotes.c*/
 int		manage_quotes(char c, t_parsing *parsing);
 /*parsing.c*/
@@ -233,6 +234,8 @@ int		ft_isspace(char c);
 void	ignore_ac_av(int ac, char **av);
 void	parse_and_execute(t_parsing *parsing, t_data *data);
 void	process_empty_prompt(t_parsing *parsing);
+int		takes_a_value(void);
+
 
 /*MAIN*/
 /*struct_init.c*/
