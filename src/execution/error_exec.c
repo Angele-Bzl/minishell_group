@@ -30,7 +30,8 @@ int	perror_return(char *message, int return_value)
 
 int	end_single_cmd(t_data *data, int *io_fd, int *save, int return_val)
 {
-	close_free_token_env(data, io_fd[0], io_fd[1]);
+	free_env(data->ls_env);
+	close_all(io_fd[0], io_fd[1]);
 	close_all(save[0], save[1]);
 	if (return_val == ERROR_PROMPT)
 		return (ERR);
