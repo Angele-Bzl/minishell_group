@@ -32,7 +32,7 @@ static char *find_var_content(char *variable, t_data *data, t_parsing *parsing)
 	return (result);
 }
 
-static char	*prompt_with_content(char *content, int start, t_parsing *parsing)
+char	*prompt_with_content(char *content, int start, t_parsing *parsing)
 {
 	int		i;
 	int		j;
@@ -66,11 +66,8 @@ static void	init_variable_and_content(t_parsing *parsing, char **content)
 	char	*variable;
 
 	variable = find_var_name(parsing);
-	if (!*variable)
-	{
-		parsing->errcode = ERR_MALLOC;
+	if (parsing->errcode != ALL_OK || !variable)	// si on a pas trouvé de variable ou si malloc a échoué
 		return;
-	}
 	*content = find_var_content(variable, parsing->data, parsing); // trouver le contenue de la variable, check fail
 	free(variable);
 	if (!*content)											// on continue en remplaçant par rien
@@ -107,12 +104,15 @@ void manage_dollar_sign(t_parsing *parsing)
 {
 	char	*content;
 
-	if (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index] == '?')
+	content = NULL;
+	if (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index + 1] == '?')
 	{
-		// handle '?'
+		if (handle_exit_status_var(parsing) == 0)
+			return;
 	}
 	init_variable_and_content(parsing, &content);
 	if (parsing->errcode == ALL_OK)
 		fill_new_prompt(parsing, content);
-	free(content);
+	if (content)
+		free(content);
 }

@@ -28,7 +28,7 @@ static void	prompt_handler(int signal)
 	rl_redisplay();
 }
 
-void	set_signals_by_mode(t_mode mode)
+void	set_signals_on(t_mode mode)
 {
 	struct sigaction	sa;
 

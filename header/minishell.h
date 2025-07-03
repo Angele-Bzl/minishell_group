@@ -95,6 +95,7 @@ typedef struct s_data
 	t_token	*ls_token;
 	t_mode	mode;
 	int		pipe_nbr;
+	int		exit_status;
 }	t_data;
 
 typedef struct s_parsing
@@ -177,6 +178,9 @@ void	quote_check(char c, t_parsing *parsing);
 void	expand_var(t_parsing *parsing);
 /*extract_token_without_quotes.c*/
 char	*extract_token_without_quotes(char *str, t_parsing *parsing);
+/*find_var_name_utils.c*/
+int		we_are_in_var_name(t_parsing *parsing, char c);
+int 	first_var_name_char_is_valid(char c);
 /*ft_coutpipe_utils.c*/
 int		prompt_begins_with_a_pipe(const char *s, int *i, t_parsing *parsing);
 int		parse_pipe_segments(char const *s, char c, int i);
@@ -189,10 +193,12 @@ t_file	*file_lstnew(void);
 void	file_lstadd_back(t_file **lst, t_file *new);
 /*manage_dollar*/
 void	manage_dollar_sign(t_parsing *parsing);
+char	*prompt_with_content(char *content, int start, t_parsing *parsing);
 /*manage_dollar_utils*/
 char	*find_var_name(t_parsing *parsing);
 int		find_var_end(char *prompt, int p_index);
 char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
+int		handle_exit_status_var(t_parsing *parsing);
 /*manage_quotes.c*/
 int		manage_quotes(char c, t_parsing *parsing);
 /*parsing.c*/
@@ -241,7 +247,7 @@ int		takes_a_value(void);
 int		struct_init(t_data *data, t_parsing *parsing);
 int		env_init(char **env, t_data *data);
 /*signals.c*/
-void	set_signals_by_mode(t_mode mode);
+void	set_signals_on(t_mode mode);
 void	heredoc_handler(int signal);
 
 #endif

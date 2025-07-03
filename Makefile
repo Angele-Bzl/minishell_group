@@ -54,6 +54,7 @@ FILES_PARS  =   cmd_token_utils.c\
 				cmd_token.c\
 				expand_var.c\
 				extract_token_without_quotes.c\
+				find_var_name_utils.c\
 				ft_countpipe_utils.c\
 				linked_list_file.c\
 				linked_list_token.c\

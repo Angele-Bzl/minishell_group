@@ -46,8 +46,8 @@ int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
 	previous_output = set_up_pipe(&i, pipe_fd, data->ls_token, current);
 	if (previous_output == ERR)
 		perror_return("Pipe", ERR);
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	// signal(SIGINT, SIG_IGN);
+	// signal(SIGQUIT, SIG_IGN);
 	pids[i] = fork();
 	if (pids[i] == -1)
 	{
