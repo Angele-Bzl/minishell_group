@@ -2,20 +2,21 @@
 
 // #include "../../../header/minishell.h"
 
-static void	manage_dash(bool *new_line, bool *dash, char **cmd, int i)
+static void	manage_dash(bool *new_line, bool *option, char **cmd, int i)
 {
 	int	j;
 
 	j = 1;
 	while (cmd[i][j] == 'n')
 		j++;
-	if (cmd[i][j] == '\0' && *dash == false)
+	if (cmd[i][j] == '\0')
 		*new_line = false;
 	else
 	{
+		printf("%s", cmd[i]);
 		if (cmd[i + 1])
 			printf(" ");
-		*dash = true;
+		*option = false;
 	}
 }
 
@@ -29,11 +30,11 @@ static void	print_arg(char **cmd, int i)
 void	exec_echo(char **cmd)
 {
 	int		i;
-	bool	dash;
+	bool	option;
 	bool	new_line;
 
 	new_line = true;
-	dash = false;
+	option = true;
 	if (!cmd[1])
 	{
 		printf("\n");
@@ -42,12 +43,12 @@ void	exec_echo(char **cmd)
 	i = 1;
 	while (cmd[i])
 	{
-		if (cmd[i][0] == '-')
-			manage_dash(&new_line, &dash, cmd, i);
+		if (cmd[i][0] == '-' && option == true)
+			manage_dash(&new_line, &option, cmd, i);
 		else
 		{
 			print_arg(cmd, i);
-			dash = true;
+			option = false;
 		}
 		i++;
 	}
