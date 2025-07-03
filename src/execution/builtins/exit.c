@@ -5,7 +5,6 @@ static int	exit_no_arg(t_data *data)
 {
 	free_token(data->ls_token);
 	free_env(data->ls_env);
-	ft_printf_err("exit\n");
 	exit(OK);
 }
 
@@ -60,10 +59,7 @@ static int	exit_arg(t_data *data, long long exit_code)
 	free_env(data->ls_env);
 	exit_255 = exit_code % 256;
 	if (exit_255 < 0)
-	{
 		exit_255 += 256;
-	}
-	ft_printf_err("exit\n");
 	exit(exit_255);
 }
 
@@ -76,6 +72,7 @@ int	exec_exit(t_data *data, t_token *cmds)
 		ft_putendl_fd("Error exit: too many arguments", STDERR_FILENO);
 		return (0);
 	}
+	printf("exit\n");
 	if (!cmds->cmd[1])
 	{
 		exit_no_arg(data);
