@@ -13,9 +13,9 @@ int	main(int ac, char **av, char **env)
 	{
 		if (struct_init(&data, &parsing) == ERR)
 			return (EXIT_FAILURE);
-		set_signals_by_mode(PROMPT_MODE);
+		set_signals_on(PROMPT_MODE);
 		parsing.prompt = readline("minishell> ");
-		set_signals_by_mode(EXEC_MODE);
+		set_signals_on(EXEC_MODE);
 		if (!parsing.prompt)
 			process_empty_prompt(&parsing);
 		if (parsing.prompt && parsing.prompt[0])

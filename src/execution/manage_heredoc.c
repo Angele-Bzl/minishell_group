@@ -44,7 +44,9 @@ int	here_doc(char *eof)
 {
 	int	fd;
 
-	set_signals_by_mode(HEREDOC_MODE);
+	// signal(SIGINT, SIG_IGN);
+	// signal(SIGQUIT, SIG_IGN);
+	set_signals_on(HEREDOC_MODE);
 	fd = open(TMP, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 		return (-1);
