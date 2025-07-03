@@ -4,10 +4,23 @@
 
 static int	var_is_valid(char *cmd)
 {
-	if (!(ft_isalpha(cmd[0]) || cmd[0] == '_'))
+	int i;
+
+	i = 0;
+	if (!(ft_isalpha(cmd[i]) || cmd[i] == '_'))
 	{
 		printf("export: '%s': not a valid identifier\n", cmd);
 		return (0);
+	}
+	i++;
+	while (cmd[i])
+	{
+		if (!ft_isalnum(cmd[i]) && cmd[i] != '=')
+		{
+			printf("export: '%s': not a valid identifier\n", cmd);
+			return (0);
+		}
+		i++;
 	}
 	return (1);
 }

@@ -66,9 +66,12 @@ static void	init_variable_and_content(t_parsing *parsing, char **content)
 	char	*variable;
 
 	variable = find_var_name(parsing);
-	if (parsing->errcode != ALL_OK || !variable)	// si on a pas trouvé de variable ou si malloc a échoué
+	if (parsing->errcode != ALL_OK)	// si on a pas trouvé de variable ou si malloc a échoué
 		return;
-	*content = find_var_content(variable, parsing->data, parsing); // trouver le contenue de la variable, check fail
+	if (!variable)
+		*content = NULL;
+	else
+		*content = find_var_content(variable, parsing->data, parsing); // trouver le contenue de la variable, check fail
 	free(variable);
 	if (!*content)											// on continue en remplaçant par rien
 	{

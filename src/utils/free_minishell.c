@@ -4,11 +4,8 @@ void	free_parsing(t_parsing *parsing)
 {
 	if (parsing->prompt)
 		free(parsing->prompt);
-<<<<<<< HEAD
-=======
 	if (parsing->old_prompt)
 		free(parsing->old_prompt);
->>>>>>> bugggs
 	if (parsing->prompt_tab)
 		free_array(parsing->prompt_tab);
 	parsing->prompt = NULL;
