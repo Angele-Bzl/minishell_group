@@ -82,22 +82,19 @@ static int	is_special_cmd(char *cmd, char **path_cmd)
 	if (ft_strchr(cmd, '/'))
 	{
 		if (stat(cmd, &buf) == -1)
-		{
-			perror(cmd);
-			return (OK);
-		}
+			return (perror_return(cmd, OK));
 		else
 		{
-			*path_cmd = cmd;
 			if (S_ISDIR(buf.st_mode))
 			{
-				ft_printf_err("%s : is a directory\n", *path_cmd);
-				*path_cmd = NULL;
+				ft_printf_err("%s : is a directory\n", cmd);
 				return (OK);
 			}
+			*path_cmd = cmd;
+			return (OK);
 		}
 	}
-	return (OK);
+	return (1);
 }
 
 char	*find_cmd(char **env, char *cmd)
@@ -109,7 +106,9 @@ char	*find_cmd(char **env, char *cmd)
 
 	path_cmd = NULL;
 	if (is_special_cmd(cmd, &path_cmd) == OK)
+	{
 		return (path_cmd);
+	}
 	i = find_path_in_env(env);
 	if (i == ERR)
 		return (msg_return_str(NO_FILE, NULL, NULL));
