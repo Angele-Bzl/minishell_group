@@ -70,6 +70,33 @@ static char	**hypothetical_path(char **env_path, char *cmd)
 	return (hypothetical_path_cmd);
 }
 
+static int	is_special_cmd(char *cmd, char **path_cmd)
+{
+	struct stat	buf;
+
+	if (!cmd || cmd_is_builtin(cmd))
+	{
+		*path_cmd = cmd;
+		return (OK);
+	}
+	if (ft_strchr(cmd, '/'))
+	{
+		if (stat(cmd, &buf) == -1)
+			return (perror_return(cmd, OK));
+		else
+		{
+			if (S_ISDIR(buf.st_mode))
+			{
+				ft_printf_err("%s : is a directory\n", cmd);
+				return (OK);
+			}
+			*path_cmd = cmd;
+			return (OK);
+		}
+	}
+	return (1);
+}
+
 char	*find_cmd(char **env, char *cmd)
 {
 	char	**env_path;
@@ -77,8 +104,11 @@ char	*find_cmd(char **env, char *cmd)
 	char	*path_cmd;
 	int		i;
 
-	if (!cmd || cmd_is_builtin(cmd) || ft_strchr(cmd, '/')) //la premier condition doit etre dans strchr
-		return (cmd);
+	path_cmd = NULL;
+	if (is_special_cmd(cmd, &path_cmd) == OK)
+	{
+		return (path_cmd);
+	}
 	i = find_path_in_env(env);
 	if (i == ERR)
 		return (msg_return_str(NO_FILE, NULL, NULL));

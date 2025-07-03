@@ -47,12 +47,12 @@ int	here_doc(char *eof)
 	set_signals_by_mode(HEREDOC_MODE);
 	fd = open(TMP, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
-		return (0);
+		return (-1);
 	readline_heredoc(fd, eof);
 	close (fd);
 	fd = open(TMP, O_RDONLY);
 	if (fd == -1)
-		return (0);
+		return (-1);
 	unlink(TMP);
 	return (fd);
 }

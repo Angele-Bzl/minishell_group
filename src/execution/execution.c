@@ -19,6 +19,5 @@ int	execution(t_data *data)
 		exit(EXIT_FAILURE);
 	}
 	free(pids);
-	// free_token(data->ls_token);
 	return (OK);
 }

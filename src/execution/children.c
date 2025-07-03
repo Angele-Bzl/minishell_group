@@ -5,10 +5,12 @@ int	manage_child(t_data *data, int prev_out, int pipe_fd[2], t_token *current)
 	int		io_fd[2];
 
 	io_fd[0] = get_input(current->ls_infile, prev_out);
+	if (io_fd[0] == ERR)
+		return (EXIT_FAILURE);
 	io_fd[1] = get_output(current->ls_outfile, pipe_fd[1], count_cmds(current));
-	if (io_fd[0] == ERR || io_fd[1] == ERR)
+	if (io_fd[1] == ERR)
 	{
-		close_all(io_fd[0], io_fd[1]);
+		close(io_fd[0]);
 		return (EXIT_FAILURE);
 	}
 	if (redirect_and_exec(current, io_fd, data) != OK)

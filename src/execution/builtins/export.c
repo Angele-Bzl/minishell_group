@@ -9,8 +9,6 @@ static int	var_is_valid(char *cmd)
 		printf("export: '%s': not a valid identifier\n", cmd);
 		return (0);
 	}
-	if (!ft_strchr(cmd, '='))
-		return (0);
 	return (1);
 }
 
@@ -60,6 +58,8 @@ static int	var_update(t_env *current, char *cmd)
 	return (1);
 }
 
+
+
 int	exec_export(t_env *ls_env, char **cmds)
 {
 	int		i;
@@ -67,6 +67,10 @@ int	exec_export(t_env *ls_env, char **cmds)
 
 	current = ls_env;
 	i = 1;
+	if (!cmds[i])
+	{
+		exec_env_export(ls_env);
+	}
 	while (cmds[i])
 	{
 		if (var_is_valid(cmds[i]))
@@ -83,26 +87,3 @@ int	exec_export(t_env *ls_env, char **cmds)
 	}
 	return (OK);
 }
-
-// static int	data_init(t_data *data)
-// {
-// 	data->ls_token = token_lstnew();
-// 	if (!data->ls_token)
-// 		return (ERR);
-// 	data->pipe_nbr = 0;
-// 	return (OK);
-// }
-
-// int main(int ac, char **av, char **env)
-// {
-// 	t_data data;
-// 	char **cmds;
-
-// 	data_init(&data);
-// 	env_init(env, &data);
-// 	cmds = ft_split("export B=b", ' ');
-// 	exec_export(data.ls_env, cmds);
-// 	free(cmds);
-// 	cmds = ft_split("export C=c", ' ');
-// 	exec_export(data.ls_env, cmds);
-// }

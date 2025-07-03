@@ -159,6 +159,7 @@ void	exec_echo(char **cmd);
 int		exec_export(t_env *ls_env, char **cmds);
 int		exec_pwd(void);
 void	exec_env(t_env *ls_env);
+void	exec_env_export(t_env *ls_env);
 void	exec_unset(t_env **ls_env, char **cmds);
 int		exec_cd(char **cmd, t_env *list_env);
 int		exec_exit(t_data *data, t_token *cmds);
