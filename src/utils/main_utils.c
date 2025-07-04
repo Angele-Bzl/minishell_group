@@ -3,7 +3,7 @@
 int	takes_a_value(void)
 {
 	return (1);
-} 
+}
 
 void	ignore_ac_av(int ac, char **av)
 {
