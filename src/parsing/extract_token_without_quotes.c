@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 char	*extract_token_without_quotes(char *str, t_parsing *parsing)
 {
@@ -17,9 +17,9 @@ char	*extract_token_without_quotes(char *str, t_parsing *parsing)
 	while (str[i])
 	{
 		quote_check(str[i], parsing);
-		if (str[i] == '\'' && parsing->double_quote == false)			// on ne copie pas la simple quote
+		if (str[i] == '\'' && parsing->double_quote == false)
 			i++;
-		else if (str[i] == '\"' && parsing->simple_quote == false)		// on ne copie pas la double quote
+		else if (str[i] == '\"' && parsing->simple_quote == false)
 			i++;
 		else
 			res[j++] = str[i++];

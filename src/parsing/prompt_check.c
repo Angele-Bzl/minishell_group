@@ -1,6 +1,6 @@
-# include "minishell.h"
+#include "minishell.h"
 
-static int	last_pipe_check(char *prompt)								// si dernier charactere effectif est un pipe, on se comporte comme pour une ERR_PROMPT
+static int	last_pipe_check(char *prompt)
 {
 	int	i;
 
@@ -21,7 +21,7 @@ static int	last_pipe_check(char *prompt)								// si dernier charactere effecti
 	return (OK);
 }
 
-static int	quote_count(char *prompt, t_parsing *parsing)				// si le nbr de quote est impaire, on free
+static int	quote_count(char *prompt, t_parsing *parsing)
 {
 	int	i;
 	int	single_quote;

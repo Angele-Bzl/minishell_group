@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 int	handle_exit_status_var(t_parsing *parsing)
 {
@@ -25,7 +25,7 @@ char	*find_var_name(t_parsing *parsing)
 
 	start = parsing->p_index + 1;
 	end = start;
-	if (!first_var_name_char_is_valid(parsing->prompt_tab[parsing->pipe_seg][start]))	// Si le premier charactère de la variable n'est pas valide
+	if (!first_var_name_char_is_valid(parsing->prompt_tab[parsing->pipe_seg][start]))
 	{
 		var_name = malloc(sizeof(char) * 2);
 		if (!var_name)
@@ -37,7 +37,7 @@ char	*find_var_name(t_parsing *parsing)
 		var_name[1] = '\0';
 		return (var_name);
 	}
-	while (we_are_in_var_name(parsing, parsing->prompt_tab[parsing->pipe_seg][end]))		// Tant qu'on est pas a la fin de notre variable
+	while (we_are_in_var_name(parsing, parsing->prompt_tab[parsing->pipe_seg][end]))
 		end++;
 	if (parsing->errcode == ERR_PROMPT)
 		return (NULL);
@@ -89,7 +89,7 @@ char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len)
 		}
 		tmp = tmp->next;
 	}
-	if (!env_var) 											//si la variable existe pas c'est = NULL mais c'est pas un fail
+	if (!env_var)
 		return (NULL);
 	return (env_var);
 }

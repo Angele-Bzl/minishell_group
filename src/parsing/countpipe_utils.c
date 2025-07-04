@@ -14,7 +14,7 @@ int	prompt_begins_with_a_pipe(const char *prompt, int *i, t_parsing *parsing)
 
 int	parse_pipe_segments(char const *s, int i)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (s[i])

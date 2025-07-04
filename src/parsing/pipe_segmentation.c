@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 static int	next_pipe_segment(int *start, int *end, t_parsing *parsing)
 {
@@ -8,7 +8,7 @@ static int	next_pipe_segment(int *start, int *end, t_parsing *parsing)
 	*start = *end;
 	while (parsing->prompt[*start] == '|' || ft_isspace(parsing->prompt[*start]))
 	{
-		if (parsing->prompt[*start] == '|' && ++pipe_count > 1)								// s'il y a plusieurs pipe sans rien entre les 2
+		if (parsing->prompt[*start] == '|' && ++pipe_count > 1)
 		{
 			parsing->errcode = ERR_PROMPT;
 			return (msg_return(ERR_SYNTAX_NEAR, "|", ERR));
@@ -21,7 +21,7 @@ static int	next_pipe_segment(int *start, int *end, t_parsing *parsing)
 	while (parsing->prompt[*end] != '|' && parsing->prompt[*end] != '\0')
 	{
 		if (parsing->prompt[*end] == '\"' || parsing->prompt[*end] == '\'')
-			skip_quote(parsing->prompt, end);		// si s[i] = quote, on continue jusqu'a la prochaine
+			skip_quote(parsing->prompt, end);
 		*end = *end + 1;
 	}
 	return (0);
@@ -66,12 +66,11 @@ static int	fill_pipe_segments(char **array, char const *prompt, t_parsing *parsi
 	pipe_seg = ft_countpipe(prompt, parsing);
 	while (i <= pipe_seg)
 	{
-		if (next_pipe_segment(&start, &end, parsing) == -1)// errcode a deja ete update plus haut donc on travail avec -1
+		if (next_pipe_segment(&start, &end, parsing) == -1)
 			return (-1);
 		array[i] = ft_substr(prompt, start, end - start);
-		if (free_split_on_failure(array, i, parsing) == -1)// errcode a deja ete update plus haut donc on travail avec -1
+		if (free_split_on_failure(array, i, parsing) == -1)
 			return (-1);
-		// ou alors : if !array[i] -> free_array(array) , parsign errcode MALLOC, return 1 ? La fonction freesplitonfailure me parait overkill
 		i++;
 	}
 	array[i] = NULL;
@@ -88,13 +87,13 @@ char	**pipe_segmentation(t_parsing *parsing)
 	pipe_seg = ft_countpipe(prompt, parsing);
 	if (pipe_seg == -1)
 		return(NULL);
-	array = malloc(sizeof(char *) * (pipe_seg + 2)); // + 1 ?
+	array = malloc(sizeof(char *) * (pipe_seg + 2));
 	if (!array)
 	{
 		parsing->errcode = ERR_MALLOC;
 		return (NULL);
 	}
-	if (fill_pipe_segments(array, prompt, parsing) == -1)// errcode a deja ete update plus haut donc on travail avec -1
+	if (fill_pipe_segments(array, prompt, parsing) == -1)
 		return (NULL);
 	return (array);
 }

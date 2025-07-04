@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 static int	update_file(t_file *ls_file, char *file_name, t_rafter redirection)
 {
@@ -53,8 +53,7 @@ int	manage_rafters(t_data *data, int *i, char *prompt, t_parsing *parsing)
 		parsing->errcode = ERR_MALLOC;
 		return (-1);
 	}
-	// if (prompt[*i] == prompt[*i + 1])
-	if (prompt[*i + 1] == '<' || prompt[*i + 1] == '>') //pas sûr parce que <> ou ><
+	if (prompt[*i + 1] == '<' || prompt[*i + 1] == '>')
 		*i = *i + 1;
 	while (ft_isspace(prompt[*i]))
 		*i = *i + 1;

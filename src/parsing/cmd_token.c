@@ -57,8 +57,8 @@ static int	find_all_cmds_len(char *prompt)
 	{
 		while (ft_isspace(prompt[i]))
 			i++;
-		if (prompt[i] == '<' || prompt[i] == '>')				// on croise un io.
-			i = skip_io(prompt, i);								// avancer jusqu'au prochain arg de de cmd.
+		if (prompt[i] == '<' || prompt[i] == '>')
+			i = skip_io(prompt, i);
 		len++;
 		while (prompt[i] && !ft_isspace(prompt[i]) && prompt[i] != '<' && prompt[i] != '>')
 		{
@@ -80,14 +80,14 @@ char	*extract_current_cmd(char *prompt, int *i, int *j, char *clean_cmd)
 
 	while (prompt[*i] && !ft_isspace(prompt[*i]) && prompt[*i] != '<' && prompt[*i] != '>')
 	{
-		if (prompt[*i] == '\'' || prompt[*i] == '\"')		// si on croise une quote
+		if (prompt[*i] == '\'' || prompt[*i] == '\"')
 		{
 			quote = prompt[*i];
-			clean_cmd[(*j)++] = prompt[(*i)++];				// ajoute quote ouvrante
+			clean_cmd[(*j)++] = prompt[(*i)++];
 			while (prompt[*i] != quote)
 				clean_cmd[(*j)++] = prompt[(*i)++];
 			if (prompt[*i] == quote)
-				clean_cmd[(*j)++] = prompt[(*i)++];			// quote fermante
+				clean_cmd[(*j)++] = prompt[(*i)++];
 		}
 		else if (prompt[*i])
 			clean_cmd[(*j)++] = prompt[(*i)++];

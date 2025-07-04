@@ -34,7 +34,7 @@ static int	find_and_store_all_cmds(t_token *current, char *prompt, t_parsing *pa
 	return (0);
 }
 
-void	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeuds de ls_token
+void	tokenisation(t_data *data, t_parsing *parsing)
 {
 	int		i;
 	t_token	*new_token_node;

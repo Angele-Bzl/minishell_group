@@ -203,8 +203,6 @@ char	*find_var_name(t_parsing *parsing);
 int		find_var_end(char *prompt, int p_index);
 char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
 int		handle_exit_status_var(t_parsing *parsing);
-/*manage_quotes.c*/
-int		manage_quotes(char c, t_parsing *parsing);
 /*parsing.c*/
 void	ft_parsing(t_data *data, t_parsing *parsing);
 /*pip_segmentation.c*/

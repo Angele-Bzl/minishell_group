@@ -59,7 +59,6 @@ FILES_PARS  =   cmd_token_utils.c\
 				linked_list_token.c\
 				manage_dollar_utils.c\
 				manage_dollar.c\
-                manage_quotes.c\
 				parsing.c\
 				pipe_segmentation.c\
 				prompt_check.c\

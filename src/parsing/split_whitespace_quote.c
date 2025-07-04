@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 static int	get_next_word_bounds(const char *s, char c, int *start, int *end)
 {

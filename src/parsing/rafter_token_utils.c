@@ -1,6 +1,6 @@
-# include "minishell.h"
+#include "minishell.h"
 
-char	*extract_file_name(char *prompt, int i)					// trouver le debut/fin du nom et le renvoyer
+char	*extract_file_name(char *prompt, int i)
 {
 	int		start;
 	int		end;
@@ -25,7 +25,7 @@ char	*extract_file_name(char *prompt, int i)					// trouver le debut/fin du nom 
 	return (file_name);
 }
 
-char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing)				// on avance jusqu'au début du nom pour l'extraire.
+char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing)
 {
 	char	*file_name;
 
@@ -37,7 +37,7 @@ char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing)				// on ava
 	if (prompt[i] == '<' || prompt[i] == '>' || prompt[i] == '\0')
 	{
 		parsing->errcode = ERR_PROMPT;
-		return (msg_return_str(ERR_SYNTAX_NEAR, ft_strdup("'<' OR '>' OR '\\0'"), NULL));
+		return (msg_return_str(ERR_SYNTAX_NEAR, "'<' OR '>' OR '\\0'", NULL));
 	}
 	file_name = extract_file_name(prompt, i);
 	if (!file_name)

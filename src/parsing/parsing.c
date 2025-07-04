@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 static void	errcode_check_in_parsing(t_parsing *parsing)
 {
