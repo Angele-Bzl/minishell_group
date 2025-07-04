@@ -23,9 +23,17 @@
 
 # include "../libft/libft.h"
 
+/*messages with arguments*/
 # define MALLOC "Error: malloc failed\n"
-# define NO_FILE "minishell: no such file or directory\n"
-# define NO_CMD "minishell: %s: command not found\n"
+# define NO_FILE " : no such file or directory\n"
+# define NO_CMD " : command not found\n"
+# define IS_DIR " : is a directory\n"
+# define ERR_SYNTAX " : syntax error near unexpected token\n"
+# define HEREDOC_EXPECT_DELIMITER " : this delimiter is expected to close heredoc\n"
+
+/*messages without arguments*/
+# define ERR_SYNTAX_PIPE "syntax error: pipe '|' must be followed by a command\n"
+# define ERR_SYNTAX_QUOTE "syntax error : open quote\n"
 # define NO_PATH "Error: no path to the command\n"
 # define ERR_PWD "Error: update_pwd failed\n"
 # define ERR_OLDPWD "Error: update_oldpwd failed\n"

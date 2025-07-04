@@ -86,10 +86,7 @@ static int	is_special_cmd(char *cmd, char **path_cmd)
 		else
 		{
 			if (S_ISDIR(buf.st_mode))
-			{
-				ft_printf_err("%s : is a directory\n", cmd);
-				return (OK);
-			}
+				return (msg_return(IS_DIR, cmd, OK));
 			*path_cmd = cmd;
 			return (OK);
 		}

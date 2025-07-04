@@ -10,9 +10,10 @@ static int	next_pipe_segment(char c, int *start, int *end, t_parsing *parsing)
 	{
 		if (parsing->prompt[*start] == c && ++pipe_count > 1)								// s'il y a plusieurs pipe sans rien entre les 2
 		{
-			ft_printf_err("syntax error near unexpected token '|'\n");
+			// ft_printf_err("syntax error near unexpected token '|'\n");
 			parsing->errcode = ERR_PROMPT;
-			return (-1);
+			return (msg_return(ERR_SYNTAX, &c, ERR));
+			// return (-1);
 		}
 		(*start)++;
 	}
