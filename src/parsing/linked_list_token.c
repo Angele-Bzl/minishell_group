@@ -17,6 +17,7 @@ t_token	*token_lstnew(void)
 	new->ls_infile = malloc(sizeof(t_file));
 	if (!new->ls_infile)
 	{
+		ft_putstr_fd(MALLOC, STDERR_FILENO);
 		free(new);
 		return (NULL);
 	}
@@ -24,6 +25,7 @@ t_token	*token_lstnew(void)
 	new->ls_outfile = malloc(sizeof(t_file));
 	if (!new->ls_outfile)
 	{
+		ft_putstr_fd(MALLOC, STDERR_FILENO);
 		free(new->ls_infile);
 		free(new);
 		return (NULL);
