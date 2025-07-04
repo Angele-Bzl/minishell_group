@@ -34,4 +34,3 @@ void	exec_env(t_env *ls_env)
 		current = current->next;
 	}
 }
-

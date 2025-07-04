@@ -22,12 +22,11 @@ static void	readline_heredoc(int fd, char *eof)
 		if (g_sigint)
 		{
 			g_sigint = 0;
-			break;
+			break ;
 		}
 		if (!input)
 		{
 			msg_return(HEREDOC_EXPECT_DELIMITER, eof, 0);
-			// ft_printf_err("bash: warning: heredoc delimited by end_of_file (wanted `%s')\n", eof);
 			break ;
 		}
 		if (!ft_strncmp(input, eof, ft_strlen(eof)))
@@ -45,8 +44,6 @@ int	here_doc(char *eof)
 {
 	int	fd;
 
-	// signal(SIGINT, SIG_IGN);
-	// signal(SIGQUIT, SIG_IGN);
 	set_signals_on(HEREDOC_MODE);
 	fd = open(TMP, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)

@@ -74,8 +74,6 @@ int	exec_single_builtin(t_data *data)
 	io_fd[1] = get_output_single_cmd(data->ls_token->ls_outfile, save_std_io);
 	if (io_fd[1] == ERR)
 		return (end_single_cmd(data, io_fd, save_std_io, ERROR_PROMPT));
-	// if (!ft_strncmp(data->ls_token->cmd[0], "exit\0", 5))///////////////////
-	// 	close_all(save_std_io[0], save_std_io[1]);///////////
 	return_value = redirect_and_exec(data->ls_token, io_fd, data, save_std_io);
 	if (return_value != OK)
 		return (end_single_cmd(data, io_fd, save_std_io, return_value));

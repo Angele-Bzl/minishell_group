@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-// #include "../../../header/minishell.h"
-
 static int	var_is_valid(char *cmd)
 {
 	if (!(ft_isalpha(cmd[0]) || cmd[0] == '_'))
@@ -29,10 +27,8 @@ static int	var_new(t_env *ls_env, char *cmd)
 
 static int	var_already_exists(t_env *current, char *cmd)
 {
-	int i = 0;
 	while (current)
 	{
-		i++;
 		if (var_cmp(current->line, cmd))
 		{
 			return (1);
@@ -57,8 +53,6 @@ static int	var_update(t_env *current, char *cmd)
 	}
 	return (1);
 }
-
-
 
 int	exec_export(t_env *ls_env, char **cmds)
 {

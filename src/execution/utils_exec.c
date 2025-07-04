@@ -52,7 +52,7 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 		if (waitpid(pid[i], &status, 0) == -1)
 		{
 			if (errno == EINTR)
-				continue;
+				continue ;
 			return (perror_return("waitpid", ERR));
 		}
 		i++;
