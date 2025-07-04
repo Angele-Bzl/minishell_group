@@ -5,10 +5,20 @@ int	takes_a_value(void)
 	return (1);
 } 
 
-void	ignore_ac_av(int ac, char **av)
+int	check_minishell_launch(int ac, char **av)
 {
-	(void)ac;
 	(void)av;
+	if (isatty(STDIN_FILENO) == 0 || isatty(STDOUT_FILENO) == 0 || isatty(STDERR_FILENO) == 0)
+	{
+		ft_printf_err("minishell: standard input/output/error is not connected to a terminal\n");
+		return (0);
+	}
+	if (ac > 1)
+	{
+		ft_printf_err("minishell: too many arguments\n");
+		return (0);
+	}
+	return (1);
 }
 
 void	process_empty_prompt(t_parsing *parsing)

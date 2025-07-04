@@ -238,7 +238,7 @@ void	free_token(t_token *token);
 /*ft_isspace.c*/
 int		ft_isspace(char c);
 /*main_utils.c*/
-void	ignore_ac_av(int ac, char **av);
+int		check_minishell_launch(int ac, char **av);
 void	parse_and_execute(t_parsing *parsing, t_data *data);
 void	process_empty_prompt(t_parsing *parsing);
 int		takes_a_value(void);

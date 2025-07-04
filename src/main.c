@@ -5,7 +5,8 @@ int	main(int ac, char **av, char **env)
 	t_data      data;
 	t_parsing   parsing;
 
-	ignore_ac_av(ac, av);
+	if (!check_minishell_launch(ac, av))
+		return (EXIT_FAILURE);
 	rl_event_hook = takes_a_value;
 	if (!env_init(env, &data))
 		msg_exit(MALLOC, NULL, EXIT_FAILURE);
