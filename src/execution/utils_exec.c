@@ -78,11 +78,14 @@ char	**get_env_in_tab(t_env *node_env)
 	i = 0;
 	while (current)
 	{
-		table_env[i] = ft_strdup(current->line);
-		if (!table_env[i])
+		if (ft_strchr(current->line, '='))
 		{
-			free_array(table_env);
-			return (NULL);
+			table_env[i] = ft_strdup(current->line);
+			if (!table_env[i])
+			{
+				free_array(table_env);
+				return (NULL);
+			}
 		}
 		current = current->next;
 		i++;

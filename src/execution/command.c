@@ -106,9 +106,7 @@ char	*find_cmd(char **env, char *cmd)
 
 	path_cmd = NULL;
 	if (is_special_cmd(cmd, &path_cmd) == OK)
-	{
 		return (path_cmd);
-	}
 	i = find_path_in_env(env);
 	if (i == ERR)
 		return (msg_return_str(NO_FILE, NULL, NULL));
