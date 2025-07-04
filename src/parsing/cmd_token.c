@@ -5,22 +5,12 @@ int	skip_io(char *prompt, int i)
 	i++;
 	if (prompt[i] == '<' || prompt[i] == '>')
 		i++;
-	if (!ft_isspace(prompt[i]))
-	{
-		while (prompt[i] && !ft_isspace(prompt[i]))
-			i++;
-		while (prompt[i] && ft_isspace(prompt[i]))
-			i++;
-	}
-	else if (ft_isspace(prompt[i]))
-	{
-		while (prompt[i] && ft_isspace(prompt[i]))
-			i++;
-		while (prompt[i] && !ft_isspace(prompt[i]))
-			i++;
-		while (prompt[i] && ft_isspace(prompt[i]))
-			i++;
-	}
+	while (prompt[i] && ft_isspace(prompt[i]))
+		i++;
+	while (prompt[i] && !ft_isspace(prompt[i]))
+		i++;
+	while (prompt[i] && ft_isspace(prompt[i]))
+		i++;
 	return (i);
 }
 

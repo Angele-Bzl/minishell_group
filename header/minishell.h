@@ -197,7 +197,7 @@ t_file	*file_lstnew(void);
 void	file_lstadd_back(t_file **lst, t_file *new);
 /*manage_dollar*/
 void	manage_dollar_sign(t_parsing *parsing);
-char	*prompt_with_content(char *content, int start, t_parsing *parsing);
+char	*update_prompt(char *content, int start, t_parsing *parsing);
 /*manage_dollar_utils*/
 char	*find_var_name(t_parsing *parsing);
 int		find_var_end(char *prompt, int p_index);

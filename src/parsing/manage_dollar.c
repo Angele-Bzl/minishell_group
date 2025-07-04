@@ -5,10 +5,8 @@ static char	*find_var_content(char *variable, t_data *data, t_parsing *parsing)
 	char	*var;
 	char	*result;
 	char	*env_var;
-	int		var_len;
 	t_env	*tmp;
 
-	env_var = NULL;
 	tmp = data->ls_env;
 	var = ft_strtrim(variable, "$");
 	if (!var)
@@ -16,9 +14,8 @@ static char	*find_var_content(char *variable, t_data *data, t_parsing *parsing)
 		parsing->errcode = ERR_MALLOC;
 		return (NULL);
 	}
-	var_len = (ft_strlen(var));
-	env_var = search_and_fill_content_with_env(tmp, var, var_len);
 	result = NULL;
+	env_var = search_and_fill_content_with_env(tmp, var, ft_strlen(var));
 	if (env_var)
 	{
 		result = ft_cutstr(env_var, ft_strlen(var) + 1);
@@ -32,7 +29,7 @@ static char	*find_var_content(char *variable, t_data *data, t_parsing *parsing)
 	return (result);
 }
 
-char	*prompt_with_content(char *content, int start, t_parsing *parsing)
+char	*update_prompt(char *content, int start, t_parsing *parsing)
 {
 	int		i;
 	int		j;
@@ -89,7 +86,7 @@ static void	fill_new_prompt(t_parsing *par, char *content)
 	start = par->p_index;
 	par->old_prompt = par->prompt_tab[par->pipe_seg];
 	par->prompt_tab[par->pipe_seg] = NULL;
-	par->prompt_tab[par->pipe_seg] = prompt_with_content(content, start, par);
+	par->prompt_tab[par->pipe_seg] = update_prompt(content, start, par);
 	free(par->old_prompt);
 	par->old_prompt = NULL;
 	if (!par->prompt_tab[par->pipe_seg])

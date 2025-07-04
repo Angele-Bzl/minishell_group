@@ -43,24 +43,19 @@ void	tokenisation(t_data *data, t_parsing *parsing)
 
 	current = data->ls_token;
 	i = 0;
-	if (parsing->prompt_tab[i])
-	{
-		if (find_store_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
-			return ;
-		if (find_store_cmds(current, parsing->prompt_tab[i], parsing) == -1)
-			return ;
-		i++;
-	}
 	while (parsing->prompt_tab[i])
 	{
-		new_token_node = token_lstnew();
-		if (!new_token_node)
+		if (i > 0)
 		{
-			parsing->errcode = ERR_MALLOC;
-			return ;
+			new_token_node = token_lstnew();
+			if (!new_token_node)
+			{
+				parsing->errcode = ERR_MALLOC;
+				return ;
+			}
+			token_lstadd_back(&current, new_token_node);
+			current = new_token_node;
 		}
-		token_lstadd_back(&current, new_token_node);
-		current = new_token_node;
 		if (find_store_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
 			return ;
 		if (find_store_cmds(current, parsing->prompt_tab[i], parsing) == -1)

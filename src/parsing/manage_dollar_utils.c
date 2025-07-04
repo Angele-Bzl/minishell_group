@@ -11,7 +11,7 @@ int	handle_exit_status_var(t_parsing *par)
 		par->errcode = ERR_MALLOC;
 		return (1);
 	}
-	par->prompt_tab[par->pipe_seg] = prompt_with_content(content, par->p_index, par);
+	par->prompt_tab[par->pipe_seg] = update_prompt(content, par->p_index, par);
 	return (0);
 }
 
