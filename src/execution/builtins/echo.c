@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-// #include "../../../header/minishell.h"
-
 static void	manage_dash(bool *new_line, bool *option, char **cmd, int i)
 {
 	int	j;
@@ -55,12 +53,3 @@ void	exec_echo(char **cmd)
 	if (new_line == true)
 		printf("\n");
 }
-
-// int main(int ac, char **av, char **env)
-// {
-// 	(void)ac;
-// 	(void)av;
-// 	char *cmd[5] = {"echo", "-p", "-n", "WORLD", NULL};
-
-// 	exec_echo(cmd, env);
-// }
