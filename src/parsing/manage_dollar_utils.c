@@ -25,6 +25,8 @@ char	*find_var_name(t_parsing *parsing)
 
 	start = parsing->p_index + 1;
 	end = start;
+	if (parsing->prompt_tab[parsing->pipe_seg][start] == '\"' || parsing->prompt_tab[parsing->pipe_seg][start] == '\'')
+			return (NULL);
 	if (!first_var_name_char_is_valid(parsing->prompt_tab[parsing->pipe_seg][start]))	// Si le premier charactère de la variable n'est pas valide
 	{
 		var_name = malloc(sizeof(char) * 2);
@@ -65,11 +67,15 @@ int	find_var_end(char *prompt, int p_index)
 	int	end;
 
 	end = p_index + 1;
+	if (prompt[end] == '\"' || prompt[end] == '\'')
+		return (end);
 	if (!first_var_name_char_is_valid(prompt[end]))
 	{
 		end++;
 		return (end);
 	}
+	if (prompt[end] == '?')
+		end++;
 	while (we_are_in_var_name(NULL, prompt[end]))
 		end++;
 	return (end);
@@ -89,7 +95,7 @@ char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len)
 		}
 		tmp = tmp->next;
 	}
-	if (!env_var) 											//si la variable existe pas c'est = NULL mais c'est pas un fail
+	if (!env_var)
 		return (NULL);
 	return (env_var);
 }

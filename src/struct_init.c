@@ -57,7 +57,6 @@ static int	data_init(t_data *data)
 	if (!data->ls_token)
 		return (ERR);
 	data->pipe_nbr = 0;
-	data->exit_status = 0;
 	return (OK);
 }
 

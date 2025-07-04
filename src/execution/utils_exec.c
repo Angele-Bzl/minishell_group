@@ -42,10 +42,12 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 {
 	size_t	i;
 	int		status;
+	int		exit_status;
 	t_token	*current;
 
 	i = 0;
 	status = 0;
+	exit_status = 0;
 	current = token;
 	while (current)
 	{
@@ -53,16 +55,24 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 		{
 			if (errno == EINTR)
 				continue;
+			set_signals_on(PROMPT_MODE);
 			return (perror_return("waitpid", ERR));
 		}
+		if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGINT)
+				write(2, "\n", 1);
+			else if (WTERMSIG(status) == SIGQUIT)
+				write(2, "Quit (core dumped)\n", 20);
+			exit_status = 128 + WTERMSIG(status);
+		}
+		else if (WIFEXITED(status))
+			exit_status = WEXITSTATUS(status);
 		i++;
 		current = current->next;
 	}
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
-	return (EXIT_SUCCESS);
+	set_signals_on(PROMPT_MODE);
+	return (exit_status);
 }
 
 char	**get_env_in_tab(t_env *node_env)

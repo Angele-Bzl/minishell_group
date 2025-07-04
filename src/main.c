@@ -9,6 +9,7 @@ int	main(int ac, char **av, char **env)
 	rl_event_hook = takes_a_value;
 	if (!env_init(env, &data))
 		msg_exit(MALLOC, NULL, EXIT_FAILURE);
+	data.exit_status = 0;
 	while (1)
 	{
 		if (struct_init(&data, &parsing) == ERR)
