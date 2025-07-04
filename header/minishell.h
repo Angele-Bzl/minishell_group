@@ -24,7 +24,6 @@
 # include "../libft/libft.h"
 
 /*messages with arguments*/
-# define MALLOC "Error: malloc failed\n"
 # define NO_FILE " : no such file or directory\n"
 # define NO_CMD " : command not found\n"
 # define IS_DIR " : is a directory\n"
@@ -32,12 +31,14 @@
 # define HEREDOC_EXPECT_DELIMITER " : this delimiter is expected to close heredoc\n"
 
 /*messages without arguments*/
+# define MALLOC "Error: malloc failed\n"
 # define ERR_SYNTAX_PIPE "syntax error: pipe '|' must be followed by a command\n"
 # define ERR_SYNTAX_QUOTE "syntax error : open quote\n"
 # define NO_PATH "Error: no path to the command\n"
 # define ERR_PWD "Error: update_pwd failed\n"
 # define ERR_OLDPWD "Error: update_oldpwd failed\n"
 # define ERR_EXECVE "Error: execve failed\n"
+
 # define TMP ".infile.tmp"
 # define IS_BUILTIN 42
 
@@ -192,7 +193,7 @@ int		we_are_in_var_name(t_parsing *parsing, char c);
 int 	first_var_name_char_is_valid(char c);
 /*ft_coutpipe_utils.c*/
 int		prompt_begins_with_a_pipe(const char *s, int *i, t_parsing *parsing);
-int		parse_pipe_segments(char const *s, char c, int i);
+int		parse_pipe_segments(char const *s, int i);
 /*linked_list_token.c*/
 t_token	*token_lstnew(void);
 t_token	*token_lstlast(t_token *lst);
@@ -213,7 +214,7 @@ int		manage_quotes(char c, t_parsing *parsing);
 /*parsing.c*/
 void	ft_parsing(t_data *data, t_parsing *parsing);
 /*pip_segmentation.c*/
-char	**pipe_segmentation(t_parsing *parsing, char c);
+char	**pipe_segmentation(t_parsing *parsing);
 /*prompt_check.c*/
 int		prompt_check(char *prompt, t_parsing *parsing);
 /*rafter_token_utils.c*/

@@ -6,8 +6,8 @@ int	we_are_in_var_name(t_parsing *parsing, char c)
 	{
 		// ft_printf_err("minishell: syntax error near unexpected token `%c'\n", c);
 		parsing->errcode = ERR_PROMPT;
-		return (msg_return(ERR_SYNTAX, &c, 1));// is &c OK ????
-		return (1);
+		return (msg_return(ERR_SYNTAX, ft_strdup("'(' OR ')' OR '<' OR '>'"), 1));// is &c OK ????
+		// return (1);
 	}
 	if (!ft_isalnum(c) && c != '_')
 		return (0);

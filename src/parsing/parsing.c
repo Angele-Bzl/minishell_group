@@ -17,7 +17,7 @@ void	ft_parsing(t_data *data, t_parsing *parsing)
 {
 	parsing->errcode = prompt_check(parsing->prompt, parsing);
 	if (parsing->errcode == ALL_OK)
-		parsing->prompt_tab = pipe_segmentation(parsing, '|');
+		parsing->prompt_tab = pipe_segmentation(parsing);
 	if (parsing->errcode == ALL_OK)
 		expand_var(parsing);
 	if (parsing->errcode == ALL_OK)
