@@ -183,8 +183,8 @@ void	expand_var(t_parsing *parsing);
 /*extract_token_without_quotes.c*/
 char	*extract_token_without_quotes(char *str, t_parsing *parsing);
 /*find_var_name_utils.c*/
-int		we_are_in_var_name(t_parsing *parsing, char c);
-int 	first_var_name_char_is_valid(char c);
+int		in_var_name(t_parsing *parsing, char c);
+int 	first_char_is_valid(char c);
 /*ft_coutpipe_utils.c*/
 int		prompt_begins_with_a_pipe(const char *s, int *i, t_parsing *parsing);
 int		parse_pipe_segments(char const *s, int i);

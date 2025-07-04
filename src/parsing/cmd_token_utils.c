@@ -2,8 +2,8 @@
 
 void	find_all_cmds(char *clean_cmd, char *prompt)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;

@@ -52,4 +52,3 @@ int	prompt_check(char *prompt, t_parsing *parsing)
 		return (ERR_PROMPT);
 	return (OK);
 }
-

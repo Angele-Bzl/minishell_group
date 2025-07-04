@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static char *find_var_content(char *variable, t_data *data, t_parsing *parsing)
+static char	*find_var_content(char *variable, t_data *data, t_parsing *parsing)
 {
 	char	*var;
 	char	*result;
@@ -37,12 +37,12 @@ char	*prompt_with_content(char *content, int start, t_parsing *parsing)
 	int		i;
 	int		j;
 	int		end;
-	int		prompt_len;
+	int		prt;
 	char	*new_prompt;
 
 	end = find_var_end(parsing->old_prompt, parsing->p_index);
-	prompt_len = ft_strlen(parsing->old_prompt) - (end - start) + (ft_strlen(content));
-	new_prompt = malloc(sizeof(char) * (prompt_len + 1));
+	prt = ft_strlen(parsing->old_prompt) - (end - start) + (ft_strlen(content));
+	new_prompt = malloc(sizeof(char) * (prt + 1));
 	if (!new_prompt)
 		return (NULL);
 	i = 0;
@@ -75,32 +75,32 @@ static void	init_variable_and_content(t_parsing *parsing, char **content)
 		*content = malloc(1);
 		if (!*content)
 		{
-		parsing->errcode = ERR_MALLOC;
-		return ;
+			parsing->errcode = ERR_MALLOC;
+			return ;
 		}
 		*content[0] = '\0';
 	}
 }
 
-static void	fill_new_prompt(t_parsing *parsing, char *content)
+static void	fill_new_prompt(t_parsing *par, char *content)
 {
 	int	start;
 
-	start = parsing->p_index;
-	parsing->old_prompt = parsing->prompt_tab[parsing->pipe_seg];
-	parsing->prompt_tab[parsing->pipe_seg] = NULL;
-	parsing->prompt_tab[parsing->pipe_seg] = prompt_with_content(content, start, parsing);
-	free(parsing->old_prompt);
-	parsing->old_prompt = NULL;
-	if (!parsing->prompt_tab[parsing->pipe_seg])
+	start = par->p_index;
+	par->old_prompt = par->prompt_tab[par->pipe_seg];
+	par->prompt_tab[par->pipe_seg] = NULL;
+	par->prompt_tab[par->pipe_seg] = prompt_with_content(content, start, par);
+	free(par->old_prompt);
+	par->old_prompt = NULL;
+	if (!par->prompt_tab[par->pipe_seg])
 	{
-		parsing->errcode = ERR_MALLOC;
+		par->errcode = ERR_MALLOC;
 		return ;
 	}
-	parsing->p_index = start + ft_strlen(content);
+	par->p_index = start + ft_strlen(content);
 }
 
-void manage_dollar_sign(t_parsing *parsing)
+void	manage_dollar_sign(t_parsing *parsing)
 {
 	char	*content;
 

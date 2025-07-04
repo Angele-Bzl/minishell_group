@@ -33,11 +33,11 @@ t_token	*token_lstnew(void)
 
 t_token	*token_lstlast(t_token *lst)
 {
-    t_token  *last;
+	t_token	*last;
 
 	if (!lst)
 		return (NULL);
-    last = lst;
+	last = lst;
 	while (last->next)
 	{
 		last = last->next;
@@ -53,7 +53,7 @@ void	token_lstadd_back(t_token **lst, t_token *new)
 		return ;
 	current = token_lstlast(*lst);
 	if (current)
-        current->next = new;
+		current->next = new;
 	else
-        *lst = new;
+		*lst = new;
 }

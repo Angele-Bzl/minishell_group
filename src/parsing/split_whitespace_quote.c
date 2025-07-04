@@ -32,7 +32,7 @@ static int	ft_countword(char const *s, char c)
 		while (s[i] == c)
 			i++;
 		if (s[i] == '\0')
-			break;
+			break ;
 		count++;
 		while (s[i] && s[i] != c)
 		{
@@ -61,7 +61,7 @@ static int	free_split_on_failure(t_parsing *parsing, char **array, int limit)
 	return (0);
 }
 
-static int	fill_split_array(char **array, char const *s, char c, t_parsing *parsing)
+static int	fill_split_array(char **array, char const *s, char c, t_parsing *par)
 {
 	int		start;
 	int		end;
@@ -77,14 +77,14 @@ static int	fill_split_array(char **array, char const *s, char c, t_parsing *pars
 		tmp = ft_substr(s, start, (end - start));
 		if (tmp == NULL)
 		{
-			parsing->errcode = ERR_MALLOC;
+			par->errcode = ERR_MALLOC;
 			return (-1);
 		}
-		array[i] = extract_token_without_quotes(tmp, parsing);
+		array[i] = extract_token_without_quotes(tmp, par);
 		free(tmp);
 		if (array[i] == NULL)
 			return (-1);
-		if (free_split_on_failure(parsing, array, i) == -1)
+		if (free_split_on_failure(par, array, i) == -1)
 			return (-1);
 		i++;
 	}

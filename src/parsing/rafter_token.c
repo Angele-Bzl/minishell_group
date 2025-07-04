@@ -21,9 +21,9 @@ static int	update_file(t_file *ls_file, char *file_name, t_rafter redirection)
 	return (0);
 }
 
-static int check_rafter(t_data *data, char *file_name, char *prompt, int i)
+static int	check_rafter(t_data *data, char *file_name, char *prompt, int i)
 {
-	t_token *current;
+	t_token	*current;
 
 	current = token_lstlast(data->ls_token);
 	if (prompt[i] == '<' && prompt[i + 1] != '<')

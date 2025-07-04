@@ -6,7 +6,8 @@ static int	next_pipe_segment(int *start, int *end, t_parsing *parsing)
 
 	pipe_count = 0;
 	*start = *end;
-	while (parsing->prompt[*start] == '|' || ft_isspace(parsing->prompt[*start]))
+	while (parsing->prompt[*start] == '|'
+		|| ft_isspace(parsing->prompt[*start]))
 	{
 		if (parsing->prompt[*start] == '|' && ++pipe_count > 1)
 		{
@@ -43,7 +44,7 @@ static int	free_split_on_failure(char **array, int i, t_parsing *parsing)
 	return (0);
 }
 
-static int		ft_countpipe(char const *prompt, t_parsing *parsing)
+static int	ft_countpipe(char const *prompt, t_parsing *parsing)
 {
 	int		i;
 	int		count;
@@ -56,20 +57,22 @@ static int		ft_countpipe(char const *prompt, t_parsing *parsing)
 	return (count);
 }
 
-static int	fill_pipe_segments(char **array, char const *prompt, t_parsing *parsing)
+static int	fill_pipe_segments(char **array, char const *prompt, t_parsing *par)
 {
-	int	i = 0;
+	int	i;
 	int	start;
-	int	end = 0;
-	int pipe_seg;
+	int	end;
+	int	pipe_seg;
 
-	pipe_seg = ft_countpipe(prompt, parsing);
+	pipe_seg = ft_countpipe(prompt, par);
+	i = 0;
+	end = 0;
 	while (i <= pipe_seg)
 	{
-		if (next_pipe_segment(&start, &end, parsing) == -1)
+		if (next_pipe_segment(&start, &end, par) == -1)
 			return (-1);
 		array[i] = ft_substr(prompt, start, end - start);
-		if (free_split_on_failure(array, i, parsing) == -1)
+		if (free_split_on_failure(array, i, par) == -1)
 			return (-1);
 		i++;
 	}
@@ -86,7 +89,7 @@ char	**pipe_segmentation(t_parsing *parsing)
 	prompt = parsing->prompt;
 	pipe_seg = ft_countpipe(prompt, parsing);
 	if (pipe_seg == -1)
-		return(NULL);
+		return (NULL);
 	array = malloc(sizeof(char *) * (pipe_seg + 2));
 	if (!array)
 	{
