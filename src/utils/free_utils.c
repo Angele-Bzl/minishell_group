@@ -33,35 +33,31 @@ void	free_env(t_env *env)
 	}
 }
 
+static void	free_file(t_file *current)
+{
+	t_file	*next;
+
+	while (current)
+	{
+		next = current->next;
+		if (current->value)
+		{
+			free(current->value);
+			current->value = NULL;
+		}
+		free(current);
+		current = next;
+	}
+}
+
 void	free_files(t_token *ls_token)
 {
 	t_file	*current;
-	t_file	*next;
 
 	current = ls_token->ls_infile;
-	while (current)
-	{
-		next = current->next;
-		if (current->value)
-		{
-			free(current->value);
-			current->value = NULL;
-		}
-		free(current);
-		current = next;
-	}
+	free_file(current);
 	current = ls_token->ls_outfile;
-	while (current)
-	{
-		next = current->next;
-		if (current->value)
-		{
-			free(current->value);
-			current->value = NULL;
-		}
-		free(current);
-		current = next;
-	}
+	free_file(current);
 }
 
 void	free_token(t_token *token)

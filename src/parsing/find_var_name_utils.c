@@ -12,7 +12,7 @@ int	in_var_name(t_parsing *parsing, char c)
 	return (1);
 }
 
-int first_char_is_valid(char c)
+int	first_char_is_valid(char c)
 {
 	if (c == '_' || ft_isalpha(c) || c == '?')
 		return (1);
