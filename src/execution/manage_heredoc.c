@@ -11,7 +11,7 @@ void	heredoc_handler(int signal)
 	}
 }
 
-static void	readline_heredoc(int fd, char *eof)
+static int	readline_heredoc(int fd, char *eof)
 {
 	char	*input;
 
@@ -22,7 +22,8 @@ static void	readline_heredoc(int fd, char *eof)
 		if (g_sigint)
 		{
 			g_sigint = 0;
-			break;
+			free(input);
+			return(HEREDOC_INTERRUPTED);
 		}
 		if (!input)
 		{
@@ -38,20 +39,25 @@ static void	readline_heredoc(int fd, char *eof)
 	}
 	free(input);
 	input = NULL;
+	return (0);
 }
 
 int	here_doc(char *eof)
 {
 	int	fd;
+	int	ret;
 
-	// signal(SIGINT, SIG_IGN);
-	// signal(SIGQUIT, SIG_IGN);
 	set_signals_on(HEREDOC_MODE);
 	fd = open(TMP, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 		return (-1);
-	readline_heredoc(fd, eof);
+	ret = readline_heredoc(fd, eof);
 	close (fd);
+		if (ret == HEREDOC_INTERRUPTED)
+	{
+		unlink(TMP);
+		return (HEREDOC_INTERRUPTED);
+	}
 	fd = open(TMP, O_RDONLY);
 	if (fd == -1)
 		return (-1);

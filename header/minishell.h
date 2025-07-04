@@ -64,6 +64,7 @@ typedef enum e_err_exec
 	NO_ERROR,
 	ERROR_SYSTEM,
 	ERROR_PROMPT,
+	HEREDOC_INTERRUPTED = -2,
 }	t_err_exec;
 
 /////////////////////////////////////// structures
