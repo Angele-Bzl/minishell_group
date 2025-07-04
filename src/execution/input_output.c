@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
+int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std_io)
 {
 	char	**env;
 	char	*path_cmd;
@@ -9,7 +9,7 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data)
 		return (perror_return("dup2", ERROR_SYSTEM));
 	close_all(io_fd[0], io_fd[1]);
 	if (cmd_is_builtin(current->cmd[0]))
-		return (exec_homemade_builtin(data, current));
+		return (exec_homemade_builtin(data, current, save_std_io));
 	env = get_env_in_tab(data->ls_env);
 	if (!env)
 		return (msg_return(MALLOC, NULL, ERR));

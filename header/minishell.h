@@ -147,14 +147,14 @@ int	end_single_cmd(t_data *data, int *io_fd, int *save, int return_val);
 /*children.c*/
 int		loop_children(t_data *data, pid_t *pids);
 /*input_output.c*/
-int		redirect_and_exec(t_token *current, int *io_fd, t_data *data);
+int		redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std_io);
 int		get_input(t_file *ls_infile, int previous_pipe);
 int		get_output(t_file *ls_outfile, int pipe_output, int count_cmd);
 /*manage_heredoc.c*/
 int 	here_doc(char *eof);
 /*BUILTINS*/
 int		cmd_is_builtin(char *path_cmd);
-int		exec_homemade_builtin(t_data *data, t_token *current);
+int		exec_homemade_builtin(t_data *data, t_token *current, int *save_std_io);
 int		var_cmp(char *s1, char *s2);
 void	exec_echo(char **cmd);
 int		exec_export(t_env *ls_env, char **cmds);
@@ -163,7 +163,7 @@ void	exec_env(t_env *ls_env);
 void	exec_env_export(t_env *ls_env);
 void	exec_unset(t_env **ls_env, char **cmds);
 int		exec_cd(char **cmd, t_env *list_env);
-int		exec_exit(t_data *data, t_token *cmds);
+int		exec_exit(t_data *data, t_token *cmds,int *save_std_io);
 /*atoull.c*/
 unsigned long long	ft_atoull(const char *str, int *minus);
 

@@ -63,7 +63,7 @@ static int	exit_arg(t_data *data, long long exit_code)
 	exit(exit_255);
 }
 
-int	exec_exit(t_data *data, t_token *cmds)
+int	exec_exit(t_data *data, t_token *cmds, int *save_std_io)
 {
 	long long	exit_code;
 
@@ -73,10 +73,10 @@ int	exec_exit(t_data *data, t_token *cmds)
 		return (0);
 	}
 	printf("exit\n");
+	if (save_std_io)
+		close_all(save_std_io[0], save_std_io[1]);
 	if (!cmds->cmd[1])
-	{
 		exit_no_arg(data);
-	}
 	exit_code = check_valid_arg(cmds->cmd[1]);
 	if (exit_code == -1)
 	{
