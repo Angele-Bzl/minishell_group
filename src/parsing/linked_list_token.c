@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+static void	file_init(t_file *file)
+{
+	file->next = NULL;
+	file->redirection = DEFAULT;
+	file->value = NULL;
+}
+
 t_token	*token_lstnew(void)
 {
 	t_token	*new;
@@ -13,9 +20,7 @@ t_token	*token_lstnew(void)
 		free(new);
 		return (NULL);
 	}
-	new->ls_infile->next = NULL;
-	new->ls_infile->redirection = DEFAULT;
-	new->ls_infile->value = NULL;
+	file_init(new->ls_infile);
 	new->ls_outfile = malloc(sizeof(t_file));
 	if (!new->ls_outfile)
 	{
@@ -23,9 +28,7 @@ t_token	*token_lstnew(void)
 		free(new);
 		return (NULL);
 	}
-	new->ls_outfile->next = NULL;
-	new->ls_outfile->redirection = DEFAULT;
-	new->ls_outfile->value = NULL;
+	file_init(new->ls_outfile);
 	new->next = NULL;
 	new->cmd = NULL;
 	return (new);
