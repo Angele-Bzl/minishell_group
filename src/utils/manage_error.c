@@ -13,7 +13,6 @@ void	msg_exit(char *message, char *arg, int exit_value)
 			exit(2);
 		}
 		ft_putstr_fd(msg, STDERR_FILENO);
-		// 	ft_printf_err(message, arg);
 		free(msg);
 	}
 	exit(exit_value);
@@ -32,7 +31,6 @@ int	msg_return(char *message, char *arg, int return_value)
 			return (ERROR_SYSTEM);
 		}
 		ft_putstr_fd(msg, STDERR_FILENO);
-		// 	ft_printf_err(message, arg);
 		free(msg);
 	}
 	return (return_value);
@@ -51,7 +49,6 @@ char	*msg_return_str(char *message, char *arg, char *return_value)
 			return (NULL);
 		}
 		ft_putstr_fd(msg, STDERR_FILENO);
-		// 	ft_printf_err(message, arg);
 		free(msg);
 	}
 	return (return_value);

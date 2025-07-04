@@ -10,10 +10,8 @@ static int	next_pipe_segment(int *start, int *end, t_parsing *parsing)
 	{
 		if (parsing->prompt[*start] == '|' && ++pipe_count > 1)								// s'il y a plusieurs pipe sans rien entre les 2
 		{
-			// ft_printf_err("syntax error near unexpected token '|'\n");
 			parsing->errcode = ERR_PROMPT;
-			return (msg_return(ERR_SYNTAX, "|", ERR));
-			// return (-1);
+			return (msg_return(ERR_SYNTAX_NEAR, "|", ERR));
 		}
 		(*start)++;
 	}
@@ -66,7 +64,7 @@ static int	fill_pipe_segments(char **array, char const *prompt, t_parsing *parsi
 	int pipe_seg;
 
 	pipe_seg = ft_countpipe(prompt, parsing);
-	while (i <= pipe_seg) //<= ?
+	while (i <= pipe_seg)
 	{
 		if (next_pipe_segment(&start, &end, parsing) == -1)// errcode a deja ete update plus haut donc on travail avec -1
 			return (-1);

@@ -8,20 +8,12 @@ static int	last_pipe_check(char *prompt)								// si dernier charactere effecti
 	if (prompt[i] != ' ' && prompt[i] != '|')
 		return (OK);
 	if (prompt[i] == '|')
-	{
 		return (msg_return(ERR_SYNTAX_PIPE, NULL, ERR_PROMPT));
-		// ft_printf_err("syntax error: pipe '|' must be followed by a command\n");
-		// return (ERR_PROMPT);
-	}
 	i--;
 	while (prompt[i])
 	{
 		if (prompt[i] == '|')
-		{
 			return (msg_return(ERR_SYNTAX_PIPE, NULL, ERR_PROMPT));
-			// ft_printf_err("syntax error: pipe '|' must be followed by a command\n");
-			// return (ERR_PROMPT);
-		}
 		if (prompt[i] != ' ')
 			return (OK);
 		i--;
@@ -48,11 +40,7 @@ static int	quote_count(char *prompt, t_parsing *parsing)				// si le nbr de quot
 		i++;
 	}
 	if (single_quote % 2 == 1 || double_quote % 2 == 1)
-	{
 		return (msg_return(ERR_SYNTAX_QUOTE, NULL, ERR_PROMPT));
-		// printf("syntax error : open quote\n");
-		// return (ERR_PROMPT);
-	}
 	return (OK);
 }
 

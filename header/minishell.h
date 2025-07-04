@@ -27,7 +27,7 @@
 # define NO_FILE " : no such file or directory\n"
 # define NO_CMD " : command not found\n"
 # define IS_DIR " : is a directory\n"
-# define ERR_SYNTAX " : syntax error near unexpected token\n"
+# define ERR_SYNTAX_NEAR " : syntax error near unexpected token\n"
 # define HEREDOC_EXPECT_DELIMITER " : this delimiter is expected to close heredoc\n"
 
 /*messages without arguments*/
@@ -147,12 +147,6 @@ void	free_token_env(t_data *data);
 void	close_all(int fd0, int fd1);
 void	close_free_token_env(t_data *data, int fd0, int fd1);
 void	close_free_array_str(int fd0, int fd1, char **env, char *path);
-/*error_exec.c*/
-void	msg_exit(char *message, char *arg, int exit_value);
-int		msg_return(char *message, char *arg, int return_value);
-char	*msg_return_str(char *message, char *arg, char *return_value);
-int		perror_return(char *message, int return_value);
-int	end_single_cmd(t_data *data, int *io_fd, int *save, int return_val);
 /*children.c*/
 int		loop_children(t_data *data, pid_t *pids);
 /*input_output.c*/
@@ -230,6 +224,12 @@ void	tokenisation(t_data *data, t_parsing *parsing);
 
 
 /*UTILS*/
+/*manage_error.c*/
+void	msg_exit(char *message, char *arg, int exit_value);
+int		msg_return(char *message, char *arg, int return_value);
+char	*msg_return_str(char *message, char *arg, char *return_value);
+int		perror_return(char *message, int return_value);
+int		end_single_cmd(t_data *data, int *io_fd, int *save, int return_val);
 /*cutstr.c*/
 char	*ft_cutstr(char const *s, unsigned int start);
 /*debug_print.c*/

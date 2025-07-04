@@ -6,9 +6,8 @@ int	prompt_begins_with_a_pipe(const char *prompt, int *i, t_parsing *parsing)
 		(*i)++;
 	if (prompt[*i] == '|')
 	{
-		printf("syntax error near unexpected token '|'\n");
 		parsing->errcode = ERR_PROMPT;
-		return (-1);
+		return (msg_return(ERR_SYNTAX_NEAR, "|", ERR));
 	}
 	return (0);
 }

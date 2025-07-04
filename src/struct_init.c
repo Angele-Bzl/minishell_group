@@ -34,7 +34,7 @@ int  env_init(char **env, t_data *data)
 	data->ls_env = NULL;;
 	i = 0;
 	if (!env || !env[0])
-		return(manage_no_env(&data->ls_env));
+		return (manage_no_env(&data->ls_env));
 	while (env[i])
 	{
 		new_node = malloc(sizeof(t_env));

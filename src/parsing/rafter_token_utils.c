@@ -36,10 +36,8 @@ char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing)				// on ava
 		i++;
 	if (prompt[i] == '<' || prompt[i] == '>' || prompt[i] == '\0')
 	{
-		// ft_printf_err("minishell: syntax error near unexpected token '%c'\n", prompt[i]);
 		parsing->errcode = ERR_PROMPT;
-		return (msg_return_str(ERR_SYNTAX, ft_strdup("'<' OR '>' OR '\0'"), NULL)); // & ?
-		// return (NULL);
+		return (msg_return_str(ERR_SYNTAX_NEAR, ft_strdup("'<' OR '>' OR '\\0'"), NULL));
 	}
 	file_name = extract_file_name(prompt, i);
 	if (!file_name)

@@ -4,10 +4,8 @@ int	we_are_in_var_name(t_parsing *parsing, char c)
 {
 	if (c == '(' || c == ')' || c == '<' || c == '>')
 	{
-		// ft_printf_err("minishell: syntax error near unexpected token `%c'\n", c);
 		parsing->errcode = ERR_PROMPT;
-		return (msg_return(ERR_SYNTAX, ft_strdup("'(' OR ')' OR '<' OR '>'"), 1));// is &c OK ????
-		// return (1);
+		return (msg_return(ERR_SYNTAX_NEAR, ft_strdup("'(' OR ')' OR '<' OR '>'"), 1)); //if malloc ft_strdup faild -> it's ok
 	}
 	if (!ft_isalnum(c) && c != '_')
 		return (0);

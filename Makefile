@@ -34,7 +34,6 @@ FILES_EXEC  =   execution.c\
 				utils_cmd.c\
 				utils_exec.c\
 				single_cmd.c\
-				error_exec.c\
 				children.c\
 				input_output.c\
 				clean.c\
@@ -74,7 +73,8 @@ FILES_UTILS =   cutstr.c\
 				free_minishell.c\
 				free_utils.c\
 				ft_isspace.c\
-				main_utils.c
+				main_utils.c\
+				manage_error.c
 FILES		=	struct_init.c\
 				signals.c\
 				main.c\
