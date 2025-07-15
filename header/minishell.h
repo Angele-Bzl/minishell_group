@@ -11,7 +11,6 @@
 
 // includes repartis dans les fichiers
 // # include <signal.h> //signals.c / utils_exec.c / children.c / manage_heredoc.c //signal, kill
-// # include <sys/wait.h> //signals.c / utils_exec.c / children.c / manage_heredoc.c //wait*
 // # include <stdio.h> //printf, readline, perror
 // # include <readline/readline.h> //readline, rl_*
 // # include <readline/history.h> //readline, rl_*
@@ -22,10 +21,11 @@
 // includes deja presents dans libft
 // # include <stdlib.h> //DEJA PRESENT DANS LIBFT //malloc, free, exit, ttyslot, getenv
 // # include <unistd.h> //DEJA PRESENT DANS LIBFT //write, access, read, close, fork, getcwd, chdir,
-	//*stat, unlink, execve, dup*,
-	//pipe, isatty, ttyname, ttyslot, tcsetattr, tcgetattr
+//*stat, unlink, execve, dup*,
+//pipe, isatty, ttyname, ttyslot, tcsetattr, tcgetattr
 
 # include "../libft/libft.h"
+# include <sys/wait.h> //signals.c / utils_exec.c / children.c / manage_heredoc.c //wait*
 # include <curses.h> //tgetent, tgetflag, tgetnum,tgetstr, tgoto, tputs
 
 /*messages with arguments*/

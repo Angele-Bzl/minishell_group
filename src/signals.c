@@ -1,6 +1,5 @@
 #include "minishell.h"
 #include <readline/readline.h>
-#include <sys/wait.h>
 #include <signal.h>
 
 static void	ignore_sigquit(void)

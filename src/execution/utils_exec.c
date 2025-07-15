@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include <sys/wait.h>
 #include <errno.h>
 #include <signal.h>
 
