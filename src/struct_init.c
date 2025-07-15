@@ -22,16 +22,16 @@ static int	manage_no_env(t_env **current)
 		return (0);
 	}
 	new_node->next = NULL;
-	ft_lstadd_back((t_list**)current, (t_list*)new_node);
+	ft_lstadd_back((t_list **)current, (t_list *)new_node);
 	return (1);
 }
 
-int  env_init(char **env, t_data *data)
+int	env_init(char **env, t_data *data)
 {
 	unsigned int	i;
 	t_env			*new_node;
 
-	data->ls_env = NULL;;
+	data->ls_env = NULL;
 	i = 0;
 	if (!env || !env[0])
 		return (manage_no_env(&data->ls_env));
@@ -64,7 +64,7 @@ static int	data_init(t_data *data)
 	return (OK);
 }
 
-static void parsing_init(t_data *data, t_parsing *parsing)
+static void	parsing_init(t_data *data, t_parsing *parsing)
 {
 	parsing->data = data;
 	parsing->errcode = ALL_OK;

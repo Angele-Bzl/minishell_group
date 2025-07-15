@@ -2,8 +2,8 @@
 
 int	main(int ac, char **av, char **env)
 {
-	t_data      data;
-	t_parsing   parsing;
+	t_data		data;
+	t_parsing	parsing;
 
 	ignore_ac_av(ac, av);
 	rl_event_hook = takes_a_value;

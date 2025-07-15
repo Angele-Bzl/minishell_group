@@ -24,7 +24,7 @@ DIR_LIBFT		=	libft
 #					FLAGS							#
 #####################################################
 CFLAGS		=	-Wall -Wextra -Werror -MMD -MP -I$(DIR_HEADER) -g3 -g
-LFLAGS		=	-lreadline -lncurses
+LFLAGS		=	-lncurses -lreadline
 
 #####################################################
 #					FILES							#
