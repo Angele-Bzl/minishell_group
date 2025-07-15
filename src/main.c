@@ -7,13 +7,11 @@ int	main(int ac, char **av, char **env)
 
 	if (!check_minishell_launch(ac, av))
 	return (EXIT_FAILURE);
-	// rl_event_hook = takes_a_value;
 	if (env_init(env, &data) == ERR)
 		msg_exit(MALLOC, NULL, EXIT_FAILURE);
 	data.exit_status = 0;
 	while (1)
 	{
-		// printf("(main) exit_status: %d\n", data.exit_status);
 		if (struct_init(&data, &parsing) == ERR)
 			return (EXIT_FAILURE);
 		set_signals_on(PROMPT_MODE);
