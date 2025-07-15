@@ -27,7 +27,7 @@ char	*find_var_name(t_parsing *parsing)
 	end = start;
 	if (parsing->prompt_tab[parsing->pipe_seg][start] == '\"' || parsing->prompt_tab[parsing->pipe_seg][start] == '\'')
 			return (NULL);
-	if (!first_var_name_char_is_valid(parsing->prompt_tab[parsing->pipe_seg][start]))	// Si le premier charactère de la variable n'est pas valide
+	if (!first_char_is_valid(parsing->prompt_tab[parsing->pipe_seg][start]))	// Si le premier charactère de la variable n'est pas valide
 	{
 		var_name = malloc(sizeof(char) * 2);
 		if (!var_name)
@@ -69,14 +69,14 @@ int	find_var_end(char *prompt, int p_index)
 	end = p_index + 1;
 	if (prompt[end] == '\"' || prompt[end] == '\'')
 		return (end);
-	if (!first_var_name_char_is_valid(prompt[end]))
+	if (!first_char_is_valid(prompt[end]))
 	{
 		end++;
 		return (end);
 	}
 	if (prompt[end] == '?')
 		end++;
-	while (we_are_in_var_name(NULL, prompt[end]))
+	while (in_var_name(NULL, prompt[end]))
 		end++;
 	return (end);
 }
