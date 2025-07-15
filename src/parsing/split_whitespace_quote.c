@@ -82,9 +82,7 @@ static int	fill_split_array(char **arr, char const *s, char c, t_parsing *par)
 		}
 		arr[i] = extract_token_without_quotes(tmp, par);
 		free(tmp);
-		if (arr[i] == NULL)
-			return (-1);
-		if (free_split_on_failure(par, arr, i) == -1)
+		if (arr[i] == NULL || free_split_on_failure(par, arr, i) == -1)
 			return (-1);
 		i++;
 	}
