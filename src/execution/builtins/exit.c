@@ -1,28 +1,27 @@
 #include "minishell.h"
 #include <limits.h>
 
+static unsigned long long	ft_atoull(const char *str, int *minus)
+{
+	unsigned long long	result;
+	size_t				i;
+
+	i = 0;
+	result = 0;
+	go_to_num(str, &i, minus);
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = (result * 10) + (str[i] - 48);
+		i++;
+	}
+	return (result);
+}
+
 static int	exit_no_arg(t_data *data)
 {
 	free_token(data->ls_token);
 	free_env(data->ls_env);
 	exit(OK);
-}
-
-int	str_is_digit(char *arg)
-{
-	int	i;
-
-	i = 0;
-	while (arg[i])
-	{
-		if (!ft_isdigit(arg[i]))
-		{
-			if (i != 0 || !(arg[i] == '-' || arg[i] == '+'))
-				return (0);
-		}
-		i++;
-	}
-	return (1);
 }
 
 static long long	check_valid_arg(char *arg)

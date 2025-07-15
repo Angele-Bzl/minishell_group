@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <wait.h>
 
 int	execution(t_data *data)
 {

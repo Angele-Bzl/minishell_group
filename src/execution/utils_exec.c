@@ -1,4 +1,7 @@
 #include "minishell.h"
+#include <sys/wait.h>
+#include <errno.h>
+#include <signal.h>
 
 char	*ft_strtrim_improved(char *s1, char const *set)
 {
@@ -54,16 +57,16 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 		if (waitpid(pid[i], &status, 0) == -1)
 		{
 			if (errno == EINTR)
-				continue;
+				continue ;
 			set_signals_on(PROMPT_MODE);
 			return (perror_return("waitpid", ERR));
 		}
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == SIGINT)
-				write(2, "\n", 1);
+				ft_putstr_fd("\n", STDERR_FILENO);
 			else if (WTERMSIG(status) == SIGQUIT)
-				write(2, "Quit (core dumped)\n", 20);
+				ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 			exit_status = 128 + WTERMSIG(status);
 		}
 		else if (WIFEXITED(status))

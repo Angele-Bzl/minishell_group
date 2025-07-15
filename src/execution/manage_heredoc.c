@@ -1,4 +1,8 @@
 #include "minishell.h"
+#include <readline/readline.h>
+#include <fcntl.h>
+#include <sys/wait.h>
+#include <signal.h>
 
 volatile sig_atomic_t	g_sigint = 0;
 
@@ -18,18 +22,16 @@ static int	readline_heredoc(int fd, char *eof)
 	input = NULL;
 	while (1)
 	{
+		rl_event_hook = takes_a_value;
 		input = readline("> ");
 		if (g_sigint)
 		{
 			g_sigint = 0;
 			free(input);
-			return(HEREDOC_INTERRUPTED);
+			return (HEREDOC_INTERRUPTED);
 		}
 		if (!input)
-		{
-			msg_return(HEREDOC_EXPECT_DELIMITER, eof, 0);
-			break ;
-		}
+			return (msg_return(HDOC_EXPECT_EOF, eof, 0));
 		if (!ft_strncmp(input, eof, ft_strlen(eof)))
 			break ;
 		write(fd, input, ft_strlen(input));
@@ -50,17 +52,17 @@ int	here_doc(char *eof)
 	set_signals_on(HEREDOC_MODE);
 	fd = open(TMP, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
-		return (-1);
+		return (ERR);
 	ret = readline_heredoc(fd, eof);
 	close (fd);
-		if (ret == HEREDOC_INTERRUPTED)
+	if (ret == HEREDOC_INTERRUPTED)
 	{
 		unlink(TMP);
 		return (HEREDOC_INTERRUPTED);
 	}
 	fd = open(TMP, O_RDONLY);
 	if (fd == -1)
-		return (-1);
+		return (ERR);
 	unlink(TMP);
 	return (fd);
 }

@@ -15,50 +15,41 @@ int	handle_exit_status_var(t_parsing *par)
 	return (0);
 }
 
-char	*find_var_name(t_parsing *parsing)
+static char	*first_char_not_valid(t_parsing *par, int start)
 {
-	int		i;
+	char	*var_name;
+
+	var_name = malloc(sizeof(char) * 2);
+	if (!var_name)
+	{
+		par->errcode = ERR_MALLOC;
+		return (NULL);
+	}
+	var_name[0] = par->prompt_tab[par->pipe_seg][start];
+	var_name[1] = '\0';
+	return (var_name);
+}
+
+char	*find_var_name(t_parsing *par)
+{
 	int		start;
 	int		end;
 	int		var_len;
 	char	*var_name;
 
-	start = parsing->p_index + 1;
+	start = par->p_index + 1;
 	end = start;
-	if (parsing->prompt_tab[parsing->pipe_seg][start] == '\"' || parsing->prompt_tab[parsing->pipe_seg][start] == '\'')
-			return (NULL);
-	if (!first_char_is_valid(parsing->prompt_tab[parsing->pipe_seg][start]))	// Si le premier charactère de la variable n'est pas valide
-	{
-		var_name = malloc(sizeof(char) * 2);
-		if (!var_name)
-		{
-			parsing->errcode = ERR_MALLOC;
-			return (NULL);
-		}
-		var_name[0] = parsing->prompt_tab[parsing->pipe_seg][start];
-		var_name[1] = '\0';
-		return (var_name);
-	}
-	while (in_var_name(parsing, parsing->prompt_tab[parsing->pipe_seg][end]))
-		end++;
-	if (parsing->errcode == ERR_PROMPT)
+	if (par->prompt_tab[par->pipe_seg][start] == '\"'
+		|| par->prompt_tab[par->pipe_seg][start] == '\'')
 		return (NULL);
-	if (end == start)
+	if (!first_char_is_valid(par->prompt_tab[par->pipe_seg][start]))
+		return (first_char_not_valid(par, start));
+	while (in_var_name(par, par->prompt_tab[par->pipe_seg][end]))
+		end++;
+	if (par->errcode == ERR_PROMPT || end == start)
 		return (NULL);
 	var_len = end - start;
-	var_name = malloc(sizeof(char) * (var_len + 1));
-	if (!var_name)
-	{
-		parsing->errcode = ERR_MALLOC;
-		return (NULL);
-	}
-	i = 0;
-	while (i < var_len)
-	{
-		var_name[i] = parsing->prompt_tab[parsing->pipe_seg][start + i];
-		i++;
-	}
-	var_name[i] = '\0';
+	var_name = fill_var_name(par, start, var_len);
 	return (var_name);
 }
 

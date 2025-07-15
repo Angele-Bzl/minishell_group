@@ -1,4 +1,5 @@
 #include "minishell.h"
+# include <sys/stat.h>
 
 static int	init_hyp_path(char **hyp_path, char *cmd, char **env_path)
 {

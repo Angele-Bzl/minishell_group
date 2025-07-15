@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <readline/history.h>
 
 int	takes_a_value(void)
 {
@@ -8,14 +9,9 @@ int	takes_a_value(void)
 int	check_minishell_launch(int ac, char **av)
 {
 	(void)av;
-	if (isatty(STDIN_FILENO) == 0 || isatty(STDOUT_FILENO) == 0 || isatty(STDERR_FILENO) == 0)
-	{
-		ft_printf_err("minishell: standard input/output/error is not connected to a terminal\n");
-		return (0);
-	}
 	if (ac > 1)
 	{
-		ft_printf_err("minishell: too many arguments\n");
+		ft_putstr_fd(TOO_MANY_ARG, STDERR_FILENO);
 		return (0);
 	}
 	return (1);

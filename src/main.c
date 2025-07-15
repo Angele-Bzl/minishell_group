@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <readline/readline.h>
 
 int	main(int ac, char **av, char **env)
 {
@@ -6,7 +7,7 @@ int	main(int ac, char **av, char **env)
 	t_parsing	parsing;
 
 	if (!check_minishell_launch(ac, av))
-	return (EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	if (env_init(env, &data) == ERR)
 		msg_exit(MALLOC, NULL, EXIT_FAILURE);
 	data.exit_status = 0;

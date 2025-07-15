@@ -15,7 +15,7 @@ void	print_prompt_tab(char **p_tab)
 
 void	print_env(t_env *env)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	printf("env tab :\n\n");
@@ -27,48 +27,14 @@ void	print_env(t_env *env)
 	}
 }
 
-// static void	print_rafter(t_rafter *r)
-// {
-// 	if (!r)
-// 	{
-// 		printf("NULL\n");
-// 		return;
-// 	}
-
-// 	// Affichage lisible de la valeur de l'énum
-// 	switch (*r)
-// 	{
-// 		case EMPTY_RAFTER:
-// 			printf("EMPTY_RAFTER\n");
-// 			break;
-// 		case SIMPLE_LEFT:
-// 			printf("SIMPLE_LEFT (<)\n");
-// 			break;
-// 		case DOUBLE_LEFT:
-// 			printf("DOUBLE_LEFT (<<)\n");
-// 			break;
-// 		case SIMPLE_RIGHT:
-// 			printf("SIMPLE_RIGHT (>)\n");
-// 			break;
-// 		case DOUBLE_RIGHT:
-// 			printf("DOUBLE_RIGHT (>>)\n");
-// 			break;
-// 		case DEFAULT:
-// 			printf("DEFAULT\n");
-// 			break;
-// 		default:
-// 			printf("UNKNOWN_RAFTER\n");
-// 	}
-// }
-
 void	print_tokens(t_data *data)
 {
 	int			i;
-	int 		k;
 	int			j;
+	int			k;
 	t_token		*current;
-	t_file	*cur_in;
-	t_file	*cur_out;
+	t_file		*cur_in;
+	t_file		*cur_out;
 
 	k = 0;
 	current = data->ls_token;
@@ -89,7 +55,7 @@ void	print_tokens(t_data *data)
 		printf("\n");
 		printf("INFILES :\n");
 		j = 0;
-		while(cur_in)
+		while (cur_in)
 		{
 			printf("in_node(%d)\n", j);
 			printf("redir: %d\n", cur_in->redirection);
@@ -99,7 +65,7 @@ void	print_tokens(t_data *data)
 		}
 		j = 0;
 		printf("OUTFILES :\n");
-		while(cur_out)
+		while (cur_out)
 		{
 			printf("out_node(%d)\n", j);
 			printf("redir: %d\n", cur_out->redirection);

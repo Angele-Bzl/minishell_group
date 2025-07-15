@@ -55,3 +55,31 @@ int	var_cmp(char *s1, char *s2)
 		return (0);
 	return (1);
 }
+
+int	str_is_digit(char *arg)
+{
+	int	i;
+
+	i = 0;
+	while (arg[i])
+	{
+		if (!ft_isdigit(arg[i]))
+		{
+			if (i != 0 || !(arg[i] == '-' || arg[i] == '+'))
+				return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
+void	go_to_num(const char *str, size_t *i, int *minus)
+{
+	if (str[*i] == '+')
+		*i = *i + 1;
+	else if (str[*i] == '-')
+	{
+		*minus = -1;
+		*i = *i + 1;
+	}
+}

@@ -1,34 +1,40 @@
-# ifndef MINISHELL_H
+#ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdio.h> //printf, readline, perror
-# include <readline/readline.h> //readline, rl_*
-# include <readline/history.h> //readline, rl_*
-# include <stdlib.h> //malloc, free, exit, ttyslot, getenv
-# include <unistd.h> //write, access, read, close, fork, getcwd, chdir,
+// includes pas utilisés
+// # include <term.h> //getent, tgetflag, tgetnum, tgetstr, tgoto, tputs
+// # include <termios.h> //tcsetattr, tcgetattr
+// # include <sys/ioctl.h> //ioctl
+// # include <string.h> //strerror
+// # include <sys/types.h> //open, wait*, kill, *stat, opendir, closedir
+// # include <dirent.h> //*dir
+
+// includes repartis dans les fichiers
+// # include <signal.h> //signals.c / utils_exec.c / children.c / manage_heredoc.c //signal, kill
+// # include <sys/wait.h> //signals.c / utils_exec.c / children.c / manage_heredoc.c //wait*
+// # include <stdio.h> //printf, readline, perror
+// # include <readline/readline.h> //readline, rl_*
+// # include <readline/history.h> //readline, rl_*
+// # include <fcntl.h> //open //single_cmd.c / input_output.c / manage_heredoc.c
+// # include <sys/stat.h> //command.c //open, stat
+// # include <errno.h> utils_exec.c //perror
+
+// includes deja presents dans libft
+// # include <stdlib.h> //DEJA PRESENT DANS LIBFT //malloc, free, exit, ttyslot, getenv
+// # include <unistd.h> //DEJA PRESENT DANS LIBFT //write, access, read, close, fork, getcwd, chdir,
 	//*stat, unlink, execve, dup*,
 	//pipe, isatty, ttyname, ttyslot, tcsetattr, tcgetattr
-# include <sys/types.h> //open, wait*, kill, *stat, opendir, closedir
-# include <sys/stat.h> //open, stat
-# include <fcntl.h> //open
-# include <sys/wait.h> //wait*
-# include <signal.h> //signal, kill
-# include <dirent.h> //*dir
-# include <string.h> //strerror
-# include <errno.h> //perror
-# include <sys/ioctl.h> //ioctl
-# include <termios.h> //tcsetattr, tcgetattr
-# include <curses.h> //tgetent, tgetflag, tgetnum,tgetstr, tgoto, tputs
-# include <term.h> //getent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 
 # include "../libft/libft.h"
+# include <curses.h> //tgetent, tgetflag, tgetnum,tgetstr, tgoto, tputs
 
 /*messages with arguments*/
 # define NO_FILE " : no such file or directory\n"
 # define NO_CMD " : command not found\n"
 # define IS_DIR " : is a directory\n"
 # define ERR_SYNTAX_NEAR " : syntax error near unexpected token\n"
-# define HEREDOC_EXPECT_DELIMITER " : this delimiter is expected to close heredoc\n"
+# define HDOC_EXPECT_EOF " : this delimiter is expected to close heredoc\n"
+# define NOT_VALID_IDENTIFIER " : not a valid identifier\n"
 
 /*messages without arguments*/
 # define MALLOC "Error: malloc failed\n"
@@ -38,6 +44,7 @@
 # define ERR_PWD "Error: update_pwd failed\n"
 # define ERR_OLDPWD "Error: update_oldpwd failed\n"
 # define ERR_EXECVE "Error: execve failed\n"
+# define TOO_MANY_ARG "Error: too many arguments\n"
 
 # define TMP ".infile.tmp"
 # define IS_BUILTIN 42
@@ -127,7 +134,7 @@ typedef struct s_parsing
 }	t_parsing;
 
 //////////////////////////////////////// functions
-void test_signal(void);
+void	test_signal(void);
 /*EXEC*/
 /*execution.c*/
 int		execution(t_data *data);
@@ -156,11 +163,8 @@ int		redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std
 int		get_input(t_file *ls_infile, int previous_pipe);
 int		get_output(t_file *ls_outfile, int pipe_output, int count_cmd);
 /*manage_heredoc.c*/
-int 	here_doc(char *eof);
+int		here_doc(char *eof);
 /*BUILTINS*/
-int		cmd_is_builtin(char *path_cmd);
-int		exec_homemade_builtin(t_data *data, t_token *current, int *save_std_io);
-int		var_cmp(char *s1, char *s2);
 void	exec_echo(char **cmd);
 int		exec_export(t_env *ls_env, char **cmds);
 int		exec_pwd(void);
@@ -168,13 +172,17 @@ void	exec_env(t_env *ls_env);
 void	exec_env_export(t_env *ls_env);
 void	exec_unset(t_env **ls_env, char **cmds);
 int		exec_cd(char **cmd, t_env *list_env);
-int		exec_exit(t_data *data, t_token *cmds,int *save_std_io);
-/*atoull.c*/
-unsigned long long	ft_atoull(const char *str, int *minus);
+int		exec_exit(t_data *data, t_token *cmds, int *save_std_io);
+/*utils_builtins.c*/
+int		str_is_digit(char *arg);
+void	go_to_num(const char *str, size_t *i, int *minus);
+int		cmd_is_builtin(char *path_cmd);
+int		exec_homemade_builtin(t_data *data, t_token *current, int *save_std_io);
+int		var_cmp(char *s1, char *s2);
 
 /*PARSING*/
 /*cmd_token_utils.c*/
-void 	find_all_cmds(char *clean_cmd, char *prompt);
+void	find_all_cmds(char *clean_cmd, char *prompt);
 /*cmd_token.c*/
 char	*extract_clean_cmd(t_parsing *parsing, char *prompt);
 int		skip_io(char *prompt, int i);
@@ -186,7 +194,8 @@ void	expand_var(t_parsing *parsing);
 char	*extract_token_without_quotes(char *str, t_parsing *parsing);
 /*find_var_name_utils.c*/
 int		in_var_name(t_parsing *parsing, char c);
-int 	first_char_is_valid(char c);
+int		first_char_is_valid(char c);
+char	*fill_var_name(t_parsing *par, int start, int var_len);
 /*ft_coutpipe_utils.c*/
 int		prompt_begins_with_a_pipe(const char *s, int *i, t_parsing *parsing);
 int		parse_pipe_segments(char const *s, int i);
@@ -222,7 +231,6 @@ char	**split_whitespace_quotes(char const *s, char c, t_parsing *parsing);
 /*tokenisation.c*/
 void	tokenisation(t_data *data, t_parsing *parsing);
 
-
 /*UTILS*/
 /*manage_error.c*/
 void	msg_exit(char *message, char *arg, int exit_value);
@@ -250,7 +258,6 @@ int		check_minishell_launch(int ac, char **av);
 void	parse_and_execute(t_parsing *parsing, t_data *data);
 void	process_empty_prompt(t_parsing *parsing);
 int		takes_a_value(void);
-
 
 /*MAIN*/
 /*struct_init.c*/
