@@ -38,6 +38,7 @@
 # define ERR_PWD "Error: update_pwd failed\n"
 # define ERR_OLDPWD "Error: update_oldpwd failed\n"
 # define ERR_EXECVE "Error: execve failed\n"
+# define TOO_MANY_ARG "Error: too many arguments\n"
 
 # define TMP ".infile.tmp"
 # define IS_BUILTIN 42

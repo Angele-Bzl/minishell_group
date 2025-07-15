@@ -61,7 +61,7 @@ static int	free_split_on_failure(t_parsing *parsing, char **array, int limit)
 	return (0);
 }
 
-static int	fill_split_array(char **array, char const *s, char c, t_parsing *par)
+static int	fill_split_array(char **arr, char const *s, char c, t_parsing *par)
 {
 	int		start;
 	int		end;
@@ -80,15 +80,15 @@ static int	fill_split_array(char **array, char const *s, char c, t_parsing *par)
 			par->errcode = ERR_MALLOC;
 			return (-1);
 		}
-		array[i] = extract_token_without_quotes(tmp, par);
+		arr[i] = extract_token_without_quotes(tmp, par);
 		free(tmp);
-		if (array[i] == NULL)
+		if (arr[i] == NULL)
 			return (-1);
-		if (free_split_on_failure(par, array, i) == -1)
+		if (free_split_on_failure(par, arr, i) == -1)
 			return (-1);
 		i++;
 	}
-	array[i] = NULL;
+	arr[i] = NULL;
 	return (0);
 }
 
