@@ -1,4 +1,5 @@
 #include "minishell.h"
+# include <fcntl.h>
 
 static int	get_input_single_cmd(t_file *ls_infile, int *save_std_io)
 {

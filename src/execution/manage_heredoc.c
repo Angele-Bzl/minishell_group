@@ -1,4 +1,8 @@
 #include "minishell.h"
+#include <readline/readline.h>
+#include <fcntl.h>
+#include <sys/wait.h>
+#include <signal.h>
 
 volatile sig_atomic_t	g_sigint = 0;
 

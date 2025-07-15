@@ -1,4 +1,5 @@
 #include "minishell.h"
+# include <fcntl.h>
 
 int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 {

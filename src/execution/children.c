@@ -1,4 +1,6 @@
 #include "minishell.h"
+#include <sys/wait.h>
+#include <signal.h>
 
 int	manage_child(t_data *data, int prev_out, int pipe_fd[2], t_token *current)
 {
