@@ -64,9 +64,9 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == SIGINT)
-				write(2, "\n", 1);
+				ft_putstr_fd("\n", STDERR_FILENO);
 			else if (WTERMSIG(status) == SIGQUIT)
-				write(2, "Quit (core dumped)\n", 20);
+				ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 			exit_status = 128 + WTERMSIG(status);
 		}
 		else if (WIFEXITED(status))
