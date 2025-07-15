@@ -54,7 +54,7 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 		if (waitpid(pid[i], &status, 0) == -1)
 		{
 			if (errno == EINTR)
-				continue;
+				continue ;
 			set_signals_on(PROMPT_MODE);
 			return (perror_return("waitpid", ERR));
 		}

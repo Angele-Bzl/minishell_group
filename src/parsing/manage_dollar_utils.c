@@ -15,7 +15,7 @@ int	handle_exit_status_var(t_parsing *par)
 	return (0);
 }
 
-static char *first_char_not_valid(t_parsing *par, int start)
+static char	*first_char_not_valid(t_parsing *par, int start)
 {
 	char	*var_name;
 
@@ -27,27 +27,6 @@ static char *first_char_not_valid(t_parsing *par, int start)
 	}
 	var_name[0] = par->prompt_tab[par->pipe_seg][start];
 	var_name[1] = '\0';
-	return (var_name);
-}
-
-static char *fill_var_name(t_parsing *par, int start, int var_len)
-{
-	int		i;
-	char	*var_name;
-
-	var_name = malloc(sizeof(char) * (var_len + 1));
-	if (!var_name)
-	{
-		par->errcode = ERR_MALLOC;
-		return (NULL);
-	}
-	i = 0;
-	while (i < var_len)
-	{
-		var_name[i] = par->prompt_tab[par->pipe_seg][start + i];
-		i++;
-	}
-	var_name[i] = '\0';
 	return (var_name);
 }
 

@@ -27,7 +27,7 @@ static int	readline_heredoc(int fd, char *eof)
 		}
 		if (!input)
 		{
-			msg_return(HEREDOC_EXPECT_DELIMITER, eof, 0);
+			msg_return(HDOC_EXPECT_EOF, eof, 0);
 			break ;
 		}
 		if (!ft_strncmp(input, eof, ft_strlen(eof)))

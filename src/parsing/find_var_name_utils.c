@@ -18,3 +18,24 @@ int	first_char_is_valid(char c)
 		return (1);
 	return (0);
 }
+
+char	*fill_var_name(t_parsing *par, int start, int var_len)
+{
+	int		i;
+	char	*var_name;
+
+	var_name = malloc(sizeof(char) * (var_len + 1));
+	if (!var_name)
+	{
+		par->errcode = ERR_MALLOC;
+		return (NULL);
+	}
+	i = 0;
+	while (i < var_len)
+	{
+		var_name[i] = par->prompt_tab[par->pipe_seg][start + i];
+		i++;
+	}
+	var_name[i] = '\0';
+	return (var_name);
+}
