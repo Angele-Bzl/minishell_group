@@ -54,8 +54,8 @@ typedef enum e_mode
 typedef enum e_parsing_error
 {
 	ERR_MALLOC = -42,
-	ERR_PROMPT = -1,
-	ALL_OK,
+	ALL_OK = 0,
+	ERR_PROMPT = 1,
 }	t_parsing_error;
 
 typedef enum e_rafter
@@ -71,8 +71,9 @@ typedef enum e_rafter
 typedef enum e_err_exec
 {
 	NO_ERROR,
-	ERROR_SYSTEM,
 	ERROR_PROMPT,
+	ERROR_SYSTEM,
+	ERROR_PERMISSION = 126,
 	HEREDOC_INTERRUPTED = -2,
 }	t_err_exec;
 
@@ -131,7 +132,7 @@ void test_signal(void);
 /*execution.c*/
 int		execution(t_data *data);
 /*command.c*/
-char	*find_cmd(char **env, char *cmd);
+char	*find_cmd(char **env, char *cmd, int *exit_status);
 /*itils_cmd.c*/
 size_t	find_path_in_env(char **env);
 void	fill_tab_null(char **table, size_t len);

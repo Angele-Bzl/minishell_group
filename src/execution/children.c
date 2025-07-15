@@ -8,15 +8,17 @@ int	manage_child(t_data *data, int prev_out, int pipe_fd[2], t_token *current)
 	if (io_fd[0] == ERR)
 		return (EXIT_FAILURE);
 	io_fd[1] = get_output(current->ls_outfile, pipe_fd[1], count_cmds(current));
-	if (io_fd[1] == ERR || io_fd[0] == HEREDOC_INTERRUPTED)
+	if (io_fd[0] == HEREDOC_INTERRUPTED)
 	{
 		close(io_fd[0]);
 		return (EXIT_FAILURE);
 	}
+	else if (io_fd[1] == ERROR_PERMISSION)
+		return (ERROR_PERMISSION);
 	if (redirect_and_exec(current, io_fd, data, NULL) != OK)
 	{
 		close_all(io_fd[0], io_fd[1]);
-		return (EXIT_FAILURE);
+		return (data->exit_status);
 	}
 	return (IS_BUILTIN);
 }

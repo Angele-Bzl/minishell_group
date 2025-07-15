@@ -13,18 +13,17 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 	env = get_env_in_tab(data->ls_env);
 	if (!env)
 		return (msg_return(MALLOC, NULL, ERR));
-	path_cmd = find_cmd(env, current->cmd[0]);
+	path_cmd = find_cmd(env, current->cmd[0], &data->exit_status);
 	if (!path_cmd)
+		return (msg_return(NO_FILE, current->cmd[0], ERR));
+	else if (access(path_cmd, X_OK) == -1)
 	{
-		free_array(env);
+		data->exit_status = ERROR_PERMISSION;
+		perror(path_cmd);
 		return (ERR);
 	}
 	if (execve(path_cmd, current->cmd, env) == -1)
-	{
-		free_array(env);
-		free(path_cmd);
 		return (msg_return(ERR_EXECVE, NULL, ERR));
-	}
 	return (OK);
 }
 
@@ -85,7 +84,7 @@ int	get_output(t_file *ls_outfile, int pipe_output, int count_cmd)
 			if (curr->redirection == DOUBLE_RIGHT)
 				output = open(curr->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (output == -1)
-				return (perror_return(curr->value, ERR));
+				return (perror_return(curr->value, ERROR_PERMISSION));
 			if (curr->next)
 				close(output);
 			curr = curr->next;

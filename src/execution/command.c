@@ -94,7 +94,7 @@ static int	is_special_cmd(char *cmd, char **path_cmd)
 	return (1);
 }
 
-char	*find_cmd(char **env, char *cmd)
+char	*find_cmd(char **env, char *cmd, int *exit_status)
 {
 	char	**env_path;
 	char	**hypothetical_path_cmd;
@@ -119,6 +119,9 @@ char	*find_cmd(char **env, char *cmd)
 	path_cmd = check_if_cmd_exists(hypothetical_path_cmd, env_path);
 	free_array(env_path);
 	if (!path_cmd || !cmd[0])
+	{
+		*exit_status = 127;
 		return (msg_return_str(NO_CMD, cmd, NULL));
+	}
 	return (path_cmd);
 }
