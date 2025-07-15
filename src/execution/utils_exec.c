@@ -3,7 +3,6 @@
 #include <errno.h>
 #include <signal.h>
 
-
 char	*ft_strtrim_improved(char *s1, char const *set)
 {
 	int		start;

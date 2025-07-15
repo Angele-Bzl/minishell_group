@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <sys/stat.h>
 
 int	is_special_cmd(char *cmd, char **path_cmd)
 {

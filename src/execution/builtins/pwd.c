@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-// #include "../../../header/minishell.h"
-
 int	exec_pwd(void)
 {
 	char	*pwd;
@@ -16,8 +14,3 @@ int	exec_pwd(void)
 	free(pwd);
 	return (1);
 }
-
-// int main(int ac, char **av, char **env)
-// {
-// 	exec_pwd(env);
-// }

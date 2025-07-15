@@ -25,10 +25,8 @@
 	//*stat, unlink, execve, dup*,
 	//pipe, isatty, ttyname, ttyslot, tcsetattr, tcgetattr
 
-
-# include <curses.h> //tgetent, tgetflag, tgetnum,tgetstr, tgoto, tputs
-
 # include "../libft/libft.h"
+# include <curses.h> //tgetent, tgetflag, tgetnum,tgetstr, tgoto, tputs
 
 /*messages with arguments*/
 # define NO_FILE " : no such file or directory\n"
