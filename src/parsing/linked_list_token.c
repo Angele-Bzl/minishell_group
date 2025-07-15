@@ -1,4 +1,11 @@
-# include "minishell.h"
+#include "minishell.h"
+
+static void	file_init(t_file *file)
+{
+	file->next = NULL;
+	file->redirection = DEFAULT;
+	file->value = NULL;
+}
 
 t_token	*token_lstnew(void)
 {
@@ -10,22 +17,20 @@ t_token	*token_lstnew(void)
 	new->ls_infile = malloc(sizeof(t_file));
 	if (!new->ls_infile)
 	{
+		ft_putstr_fd(MALLOC, STDERR_FILENO);
 		free(new);
 		return (NULL);
 	}
-	new->ls_infile->next = NULL;
-	new->ls_infile->redirection = DEFAULT;
-	new->ls_infile->value = NULL;
+	file_init(new->ls_infile);
 	new->ls_outfile = malloc(sizeof(t_file));
 	if (!new->ls_outfile)
 	{
+		ft_putstr_fd(MALLOC, STDERR_FILENO);
 		free(new->ls_infile);
 		free(new);
 		return (NULL);
 	}
-	new->ls_outfile->next = NULL;
-	new->ls_outfile->redirection = DEFAULT;
-	new->ls_outfile->value = NULL;
+	file_init(new->ls_outfile);
 	new->next = NULL;
 	new->cmd = NULL;
 	return (new);
@@ -33,11 +38,11 @@ t_token	*token_lstnew(void)
 
 t_token	*token_lstlast(t_token *lst)
 {
-    t_token  *last;
+	t_token	*last;
 
 	if (!lst)
 		return (NULL);
-    last = lst;
+	last = lst;
 	while (last->next)
 	{
 		last = last->next;
@@ -53,7 +58,7 @@ void	token_lstadd_back(t_token **lst, t_token *new)
 		return ;
 	current = token_lstlast(*lst);
 	if (current)
-        current->next = new;
+		current->next = new;
 	else
-        *lst = new;
+		*lst = new;
 }

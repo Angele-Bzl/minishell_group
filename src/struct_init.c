@@ -22,33 +22,36 @@ static int	manage_no_env(t_env **current)
 		return (0);
 	}
 	new_node->next = NULL;
-	ft_lstadd_back((t_list**)current, (t_list*)new_node);
+	ft_lstadd_back((t_list **)current, (t_list *)new_node);
 	return (1);
 }
 
-int  env_init(char **env, t_data *data)
-{ /*a securiser ! et free si soucis !*/
+int	env_init(char **env, t_data *data)
+{
 	unsigned int	i;
 	t_env			*new_node;
 
-	data->ls_env = NULL;;
+	data->ls_env = NULL;
 	i = 0;
 	if (!env || !env[0])
-		return(manage_no_env(&data->ls_env));
+		return (manage_no_env(&data->ls_env));
 	while (env[i])
 	{
 		new_node = malloc(sizeof(t_env));
 		if (!new_node)
-			return (0);
-		new_node->line = ft_strdup(env[i]);
+			return (msg_return(MALLOC, NULL, ERR));
+		new_node->line = ft_strdup(env[i++]);
 		if (!new_node->line)
-			return (0);
+		{
+			free(new_node);
+			free_env(data->ls_env);
+			return (msg_return(MALLOC, NULL, ERR));
+		}
 		new_node->next = NULL;
 		ft_lstadd_back((t_list **)&data->ls_env, (t_list *)new_node);
 		new_node = new_node->next;
-		i++;
 	}
-	return (1);
+	return (OK);
 }
 
 static int	data_init(t_data *data)
@@ -60,9 +63,9 @@ static int	data_init(t_data *data)
 	return (OK);
 }
 
-static void parsing_init(t_data *data, t_parsing *parsing)
+static void	parsing_init(t_data *data, t_parsing *parsing)
 {
-	parsing->data = data; //parsing init
+	parsing->data = data;
 	parsing->errcode = ALL_OK;
 	parsing->dollar = false;
 	parsing->double_quote = false;

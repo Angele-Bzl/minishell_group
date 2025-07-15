@@ -1,38 +1,28 @@
-# include "minishell.h"
+#include "minishell.h"
 
 int	skip_io(char *prompt, int i)
 {
 	i++;
 	if (prompt[i] == '<' || prompt[i] == '>')
 		i++;
-	if (!ft_isspace(prompt[i]))									// il n'y a pas d'espace apres le chevron.
-	{
-		while (prompt[i] && !ft_isspace(prompt[i]))
-			i++;
-		while (prompt[i] && ft_isspace(prompt[i]))
-			i++;
-	}
-	else if (ft_isspace(prompt[i]))								// il y a un espace apres le chevron.
-	{
-		while (prompt[i] && ft_isspace(prompt[i]))
-			i++;
-		while (prompt[i] && !ft_isspace(prompt[i]))
-			i++;
-		while (prompt[i] && ft_isspace(prompt[i]))
-			i++;
-	}
+	while (prompt[i] && ft_isspace(prompt[i]))
+		i++;
+	while (prompt[i] && !ft_isspace(prompt[i]))
+		i++;
+	while (prompt[i] && ft_isspace(prompt[i]))
+		i++;
 	return (i);
 }
 
 static int	skip_quote_cmd(char *prompt, int *i)
 {
-	char quote;
-	int count = 0;
+	char	quote;
+	int		count;
 
 	quote = prompt[*i];
 	count = 0;
-	(*i)++; 													// skip quote d'ouverture
-	count++;													// prendre en compte les quotes
+	(*i)++;
+	count++;
 	while (prompt[*i] && prompt[*i] != quote)
 	{
 		(*i)++;
@@ -40,7 +30,7 @@ static int	skip_quote_cmd(char *prompt, int *i)
 	}
 	if (prompt[*i] == quote)
 	{
-		(*i)++; 												// skip quote de fermeture
+		(*i)++;
 		count++;
 	}
 	return (count);
@@ -57,10 +47,11 @@ static int	find_all_cmds_len(char *prompt)
 	{
 		while (ft_isspace(prompt[i]))
 			i++;
-		if (prompt[i] == '<' || prompt[i] == '>')				// on croise un io.
-			i = skip_io(prompt, i);								// avancer jusqu'au prochain arg de de cmd.
+		if (prompt[i] == '<' || prompt[i] == '>')
+			i = skip_io(prompt, i);
 		len++;
-		while (prompt[i] && !ft_isspace(prompt[i]) && prompt[i] != '<' && prompt[i] != '>')
+		while (prompt[i] && !ft_isspace(prompt[i])
+			&& prompt[i] != '<' && prompt[i] != '>')
 		{
 			if (prompt[i] == '\'' || prompt[i] == '\"')
 				len += skip_quote_cmd(prompt, &i);
@@ -78,16 +69,17 @@ char	*extract_current_cmd(char *prompt, int *i, int *j, char *clean_cmd)
 {
 	char	quote;
 
-	while (prompt[*i] && !ft_isspace(prompt[*i]) && prompt[*i] != '<' && prompt[*i] != '>')
+	while (prompt[*i] && !ft_isspace(prompt[*i])
+		&& prompt[*i] != '<' && prompt[*i] != '>')
 	{
-		if (prompt[*i] == '\'' || prompt[*i] == '\"')		// si on croise une quote
+		if (prompt[*i] == '\'' || prompt[*i] == '\"')
 		{
 			quote = prompt[*i];
-			clean_cmd[(*j)++] = prompt[(*i)++];				// ajoute quote ouvrante
+			clean_cmd[(*j)++] = prompt[(*i)++];
 			while (prompt[*i] != quote)
 				clean_cmd[(*j)++] = prompt[(*i)++];
 			if (prompt[*i] == quote)
-				clean_cmd[(*j)++] = prompt[(*i)++];			// quote fermante
+				clean_cmd[(*j)++] = prompt[(*i)++];
 		}
 		else if (prompt[*i])
 			clean_cmd[(*j)++] = prompt[(*i)++];

@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 static int	update_file(t_file *ls_file, char *file_name, t_rafter redirection)
 {
@@ -21,9 +21,9 @@ static int	update_file(t_file *ls_file, char *file_name, t_rafter redirection)
 	return (0);
 }
 
-static int check_rafter(t_data *data, char *file_name, char *prompt, int i)
+static int	check_rafter(t_data *data, char *file_name, char *prompt, int i)
 {
-	t_token *current;
+	t_token	*current;
 
 	current = token_lstlast(data->ls_token);
 	if (prompt[i] == '<' && prompt[i + 1] != '<')
@@ -53,8 +53,7 @@ int	manage_rafters(t_data *data, int *i, char *prompt, t_parsing *parsing)
 		parsing->errcode = ERR_MALLOC;
 		return (-1);
 	}
-	// if (prompt[*i] == prompt[*i + 1])
-	if (prompt[*i + 1] == '<' || prompt[*i + 1] == '>') //pas sûr parce que <> ou ><
+	if (prompt[*i + 1] == '<' || prompt[*i + 1] == '>')
 		*i = *i + 1;
 	while (ft_isspace(prompt[*i]))
 		*i = *i + 1;

@@ -3,7 +3,7 @@
 int	takes_a_value(void)
 {
 	return (1);
-} 
+}
 
 int	check_minishell_launch(int ac, char **av)
 {

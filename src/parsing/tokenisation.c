@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-static int	find_and_store_all_rafters(t_data *data, t_parsing *parsing, char *prompt)
+static int	find_store_rafters(t_data *data, t_parsing *parsing, char *prompt)
 {
 	int	i;
 
 	i = 0;
-	while(prompt[i])
+	while (prompt[i])
 	{
 		while (prompt[i] && prompt[i] != '<' && prompt[i] != '>')
 			i++;
@@ -13,14 +13,15 @@ static int	find_and_store_all_rafters(t_data *data, t_parsing *parsing, char *pr
 		{
 			if (manage_rafters(data, &i, prompt, parsing) == -1)
 				return (-1);
-			while (ft_isspace(prompt[i]) || prompt[i] == '<' ||  prompt[i] == '>')
+			while (ft_isspace(prompt[i])
+				|| prompt[i] == '<' || prompt[i] == '>')
 				i++;
 		}
 	}
 	return (0);
 }
 
-static int	find_and_store_all_cmds(t_token *current, char *prompt, t_parsing *parsing)
+static int	find_store_cmds(t_token *current, char *prompt, t_parsing *parsing)
 {
 	char	*clean_cmds;
 
@@ -34,7 +35,7 @@ static int	find_and_store_all_cmds(t_token *current, char *prompt, t_parsing *pa
 	return (0);
 }
 
-void	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeuds de ls_token
+void	tokenisation(t_data *data, t_parsing *parsing)
 {
 	int		i;
 	t_token	*new_token_node;
@@ -42,27 +43,22 @@ void	tokenisation(t_data *data, t_parsing *parsing)		// remplir chacuns des noeu
 
 	current = data->ls_token;
 	i = 0;
-	if (parsing->prompt_tab[i])
-	{
-        if (find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
-			return ;
-        if (find_and_store_all_cmds(current, parsing->prompt_tab[i], parsing) == -1)
-			return ;
-		i++;
-    }
 	while (parsing->prompt_tab[i])
 	{
-		new_token_node = token_lstnew();
-		if (!new_token_node)
+		if (i > 0)
 		{
-			parsing->errcode = ERR_MALLOC;
-			return ;
+			new_token_node = token_lstnew();
+			if (!new_token_node)
+			{
+				parsing->errcode = ERR_MALLOC;
+				return ;
+			}
+			token_lstadd_back(&current, new_token_node);
+			current = new_token_node;
 		}
-		token_lstadd_back(&current, new_token_node);
-		current = new_token_node;
-		if (find_and_store_all_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
+		if (find_store_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
 			return ;
-		if (find_and_store_all_cmds(current, parsing->prompt_tab[i], parsing) == -1)
+		if (find_store_cmds(current, parsing->prompt_tab[i], parsing) == -1)
 			return ;
 		i++;
 	}

@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 static int	is_expandable(char current_i, char next_i, t_parsing *parsing)
 {
@@ -19,13 +19,21 @@ static int	is_expandable(char current_i, char next_i, t_parsing *parsing)
 
 void	quote_check(char c, t_parsing *parsing)
 {
-	if (c == '\"' && parsing->double_quote == false && parsing->simple_quote == false)
+	if (c == '\"'
+		&& parsing->double_quote == false
+		&& parsing->simple_quote == false)
 		parsing->double_quote = true;
-	else if (c == '\"' && parsing->double_quote == true && parsing->simple_quote == false)
+	else if (c == '\"'
+		&& parsing->double_quote == true
+		&& parsing->simple_quote == false)
 		parsing->double_quote = false;
-	else if (c == '\'' && parsing->simple_quote == false && parsing->double_quote == false)
+	else if (c == '\''
+		&& parsing->simple_quote == false
+		&& parsing->double_quote == false)
 		parsing->simple_quote = true;
-	else if (c == '\'' && parsing->simple_quote == true && parsing->double_quote == false)
+	else if (c == '\''
+		&& parsing->simple_quote == true
+		&& parsing->double_quote == false)
 		parsing->simple_quote = false;
 }
 
@@ -37,34 +45,39 @@ static int	dollar_remaining(char *str, t_parsing *parsing)
 	while (str[i])
 	{
 		quote_check(str[i], parsing);
-		if (str[i] == '$' && parsing->simple_quote == false && !ft_isspace(str[i + 1])
-			&& str[i + 1] != '\0' && str[i + 1] != '\"' && str[i + 1] != '=')
+		if (str[i] == '$'
+			&& parsing->simple_quote == false
+			&& !ft_isspace(str[i + 1])
+			&& str[i + 1] != '\0'
+			&& str[i + 1] != '\"'
+			&& str[i + 1] != '=')
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-void	expand_var(t_parsing *parsing)		// partie expand, "go!". checker si on est dans une quote.
+void	expand_var(t_parsing *par)
 {
-	parsing->pipe_seg = 0;
-	parsing->p_index = 0;
-	while (parsing->prompt_tab[parsing->pipe_seg])		// tant qu'on a un seg_pipe
+	par->pipe_seg = 0;
+	par->p_index = 0;
+	while (par->prompt_tab[par->pipe_seg])
 	{
-		while (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index])// tant qu'on a des charactères dans le seg_pipe actuel
+		while (par->prompt_tab[par->pipe_seg][par->p_index])
 		{
-			quote_check(parsing->prompt_tab[parsing->pipe_seg][parsing->p_index], parsing);
-			if (is_expandable(parsing->prompt_tab[parsing->pipe_seg][parsing->p_index],
-				parsing->prompt_tab[parsing->pipe_seg][parsing->p_index + 1], parsing))
+			quote_check(par->prompt_tab[par->pipe_seg][par->p_index], par);
+			if (is_expandable(par->prompt_tab[par->pipe_seg][par->p_index],
+				par->prompt_tab[par->pipe_seg][par->p_index + 1], par))
 			{
-				manage_dollar_sign(parsing);
-				if (parsing->errcode != ALL_OK || !parsing->prompt_tab[parsing->pipe_seg][parsing->p_index])
-					return;
+				manage_dollar_sign(par);
+				if (par->errcode != ALL_OK
+					|| !par->prompt_tab[par->pipe_seg][par->p_index])
+					return ;
 			}
-			parsing->p_index++;
+			par->p_index++;
 		}
-		if (!dollar_remaining(parsing->prompt_tab[parsing->pipe_seg], parsing))
-			parsing->pipe_seg++;
-		parsing->p_index = 0;
+		if (!dollar_remaining(par->prompt_tab[par->pipe_seg], par))
+			par->pipe_seg++;
+		par->p_index = 0;
 	}
 }

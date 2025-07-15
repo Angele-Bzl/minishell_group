@@ -27,7 +27,7 @@ static int	readline_heredoc(int fd, char *eof)
 		}
 		if (!input)
 		{
-			ft_printf_err("bash: warning: heredoc delimited by end_of_file (wanted `%s')\n", eof);
+			msg_return(HEREDOC_EXPECT_DELIMITER, eof, 0);
 			break ;
 		}
 		if (!ft_strncmp(input, eof, ft_strlen(eof)))

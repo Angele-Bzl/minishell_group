@@ -1,17 +1,17 @@
-# include "minishell.h"
+#include "minishell.h"
 
-int	handle_exit_status_var(t_parsing *parsing)
+int	handle_exit_status_var(t_parsing *par)
 {
 	char	*content;
 
-	parsing->old_prompt = parsing->prompt_tab[parsing->pipe_seg];
-	content = ft_itoa(parsing->data->exit_status);
+	par->old_prompt = par->prompt_tab[par->pipe_seg];
+	content = ft_itoa(par->data->exit_status);
 	if (!content)
 	{
-		parsing->errcode = ERR_MALLOC;
+		par->errcode = ERR_MALLOC;
 		return (1);
 	}
-	parsing->prompt_tab[parsing->pipe_seg] = prompt_with_content(content, parsing->p_index, parsing);
+	par->prompt_tab[par->pipe_seg] = update_prompt(content, par->p_index, par);
 	return (0);
 }
 
@@ -39,7 +39,7 @@ char	*find_var_name(t_parsing *parsing)
 		var_name[1] = '\0';
 		return (var_name);
 	}
-	while (we_are_in_var_name(parsing, parsing->prompt_tab[parsing->pipe_seg][end]))		// Tant qu'on est pas a la fin de notre variable
+	while (in_var_name(parsing, parsing->prompt_tab[parsing->pipe_seg][end]))
 		end++;
 	if (parsing->errcode == ERR_PROMPT)
 		return (NULL);
@@ -83,7 +83,7 @@ int	find_var_end(char *prompt, int p_index)
 
 char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len)
 {
-	char *env_var;
+	char	*env_var;
 
 	env_var = NULL;
 	while (tmp)
@@ -91,7 +91,7 @@ char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len)
 		if (!ft_strncmp(tmp->line, var, var_len) && tmp->line[var_len] == '=')
 		{
 			env_var = tmp->line;
-			break;
+			break ;
 		}
 		tmp = tmp->next;
 	}

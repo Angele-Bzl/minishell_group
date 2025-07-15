@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 t_file	*file_lstnew(void)
 {
@@ -14,11 +14,11 @@ t_file	*file_lstnew(void)
 
 static t_file	*file_lstlast(t_file *lst)
 {
-    t_file  *last;
+	t_file	*last;
 
 	if (!lst)
 		return (NULL);
-    last = lst;
+	last = lst;
 	while (last->next)
 	{
 		last = last->next;
@@ -34,7 +34,7 @@ void	file_lstadd_back(t_file **lst, t_file *new)
 		return ;
 	current = file_lstlast(*lst);
 	if (current)
-        current->next = new;
+		current->next = new;
 	else
-        *lst = new;
+		*lst = new;
 }

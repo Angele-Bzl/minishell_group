@@ -23,13 +23,22 @@
 
 # include "../libft/libft.h"
 
+/*messages with arguments*/
+# define NO_FILE " : no such file or directory\n"
+# define NO_CMD " : command not found\n"
+# define IS_DIR " : is a directory\n"
+# define ERR_SYNTAX_NEAR " : syntax error near unexpected token\n"
+# define HEREDOC_EXPECT_DELIMITER " : this delimiter is expected to close heredoc\n"
+
+/*messages without arguments*/
 # define MALLOC "Error: malloc failed\n"
-# define NO_FILE "minishell: no such file or directory\n"
-# define NO_CMD "minishell: %s: command not found\n"
+# define ERR_SYNTAX_PIPE "syntax error: pipe '|' must be followed by a command\n"
+# define ERR_SYNTAX_QUOTE "syntax error : open quote\n"
 # define NO_PATH "Error: no path to the command\n"
 # define ERR_PWD "Error: update_pwd failed\n"
 # define ERR_OLDPWD "Error: update_oldpwd failed\n"
 # define ERR_EXECVE "Error: execve failed\n"
+
 # define TMP ".infile.tmp"
 # define IS_BUILTIN 42
 
@@ -139,12 +148,6 @@ void	free_token_env(t_data *data);
 void	close_all(int fd0, int fd1);
 void	close_free_token_env(t_data *data, int fd0, int fd1);
 void	close_free_array_str(int fd0, int fd1, char **env, char *path);
-/*error_exec.c*/
-void	msg_exit(char *message, char *arg, int exit_value);
-int		msg_return(char *message, char *arg, int return_value);
-char	*msg_return_str(char *message, char *arg, char *return_value);
-int		perror_return(char *message, int return_value);
-int	end_single_cmd(t_data *data, int *io_fd, int *save, int return_val);
 /*children.c*/
 int		loop_children(t_data *data, pid_t *pids);
 /*input_output.c*/
@@ -181,11 +184,11 @@ void	expand_var(t_parsing *parsing);
 /*extract_token_without_quotes.c*/
 char	*extract_token_without_quotes(char *str, t_parsing *parsing);
 /*find_var_name_utils.c*/
-int		we_are_in_var_name(t_parsing *parsing, char c);
-int 	first_var_name_char_is_valid(char c);
+int		in_var_name(t_parsing *parsing, char c);
+int 	first_char_is_valid(char c);
 /*ft_coutpipe_utils.c*/
 int		prompt_begins_with_a_pipe(const char *s, int *i, t_parsing *parsing);
-int		parse_pipe_segments(char const *s, char c, int i);
+int		parse_pipe_segments(char const *s, int i);
 /*linked_list_token.c*/
 t_token	*token_lstnew(void);
 t_token	*token_lstlast(t_token *lst);
@@ -195,18 +198,16 @@ t_file	*file_lstnew(void);
 void	file_lstadd_back(t_file **lst, t_file *new);
 /*manage_dollar*/
 void	manage_dollar_sign(t_parsing *parsing);
-char	*prompt_with_content(char *content, int start, t_parsing *parsing);
+char	*update_prompt(char *content, int start, t_parsing *parsing);
 /*manage_dollar_utils*/
 char	*find_var_name(t_parsing *parsing);
 int		find_var_end(char *prompt, int p_index);
 char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
 int		handle_exit_status_var(t_parsing *parsing);
-/*manage_quotes.c*/
-int		manage_quotes(char c, t_parsing *parsing);
 /*parsing.c*/
 void	ft_parsing(t_data *data, t_parsing *parsing);
 /*pip_segmentation.c*/
-char	**pipe_segmentation(t_parsing *parsing, char c);
+char	**pipe_segmentation(t_parsing *parsing);
 /*prompt_check.c*/
 int		prompt_check(char *prompt, t_parsing *parsing);
 /*rafter_token_utils.c*/
@@ -222,6 +223,12 @@ void	tokenisation(t_data *data, t_parsing *parsing);
 
 
 /*UTILS*/
+/*manage_error.c*/
+void	msg_exit(char *message, char *arg, int exit_value);
+int		msg_return(char *message, char *arg, int return_value);
+char	*msg_return_str(char *message, char *arg, char *return_value);
+int		perror_return(char *message, int return_value);
+int		end_single_cmd(t_data *data, int *io_fd, int *save, int return_val);
 /*cutstr.c*/
 char	*ft_cutstr(char const *s, unsigned int start);
 /*debug_print.c*/

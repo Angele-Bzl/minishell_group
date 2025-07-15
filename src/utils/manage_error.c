@@ -2,22 +2,55 @@
 
 void	msg_exit(char *message, char *arg, int exit_value)
 {
+	char	*msg;
+
 	if (message)
-		ft_printf_err(message, arg);
+	{
+		msg = ft_strjoin(arg, message);
+		if (!msg)
+		{
+			ft_putstr_fd(MALLOC, STDERR_FILENO);
+			exit(2);
+		}
+		ft_putstr_fd(msg, STDERR_FILENO);
+		free(msg);
+	}
 	exit(exit_value);
 }
 
 int	msg_return(char *message, char *arg, int return_value)
 {
+	char	*msg;
+
 	if (message)
-		ft_printf_err(message, arg);
+	{
+		msg = ft_strjoin(arg, message);
+		if (!msg)
+		{
+			ft_putstr_fd(MALLOC, STDERR_FILENO);
+			return (ERROR_SYSTEM);
+		}
+		ft_putstr_fd(msg, STDERR_FILENO);
+		free(msg);
+	}
 	return (return_value);
 }
 
 char	*msg_return_str(char *message, char *arg, char *return_value)
 {
+	char	*msg;
+
 	if (message)
-		ft_printf_err(message, arg);
+	{
+		msg = ft_strjoin(arg, message);
+		if (!msg)
+		{
+			ft_putstr_fd(MALLOC, STDERR_FILENO);
+			return (NULL);
+		}
+		ft_putstr_fd(msg, STDERR_FILENO);
+		free(msg);
+	}
 	return (return_value);
 }
 

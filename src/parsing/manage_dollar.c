@@ -1,61 +1,58 @@
-# include "minishell.h"
+#include "minishell.h"
 
-static char *find_var_content(char *variable, t_data *data, t_parsing *parsing)
+static char	*find_var_content(char *variable, t_data *data, t_parsing *parsing)
 {
 	char	*var;
 	char	*result;
 	char	*env_var;
-	int		var_len;
 	t_env	*tmp;
 
-	env_var = NULL;
 	tmp = data->ls_env;
 	var = ft_strtrim(variable, "$");
 	if (!var)
 	{
 		parsing->errcode = ERR_MALLOC;
-		return (NULL); 											//fail malloc
+		return (NULL);
 	}
-	var_len = (ft_strlen(var));
-	env_var = search_and_fill_content_with_env(tmp, var, var_len);
 	result = NULL;
+	env_var = search_and_fill_content_with_env(tmp, var, ft_strlen(var));
 	if (env_var)
 	{
 		result = ft_cutstr(env_var, ft_strlen(var) + 1);
 		if (!result)
 		{
 			parsing->errcode = ERR_MALLOC;
-			return (NULL); 											//fail malloc
+			return (NULL);
 		}
 	}
 	free(var);
 	return (result);
 }
 
-char	*prompt_with_content(char *content, int start, t_parsing *parsing)
+char	*update_prompt(char *content, int start, t_parsing *parsing)
 {
 	int		i;
 	int		j;
 	int		end;
-	int		prompt_len;
+	int		prt;
 	char	*new_prompt;
 
 	end = find_var_end(parsing->old_prompt, parsing->p_index);
-	prompt_len = ft_strlen(parsing->old_prompt) - (end - start) + (ft_strlen(content));
-	new_prompt = malloc(sizeof(char) * (prompt_len + 1));
+	prt = ft_strlen(parsing->old_prompt) - (end - start) + (ft_strlen(content));
+	new_prompt = malloc(sizeof(char) * (prt + 1));
 	if (!new_prompt)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (i < start)												// copier ce qui se trouve avant la variable.
+	while (i < start)
 		new_prompt[j++] = parsing->old_prompt[i++];
-	while (content && content[j - i])								// inserer valeur de la variable.
+	while (content && content[j - i])
 	{
-		new_prompt[j] = content[j - i];								// j - i car on veut content[0].
+		new_prompt[j] = content[j - i];
 		j++;
 	}
 	i = end;
-	while (parsing->old_prompt[i]) 												// recopier la fin du prompt
+	while (parsing->old_prompt[i])
 		new_prompt[j++] = parsing->old_prompt[i++];
 	new_prompt[j] = '\0';
 	return (new_prompt);
@@ -73,37 +70,37 @@ static void	init_variable_and_content(t_parsing *parsing, char **content)
 	else
 		*content = find_var_content(variable, parsing->data, parsing); // trouver le contenue de la variable, check fail
 	free(variable);
-	if (!*content)											// on continue en remplaçant par rien
+	if (!*content)
 	{
 		*content = malloc(1);
 		if (!*content)
 		{
-		parsing->errcode = ERR_MALLOC;
-		return; 									// fail malloc
+			parsing->errcode = ERR_MALLOC;
+			return ;
 		}
 		*content[0] = '\0';
 	}
 }
 
-static void	fill_new_prompt(t_parsing *parsing, char *content)
+static void	fill_new_prompt(t_parsing *par, char *content)
 {
 	int	start;
 
-	start = parsing->p_index;
-	parsing->old_prompt = parsing->prompt_tab[parsing->pipe_seg];
-	parsing->prompt_tab[parsing->pipe_seg] = NULL;
-	parsing->prompt_tab[parsing->pipe_seg] = prompt_with_content(content, start, parsing);	// retirer la variable et rajouter contenu
-	free(parsing->old_prompt);
-	parsing->old_prompt = NULL;
-	if (!parsing->prompt_tab[parsing->pipe_seg])
+	start = par->p_index;
+	par->old_prompt = par->prompt_tab[par->pipe_seg];
+	par->prompt_tab[par->pipe_seg] = NULL;
+	par->prompt_tab[par->pipe_seg] = update_prompt(content, start, par);
+	free(par->old_prompt);
+	par->old_prompt = NULL;
+	if (!par->prompt_tab[par->pipe_seg])
 	{
-		parsing->errcode = ERR_MALLOC;
-		return;
+		par->errcode = ERR_MALLOC;
+		return ;
 	}
-	parsing->p_index = start + ft_strlen(content);
+	par->p_index = start + ft_strlen(content);
 }
 
-void manage_dollar_sign(t_parsing *parsing)
+void	manage_dollar_sign(t_parsing *parsing)
 {
 	char	*content;
 
@@ -111,7 +108,7 @@ void manage_dollar_sign(t_parsing *parsing)
 	if (parsing->prompt_tab[parsing->pipe_seg][parsing->p_index + 1] == '?')
 	{
 		if (handle_exit_status_var(parsing) == 0)
-			return;
+			return ;
 	}
 	init_variable_and_content(parsing, &content);
 	if (parsing->errcode == ALL_OK)

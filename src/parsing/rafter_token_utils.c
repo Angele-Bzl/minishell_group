@@ -1,6 +1,6 @@
-# include "minishell.h"
+#include "minishell.h"
 
-char	*extract_file_name(char *prompt, int i)					// trouver le debut/fin du nom et le renvoyer
+char	*extract_file_name(char *prompt, int i)
 {
 	int		start;
 	int		end;
@@ -8,7 +8,10 @@ char	*extract_file_name(char *prompt, int i)					// trouver le debut/fin du nom 
 	char	*file_name;
 
 	start = i;
-	while (!ft_isspace(prompt[i]) && prompt[i] != '\0' && prompt[i] != '>' && prompt[i] != '<')
+	while (!ft_isspace(prompt[i])
+		&& prompt[i] != '\0'
+		&& prompt[i] != '>'
+		&& prompt[i] != '<')
 		i++;
 	end = i;
 	len = end - start;
@@ -25,7 +28,7 @@ char	*extract_file_name(char *prompt, int i)					// trouver le debut/fin du nom 
 	return (file_name);
 }
 
-char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing)				// on avance jusqu'au début du nom pour l'extraire.
+char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing)
 {
 	char	*file_name;
 
@@ -36,9 +39,8 @@ char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing)				// on ava
 		i++;
 	if (prompt[i] == '<' || prompt[i] == '>' || prompt[i] == '\0')
 	{
-		ft_printf_err("minishell: syntax error near unexpected token '%c'\n", prompt[i]);
 		parsing->errcode = ERR_PROMPT;
-		return (NULL);
+		return (msg_return_str(ERR_SYNTAX_NEAR, "'<' OR '>' OR '\\0'", NULL));
 	}
 	file_name = extract_file_name(prompt, i);
 	if (!file_name)
