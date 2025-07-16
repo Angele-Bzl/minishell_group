@@ -43,25 +43,63 @@ static int	readline_heredoc(int fd, char *eof)
 	return (0);
 }
 
+static int	change_tmp_name(char *tmp, int i)
+{
+	if (tmp[i] < 90)
+		tmp[i] = tmp[i] + 1;
+	else if (i > 0)
+	{
+		if (change_tmp_name(tmp, i - 1) == ERR)
+			return (ERR);
+	}
+	else
+		return (ERR);
+	return (OK);
+}
+
+static char	*generate_name_tmp()
+{
+	char	*tmp;
+	int		i;
+
+	tmp = ft_strdup(".AAAAAAAAAA.tmp");
+	if (!tmp)
+		return (NULL);
+	while (1)
+	{
+		if (!access(tmp, F_OK))
+		{
+			i = 10;
+			change_tmp_name(tmp, i);
+		}
+		else
+			return (tmp);
+	}
+}
+
 int	here_doc(char *eof)
 {
 	int	fd;
 	int	ret;
+	char	*tmp;
 
+	tmp = generate_name_tmp();
+	if (!tmp)
+		return (ERR);
 	set_signals_on(HEREDOC_MODE);
-	fd = open(TMP, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	fd = open(tmp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 		return (ERR);
 	ret = readline_heredoc(fd, eof);
 	close (fd);
 	if (ret == HEREDOC_INTERRUPTED)
 	{
-		unlink(TMP);
+		unlink(tmp);
 		return (HEREDOC_INTERRUPTED);
 	}
-	fd = open(TMP, O_RDONLY);
+	fd = open(tmp, O_RDONLY);
 	if (fd == -1)
 		return (ERR);
-	unlink(TMP);
+	unlink(tmp);
 	return (fd);
 }
