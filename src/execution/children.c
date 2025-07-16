@@ -21,7 +21,7 @@ int	manage_child(t_data *data, int prev_out, int pipe_fd[2], t_token *current)
 		close_all(io_fd[0], io_fd[1]);
 		return (data->exit_status);
 	}
-	return (IS_BUILTIN);
+	return (OK);
 }
 
 static int	set_up_pipe(int *i, int *pipe_fd, t_token *token, t_token *current)

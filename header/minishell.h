@@ -180,7 +180,7 @@ int		exec_pwd(void);
 void	exec_env(t_env *ls_env);
 void	exec_env_export(t_env *ls_env);
 void	exec_unset(t_env **ls_env, char **cmds);
-int		exec_cd(char **cmd, t_env *list_env);
+int		exec_cd(char **cmd, t_env *list_env, t_data *data);
 int		exec_exit(t_data *data, t_token *cmds, int *save_std_io);
 /*utils_builtins.c*/
 int		str_is_digit(char *arg);
