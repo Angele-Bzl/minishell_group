@@ -163,7 +163,7 @@ int		redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std
 int		get_input(t_file *ls_infile, int previous_pipe);
 int		get_output(t_file *ls_outfile, int pipe_output, int count_cmd);
 /*manage_heredoc.c*/
-int		here_doc(char *eof);
+char	*here_doc(char *eof);
 /*BUILTINS*/
 void	exec_echo(char **cmd);
 int		exec_export(t_env *ls_env, char **cmds);

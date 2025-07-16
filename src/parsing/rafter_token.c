@@ -33,8 +33,14 @@ static int	check_rafter(t_data *data, char *file_name, char *prompt, int i)
 		if (update_file(current->ls_outfile, file_name, SIMPLE_RIGHT) == -1)
 			return (-1);
 	if (prompt[i + 1] == '<')
+	{
+		file_name = here_doc(file_name);
+		if (!file_name)
+		return (-1);
 		if (update_file(current->ls_infile, file_name, DOUBLE_LEFT) == -1)
-			return (-1);
+		return (-1);
+		// printf("file name = %s\n", current->ls_infile->value);
+	}
 	if (prompt[i + 1] == '>')
 		if (update_file(current->ls_outfile, file_name, DOUBLE_RIGHT) == -1)
 			return (-1);

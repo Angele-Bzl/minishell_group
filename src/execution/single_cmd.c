@@ -18,15 +18,16 @@ static int	get_input_single_cmd(t_file *ls_infile, int *save_std_io, int *exit_s
 		current = ls_infile;
 		while (current)
 		{
-			if (current->redirection == SIMPLE_LEFT)
-				input = open(current->value, O_RDONLY);
-			if (current->redirection == DOUBLE_LEFT)
-				input = here_doc(current->value);
+			// if (current->redirection == SIMPLE_LEFT)
+			input = open(current->value, O_RDONLY);
+			// 	input = here_doc(current->value);
 			if (input == -1)
 			{
 				*exit_status = ERROR_PROMPT;
 				return (perror_return(current->value, ERR));
 			}
+			if (current->redirection == DOUBLE_LEFT)
+				unlink(current->value);
 			if (current->next)
 				close(input);
 			current = current->next;

@@ -77,7 +77,35 @@ static char	*generate_name_tmp()
 	}
 }
 
-int	here_doc(char *eof)
+// int	here_doc(char *eof)
+// {
+// 	int	fd;
+// 	int	ret;
+// 	char	*tmp;
+
+// 	tmp = generate_name_tmp();
+// 	if (!tmp)
+// 		return (ERR);
+// 	set_signals_on(HEREDOC_MODE);
+// 	fd = open(tmp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+// 	if (fd == -1)
+// 		return (ERR);
+// 	ret = readline_heredoc(fd, eof);
+// 	close (fd);
+// 	if (ret == HEREDOC_INTERRUPTED)
+// 	{
+// 		unlink(tmp);
+// 		return (HEREDOC_INTERRUPTED);
+// 	}
+// 	// fd = open(tmp, O_RDONLY);
+// 	// if (fd == -1)
+// 	// 	return (ERR);
+// 	// unlink(tmp);
+// 	return (fd);
+// }
+
+
+char	*here_doc(char *eof)
 {
 	int	fd;
 	int	ret;
@@ -85,21 +113,24 @@ int	here_doc(char *eof)
 
 	tmp = generate_name_tmp();
 	if (!tmp)
-		return (ERR);
+	{
+		free(eof);//?
+		return (NULL);
+	}
 	set_signals_on(HEREDOC_MODE);
 	fd = open(tmp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
-		return (ERR);
+	{
+		free(eof); //?
+		return (NULL);
+	}
 	ret = readline_heredoc(fd, eof);
+	free(eof);
 	close (fd);
 	if (ret == HEREDOC_INTERRUPTED)
 	{
 		unlink(tmp);
-		return (HEREDOC_INTERRUPTED);
+		return (NULL);
 	}
-	fd = open(tmp, O_RDONLY);
-	if (fd == -1)
-		return (ERR);
-	unlink(tmp);
-	return (fd);
+	return (tmp);
 }
