@@ -22,7 +22,6 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 		data->exit_status = ERROR_PERMISSION;
 		return (perror_return(path_cmd, ERR));
 	}
-	printf("path_cmd : %s\n", path_cmd);
 	if (execve(path_cmd, current->cmd, env) == -1)
 		return (msg_return(ERR_EXECVE, NULL, ERR));
 	return (OK);
@@ -85,7 +84,7 @@ int	get_output(t_file *ls_outfile, int pipe_output, int count_cmd)
 			if (curr->redirection == DOUBLE_RIGHT)
 				output = open(curr->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (output == -1)
-				return (perror_return(curr->value, ERROR_PERMISSION));
+				return (perror_return(curr->value, ERROR_PROMPT));
 			if (curr->next)
 				close(output);
 			curr = curr->next;

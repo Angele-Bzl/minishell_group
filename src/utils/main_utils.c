@@ -30,5 +30,4 @@ void	parse_and_execute(t_parsing *parsing, t_data *data)
 	ft_parsing(data, parsing);
 	if (parsing->errcode == OK)
 		execution(data);
-	// printf("(main_utils.c) exit_status: %d\n", data->exit_status);
 }

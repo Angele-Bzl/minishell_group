@@ -44,11 +44,13 @@ static int	quote_count(char *prompt, t_parsing *parsing)
 	return (OK);
 }
 
-int	prompt_check(char *prompt, t_parsing *parsing)
+int	prompt_check(char *prompt, t_parsing *parsing, t_data *data)
 {
-	if (quote_count(prompt, parsing) == ERR_PROMPT)
+	if (quote_count(prompt, parsing) == ERR_PROMPT
+		|| last_pipe_check(prompt) == ERR_PROMPT)
+	{
+		data->exit_status = 2;
 		return (ERR_PROMPT);
-	if (last_pipe_check(prompt) == ERR_PROMPT)
-		return (ERR_PROMPT);
+	}
 	return (OK);
 }
