@@ -21,10 +21,7 @@ static char	*first_char_not_valid(t_parsing *par, int start)
 
 	var_name = malloc(sizeof(char) * 2);
 	if (!var_name)
-	{
-		par->errcode = ERR_MALLOC;
-		return (NULL);
-	}
+		return (parsing_error_char(par, ERR_MALLOC, EXIT_SYSTEM, NULL));
 	var_name[0] = par->prompt_tab[par->pipe_seg][start];
 	var_name[1] = '\0';
 	return (var_name);
@@ -50,6 +47,8 @@ char	*find_var_name(t_parsing *par)
 		return (NULL);
 	var_len = end - start;
 	var_name = fill_var_name(par, start, var_len);
+	if (!var_name)
+		return (NULL);
 	return (var_name);
 }
 

@@ -39,14 +39,11 @@ char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing)
 		i++;
 	if (prompt[i] == '<' || prompt[i] == '>' || prompt[i] == '\0')
 	{
-		parsing->errcode = ERR_PROMPT;
+		parsing_error_char(parsing, ERR_PROMPT, EXIT_SYSTEM, NULL);
 		return (msg_return_str(ERR_SYNTAX_NEAR, "'<' OR '>' OR '\\0'", NULL));
 	}
 	file_name = extract_file_name(prompt, i);
 	if (!file_name)
-	{
-		parsing->errcode = ERR_MALLOC;
-		return (NULL);
-	}
+		return (parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
 	return (file_name);
 }
