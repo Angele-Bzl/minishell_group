@@ -14,7 +14,7 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 	env = get_env_in_tab(data->ls_env);
 	if (!env)
 		return (msg_return(MALLOC, NULL, ERR));
-	path_cmd = find_cmd(env, current->cmd[0], &data->exit_status);
+	path_cmd = find_cmd(env, current->cmd[0], &data->exit_status, data);
 	if (!path_cmd)
 	{
 		free_array(env);

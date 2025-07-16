@@ -30,7 +30,7 @@ int	exec_homemade_builtin(t_data *data, t_token *current, int *save_std_io)
 	if (!ft_strncmp(current->cmd[0], "pwd\0", 4))
 		exec_pwd();
 	if (!ft_strncmp(current->cmd[0], "export\0", 7))
-		return (exec_export(data->ls_env, data->ls_token->cmd));
+		return (exec_export(data->ls_env, data->ls_token->cmd, data));
 	if (!ft_strncmp(current->cmd[0], "unset\0", 6))
 		exec_unset(&data->ls_env, data->ls_token->cmd);
 	if (!ft_strncmp(current->cmd[0], "env\0", 4))

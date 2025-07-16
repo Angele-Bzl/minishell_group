@@ -15,7 +15,6 @@ void	execution(t_data *data)
 	if (loop_children(data, pids) == ERR)
 	{
 		data->exit_status = EXIT_SYSTEM;
-		// return (ERR);
 		return ;
 	}
 	data->exit_status = wait_for_pid(data->ls_token, pids);
@@ -25,6 +24,5 @@ void	execution(t_data *data)
 		exit(EXIT_FAILURE);
 	}
 	free(pids);
-	// return (OK);
 	return ;
 }

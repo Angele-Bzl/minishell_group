@@ -148,7 +148,7 @@ void	test_signal(void);
 /*execution.c*/
 void		execution(t_data *data);
 /*command.c*/
-char	*find_cmd(char **env, char *cmd, int *exit_status);
+char	*find_cmd(char **env, char *cmd, int *exit_status, t_data *data);
 /*itils_cmd.c*/
 size_t	find_path_in_env(char **env);
 void	fill_tab_null(char **table, size_t len);
@@ -175,7 +175,7 @@ int		get_output(t_file *ls_outfile, int pipe_output, int count_cmd);
 char	*here_doc(char *eof);
 /*BUILTINS*/
 void	exec_echo(char **cmd);
-int		exec_export(t_env *ls_env, char **cmds);
+int		exec_export(t_env *ls_env, char **cmds, t_data *data);
 int		exec_pwd(void);
 void	exec_env(t_env *ls_env);
 void	exec_env_export(t_env *ls_env);

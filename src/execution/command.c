@@ -71,7 +71,7 @@ static char	**hypothetical_path(char **env_path, char *cmd)
 	return (hypothetical_path_cmd);
 }
 
-static int	is_special_cmd(char *cmd, char **path_cmd)
+static int	is_special_cmd(char *cmd, char **path_cmd, t_data *data)
 {
 	struct stat	buf;
 
@@ -87,7 +87,10 @@ static int	is_special_cmd(char *cmd, char **path_cmd)
 		else
 		{
 			if (S_ISDIR(buf.st_mode))
+			{
+				data->exit_status = EXIT_CMD_NO_PERMISSION;
 				return (msg_return(IS_DIR, cmd, OK));
+			}
 			*path_cmd = cmd;
 			return (OK);
 		}
@@ -95,7 +98,7 @@ static int	is_special_cmd(char *cmd, char **path_cmd)
 	return (1);
 }
 
-char	*find_cmd(char **env, char *cmd, int *exit_status)
+char	*find_cmd(char **env, char *cmd, int *exit_status, t_data *data)
 {
 	char	**env_path;
 	char	**hypothetical_path_cmd;
@@ -103,7 +106,7 @@ char	*find_cmd(char **env, char *cmd, int *exit_status)
 	int		i;
 
 	path_cmd = NULL;
-	if (is_special_cmd(cmd, &path_cmd) == OK)
+	if (is_special_cmd(cmd, &path_cmd, data) == OK)
 		return (path_cmd);
 	i = find_path_in_env(env);
 	if (i == ERR)
