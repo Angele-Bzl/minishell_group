@@ -15,7 +15,7 @@ int	manage_child(t_data *data, int prev_out, int pipe_fd[2], t_token *current)
 		return (EXIT_FAILURE);
 	}
 	else if (io_fd[1] == ERROR_PROMPT)
-		return (ERROR_PROMPT);
+		return (EXIT_PROMPT);
 	if (redirect_and_exec(current, io_fd, data, NULL) != OK)
 	{
 		close_all(io_fd[0], io_fd[1]);
