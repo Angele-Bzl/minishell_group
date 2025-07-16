@@ -84,6 +84,15 @@ typedef enum e_err_exec
 	HEREDOC_INTERRUPTED = -3,
 }	t_err_exec;
 
+typedef enum e_exit_status
+{
+    EXIT_OK,
+    EXIT_PROMPT = 1,
+    EXIT_SYSTEM = 2,
+    EXIT_CMD_NO_PERMISSION = 126,
+    EXIT_CMD_NOT_FOUND = 127,
+}    t_exit_status;
+
 /////////////////////////////////////// structures
 
 typedef struct s_env
@@ -197,7 +206,7 @@ int		in_var_name(t_parsing *parsing, char c);
 int		first_char_is_valid(char c);
 char	*fill_var_name(t_parsing *par, int start, int var_len);
 /*ft_coutpipe_utils.c*/
-int		prompt_begins_with_a_pipe(const char *s, int *i, t_parsing *parsing);
+int		prompt_begins_with_a_pipe(const char *s, int *i);
 int		parse_pipe_segments(char const *s, int i);
 /*linked_list_token.c*/
 t_token	*token_lstnew(void);
@@ -214,6 +223,10 @@ char	*find_var_name(t_parsing *parsing);
 int		find_var_end(char *prompt, int p_index);
 char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
 int		handle_exit_status_var(t_parsing *parsing);
+/*parsing_error.c*/
+int		parsing_error_int(t_parsing *parsing, int errcode ,int	exit_status, int return_value);
+char	*parsing_error_char(t_parsing *parsing, int errcode ,int	exit_status, char *return_value);
+void	parsing_error_void(t_parsing *parsing, int errcode ,int	exit_status);
 /*parsing.c*/
 void	ft_parsing(t_data *data, t_parsing *parsing);
 /*pip_segmentation.c*/

@@ -7,7 +7,6 @@ static int	find_store_rafters(t_data *data, t_parsing *parsing, char *prompt)
 	i = 0;
 	while (prompt[i])
 	{
-		// printf("prompt[%d] = %c\n", i, prompt[i]);
 		while (prompt[i] && prompt[i] != '<' && prompt[i] != '>')
 		{
 			quote_check(prompt[i], parsing);
@@ -17,8 +16,8 @@ static int	find_store_rafters(t_data *data, t_parsing *parsing, char *prompt)
 			&& parsing->double_quote == false
 			&& parsing->simple_quote == false)
 		{
-			if (manage_rafter(data, &i, prompt, parsing) == -1)
-				return (-1);
+			if (manage_rafter(data, &i, prompt, parsing) == ERR)
+				return (ERR);
 			while (ft_isspace(prompt[i])
 				|| prompt[i] == '<' || prompt[i] == '>')
 			{
@@ -41,11 +40,11 @@ static int	find_store_cmds(t_token *current, char *prompt, t_parsing *parsing)
 
 	clean_cmds = extract_clean_cmd(parsing, prompt);
 	if (!clean_cmds)
-		return (-1);
+		return (ERR);
 	current->cmd = split_whitespace_quotes(clean_cmds, ' ', parsing);
 	free(clean_cmds);
 	if (current->cmd == NULL)
-		return (-1);
+		return (ERR);
 	return (0);
 }
 
@@ -63,16 +62,13 @@ void	tokenisation(t_data *data, t_parsing *parsing)
 		{
 			new_token_node = token_lstnew();
 			if (!new_token_node)
-			{
-				parsing->errcode = ERR_MALLOC;
-				return ;
-			}
+				return (parsing_error_void(parsing, ERR_MALLOC, EXIT_SYSTEM));
 			token_lstadd_back(&current, new_token_node);
 			current = new_token_node;
 		}
-		if (find_store_rafters(data, parsing, parsing->prompt_tab[i]) == -1)
+		if (find_store_rafters(data, parsing, parsing->prompt_tab[i]) == ERR)
 			return ;
-		if (find_store_cmds(current, parsing->prompt_tab[i], parsing) == -1)
+		if (find_store_cmds(current, parsing->prompt_tab[i], parsing) == ERR)
 			return ;
 		i++;
 	}

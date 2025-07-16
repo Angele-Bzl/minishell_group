@@ -1,14 +1,11 @@
 #include "minishell.h"
 
-int	prompt_begins_with_a_pipe(const char *prompt, int *i, t_parsing *parsing)
+int	prompt_begins_with_a_pipe(const char *prompt, int *i)
 {
 	while (ft_isspace(prompt[*i]))
 		(*i)++;
 	if (prompt[*i] == '|')
-	{
-		parsing->errcode = ERR_PROMPT;
 		return (msg_return(ERR_SYNTAX_NEAR, "|", ERR));
-	}
 	return (0);
 }
 

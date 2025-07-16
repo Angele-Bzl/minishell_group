@@ -4,7 +4,7 @@ int	in_var_name(t_parsing *parsing, char c)
 {
 	if (c == '(' || c == ')' || c == '<' || c == '>')
 	{
-		parsing->errcode = ERR_PROMPT;
+		parsing_error_int(parsing, ERR_PROMPT, EXIT_SYSTEM, 0);
 		return (msg_return(ERR_SYNTAX_NEAR, "'(' OR ')' OR '<' OR '>'", 1));
 	}
 	if (!ft_isalnum(c) && c != '_')
@@ -26,10 +26,7 @@ char	*fill_var_name(t_parsing *par, int start, int var_len)
 
 	var_name = malloc(sizeof(char) * (var_len + 1));
 	if (!var_name)
-	{
-		par->errcode = ERR_MALLOC;
-		return (NULL);
-	}
+		parsing_error_char(par, ERR_MALLOC, EXIT_SYSTEM, NULL);
 	i = 0;
 	while (i < var_len)
 	{

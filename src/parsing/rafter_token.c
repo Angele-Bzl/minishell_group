@@ -13,7 +13,7 @@ static int	update_file(t_file *ls_file, char *file_name, t_rafter redirection)
 	{
 		new_in_node = file_lstnew();
 		if (!new_in_node)
-			return (-1);
+			return (ERR);
 		new_in_node->value = file_name;
 		new_in_node->redirection = redirection;
 		file_lstadd_back(&ls_file, new_in_node);
@@ -27,23 +27,22 @@ static int	check_rafter(t_data *data, char *file_name, char *prompt, int i)
 
 	current = token_lstlast(data->ls_token);
 	if (prompt[i] == '<' && prompt[i + 1] != '<')
-		if (update_file(current->ls_infile, file_name, SIMPLE_LEFT) == -1)
-			return (-1);
+		if (update_file(current->ls_infile, file_name, SIMPLE_LEFT) == ERR)
+			return (ERR);
 	if (prompt[i] == '>' && prompt[i + 1] != '>')
-		if (update_file(current->ls_outfile, file_name, SIMPLE_RIGHT) == -1)
-			return (-1);
+		if (update_file(current->ls_outfile, file_name, SIMPLE_RIGHT) == ERR)
+			return (ERR);
 	if (prompt[i + 1] == '<')
 	{
 		file_name = here_doc(file_name);
 		if (!file_name)
-		return (-1);
-		if (update_file(current->ls_infile, file_name, DOUBLE_LEFT) == -1)
-		return (-1);
-		// printf("file name = %s\n", current->ls_infile->value);
+			return (ERR);
+		if (update_file(current->ls_infile, file_name, DOUBLE_LEFT) == ERR)
+			return (ERR);
 	}
 	if (prompt[i + 1] == '>')
-		if (update_file(current->ls_outfile, file_name, DOUBLE_RIGHT) == -1)
-			return (-1);
+		if (update_file(current->ls_outfile, file_name, DOUBLE_RIGHT) == ERR)
+			return (ERR);
 	return (0);
 }
 
@@ -53,12 +52,9 @@ int	manage_rafter(t_data *data, int *i, char *prompt, t_parsing *parsing)
 
 	file_name = find_redir_file_name(prompt, *i, parsing);
 	if (file_name == NULL)
-		return (-1);
-	if (check_rafter(data, file_name, prompt, *i) == -1)
-	{
-		parsing->errcode = ERR_MALLOC;
-		return (-1);
-	}
+		return (ERR);
+	if (check_rafter(data, file_name, prompt, *i) == ERR)
+		return (parsing_error_int(parsing, ERR_MALLOC, EXIT_SYSTEM, ERR));
 	if (prompt[*i + 1] == '<' || prompt[*i + 1] == '>')
 		*i = *i + 1;
 	while (ft_isspace(prompt[*i]))

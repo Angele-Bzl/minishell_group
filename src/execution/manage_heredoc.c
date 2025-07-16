@@ -114,14 +114,14 @@ char	*here_doc(char *eof)
 	tmp = generate_name_tmp();
 	if (!tmp)
 	{
-		free(eof);//?
+		free(eof);
 		return (NULL);
 	}
 	set_signals_on(HEREDOC_MODE);
 	fd = open(tmp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		free(eof); //?
+		free(eof);
 		return (NULL);
 	}
 	ret = readline_heredoc(fd, eof);

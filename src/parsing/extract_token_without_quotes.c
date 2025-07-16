@@ -10,10 +10,7 @@ char	*extract_token_without_quotes(char *str, t_parsing *parsing)
 	j = 0;
 	res = malloc(ft_strlen(str) + 1);
 	if (!res)
-	{
-		parsing->errcode = ERR_MALLOC;
-		return (NULL);
-	}
+		return (parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
 	while (str[i])
 	{
 		quote_check(str[i], parsing);

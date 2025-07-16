@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	errcode_check_in_parsing(t_parsing *parsing)
+static void	errcode_check_parsing(t_parsing *parsing)
 {
 	if (parsing->errcode == ERR_MALLOC)
 	{
@@ -22,5 +22,5 @@ void	ft_parsing(t_data *data, t_parsing *parsing)
 		expand_var(parsing);
 	if (parsing->errcode == ALL_OK)
 		tokenisation(data, parsing);
-	errcode_check_in_parsing(parsing);
+	errcode_check_parsing(parsing);
 }
