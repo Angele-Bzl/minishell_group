@@ -16,16 +16,20 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 		return (msg_return(MALLOC, NULL, ERR));
 	path_cmd = find_cmd(env, current->cmd[0], &data->exit_status);
 	if (!path_cmd)
-		// return (msg_return(NO_FILE, current->cmd[0], ERR));
+	{
+		free_array(env);
 		return (ERR);
+		// return (msg_return(NO_FILE, current->cmd[0], ERR));
+	}
 	else if (access(path_cmd, X_OK) == -1)
 	{
+		free_array(env);
 		data->exit_status = ERROR_PERMISSION;
 		return (perror_return(path_cmd, ERR));
 	}
-	if (execve(path_cmd, current->cmd, env) == -1)
-		return (msg_return(ERR_EXECVE, NULL, ERR));
-	return (OK);
+	execve(path_cmd, current->cmd, env);
+	free_array(env);
+	return (msg_return(ERR_EXECVE, NULL, ERR));
 }
 
 int	get_input(t_file *ls_infile, int previous_output)

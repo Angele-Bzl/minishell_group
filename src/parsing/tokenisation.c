@@ -7,6 +7,7 @@ static int	find_store_rafters(t_data *data, t_parsing *parsing, char *prompt)
 	i = 0;
 	while (prompt[i])
 	{
+		// printf("prompt[%d] = %c\n", i, prompt[i]);
 		while (prompt[i] && prompt[i] != '<' && prompt[i] != '>')
 		{
 			quote_check(prompt[i], parsing);

@@ -84,10 +84,8 @@ char	**pipe_segmentation(t_parsing *parsing)
 {
 	int		pipe_seg;
 	char	**array;
-	char	*prompt;
 
-	prompt = parsing->prompt;
-	pipe_seg = ft_countpipe(prompt, parsing);
+	pipe_seg = ft_countpipe(parsing->prompt, parsing);
 	if (pipe_seg == -1)
 		return (NULL);
 	array = malloc(sizeof(char *) * (pipe_seg + 2));
@@ -96,7 +94,7 @@ char	**pipe_segmentation(t_parsing *parsing)
 		parsing->errcode = ERR_MALLOC;
 		return (NULL);
 	}
-	if (fill_pipe_segments(array, prompt, parsing) == -1)
+	if (fill_pipe_segments(array, parsing->prompt, parsing) == -1)
 		return (NULL);
 	return (array);
 }
