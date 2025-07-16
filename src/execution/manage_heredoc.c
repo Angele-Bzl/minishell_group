@@ -64,13 +64,14 @@ static char	*generate_name_tmp()
 
 	tmp = ft_strdup(".AAAAAAAAAA.tmp");
 	if (!tmp)
-		return (NULL);
+		return (msg_return_str(MALLOC, NULL, NULL));
 	while (1)
 	{
 		if (!access(tmp, F_OK))
 		{
 			i = 10;
-			change_tmp_name(tmp, i);
+			if (change_tmp_name(tmp, i) == ERR)
+				return (msg_return_str(HEREDOC_NAME, NULL, NULL));
 		}
 		else
 			return (tmp);
