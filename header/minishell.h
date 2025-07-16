@@ -84,6 +84,15 @@ typedef enum e_err_exec
 	HEREDOC_INTERRUPTED = -3,
 }	t_err_exec;
 
+typedef enum e_exit_status
+{
+	EXIT_OK,
+	EXIT_PROMPT = 1,
+	EXIT_SYSTEM = 2,
+	EXIT_CMD_NO_PERMISSION = 126,
+	EXIT_CMD_NOT_FOUND = 127,
+}	t_exit_status;
+
 /////////////////////////////////////// structures
 
 typedef struct s_env
@@ -137,7 +146,7 @@ typedef struct s_parsing
 void	test_signal(void);
 /*EXEC*/
 /*execution.c*/
-int		execution(t_data *data);
+void		execution(t_data *data);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd, int *exit_status);
 /*itils_cmd.c*/
@@ -148,7 +157,7 @@ char	*ft_strtrim_improved(char *s1, char const *set);
 size_t	tablen(char **table);
 int		wait_for_pid(t_token *token, pid_t *pid);
 char	**get_env_in_tab(t_env *node_env);
-int		exec_single_builtin(t_data *data);
+void	exec_single_builtin(t_data *data);
 size_t	count_cmds(t_token *token);
 /*clean.c*/
 void	close_free_token_env_pids(t_data *data, int fd0, int fd1, pid_t *pids);
@@ -237,7 +246,7 @@ void	msg_exit(char *message, char *arg, int exit_value);
 int		msg_return(char *message, char *arg, int return_value);
 char	*msg_return_str(char *message, char *arg, char *return_value);
 int		perror_return(char *message, int return_value);
-int		end_single_cmd(t_data *data, int *io_fd, int *save, int return_val);
+void	end_single_cmd(t_data *data, int *io_fd, int *save, int return_val);
 /*cutstr.c*/
 char	*ft_cutstr(char const *s, unsigned int start);
 /*debug_print.c*/

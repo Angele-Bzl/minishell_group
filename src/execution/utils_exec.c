@@ -49,7 +49,7 @@ int	wait_for_pid(t_token *token, pid_t *pid)
 
 	i = 0;
 	status = 0;
-	exit_status = 0;
+	exit_status = EXIT_OK;
 	current = token;
 	while (current)
 	{
