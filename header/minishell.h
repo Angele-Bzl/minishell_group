@@ -80,7 +80,7 @@ typedef enum e_err_exec
 	NO_ERROR,
 	ERROR_PROMPT = -1,
 	ERROR_SYSTEM = -2,
-	ERROR_PERMISSION = -126,
+	ERROR_PERMISSION = -126, //not used
 	HEREDOC_INTERRUPTED = -3,
 }	t_err_exec;
 
@@ -148,7 +148,7 @@ void	test_signal(void);
 /*execution.c*/
 void		execution(t_data *data);
 /*command.c*/
-char	*find_cmd(char **env, char *cmd, int *exit_status, t_data *data);
+char	*find_cmd(char **env, char *cmd, t_data *data);
 /*itils_cmd.c*/
 size_t	find_path_in_env(char **env);
 void	fill_tab_null(char **table, size_t len);

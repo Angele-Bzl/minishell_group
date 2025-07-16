@@ -83,7 +83,10 @@ static int	is_special_cmd(char *cmd, char **path_cmd, t_data *data)
 	if (ft_strchr(cmd, '/'))
 	{
 		if (stat(cmd, &buf) == -1)
+		{
+			data->exit_status = EXIT_CMD_NOT_FOUND;
 			return (perror_return(cmd, OK));
+		}
 		else
 		{
 			if (S_ISDIR(buf.st_mode))
@@ -98,7 +101,7 @@ static int	is_special_cmd(char *cmd, char **path_cmd, t_data *data)
 	return (1);
 }
 
-char	*find_cmd(char **env, char *cmd, int *exit_status, t_data *data)
+char	*find_cmd(char **env, char *cmd, t_data *data)
 {
 	char	**env_path;
 	char	**hypothetical_path_cmd;
@@ -124,7 +127,7 @@ char	*find_cmd(char **env, char *cmd, int *exit_status, t_data *data)
 	free_array(env_path);
 	if (!path_cmd || !cmd[0])
 	{
-		*exit_status = 127;
+		data->exit_status = EXIT_CMD_NOT_FOUND;
 		return (msg_return_str(NO_CMD, cmd, NULL));
 	}
 	return (path_cmd);
