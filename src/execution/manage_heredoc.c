@@ -33,8 +33,7 @@ static int	readline_heredoc(int fd, char *eof)
 			return (msg_return(HDOC_EXPECT_EOF, eof, 0));
 		if (!ft_strncmp(input, eof, ft_strlen(eof)))
 			break ;
-		write(fd, input, ft_strlen(input));
-		write(fd, "\n", 1);
+		ft_putendl_fd(input, fd);
 		free(input);
 		input = NULL;
 	}
