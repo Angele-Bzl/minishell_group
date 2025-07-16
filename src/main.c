@@ -10,7 +10,7 @@ int	main(int ac, char **av, char **env)
 		return (EXIT_FAILURE);
 	if (env_init(env, &data) == ERR)
 		msg_exit(MALLOC, NULL, EXIT_FAILURE);
-	data.exit_status = 0;
+	data.exit_status = OK;
 	while (1)
 	{
 		if (struct_init(&data, &parsing) == ERR)

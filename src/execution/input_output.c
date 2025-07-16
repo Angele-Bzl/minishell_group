@@ -19,7 +19,6 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 	{
 		free_array(env);
 		return (ERR);
-		// return (msg_return(NO_FILE, current->cmd[0], ERR));
 	}
 	else if (access(path_cmd, X_OK) == -1)
 	{
