@@ -25,7 +25,7 @@ static int	get_input_single_cmd(t_file *ls_infile, int *save_std_io, int *exit_s
 			if (input == -1)
 			{
 				*exit_status = ERROR_PROMPT;
-				return (perror_return(ls_infile->value, ERR));
+				return (perror_return(current->value, ERR));
 			}
 			if (current->next)
 				close(input);
@@ -59,7 +59,7 @@ static int	get_output_single_cmd(t_file *ls_outfile, int *save_std_io, int *exit
 			if (output == -1)
 			{
 				*exit_status = ERROR_PROMPT;
-				return (perror_return(ls_outfile->value, ERR));
+				return (perror_return(curr->value, ERR));
 			}
 			if (curr->next)
 				close(output);
