@@ -8,14 +8,27 @@ static int	find_store_rafters(t_data *data, t_parsing *parsing, char *prompt)
 	while (prompt[i])
 	{
 		while (prompt[i] && prompt[i] != '<' && prompt[i] != '>')
-			i++;
-		if (prompt[i] == '<' || prompt[i] == '>')
 		{
-			if (manage_rafters(data, &i, prompt, parsing) == -1)
+			quote_check(prompt[i], parsing);
+			i++;
+		}
+		if ((prompt[i] == '<' || prompt[i] == '>')
+			&& parsing->double_quote == false
+			&& parsing->simple_quote == false)
+		{
+			if (manage_rafter(data, &i, prompt, parsing) == -1)
 				return (-1);
 			while (ft_isspace(prompt[i])
 				|| prompt[i] == '<' || prompt[i] == '>')
+			{
+				quote_check(prompt[i], parsing);
 				i++;
+			}
+		}
+		else
+		{
+			quote_check(prompt[i], parsing);
+			i++;
 		}
 	}
 	return (0);

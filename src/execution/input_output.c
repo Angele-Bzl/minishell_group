@@ -84,7 +84,7 @@ int	get_output(t_file *ls_outfile, int pipe_output, int count_cmd)
 			if (curr->redirection == DOUBLE_RIGHT)
 				output = open(curr->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (output == -1)
-				return (perror_return(curr->value, ERROR_PERMISSION));
+				return (perror_return(curr->value, ERROR_PROMPT));
 			if (curr->next)
 				close(output);
 			curr = curr->next;

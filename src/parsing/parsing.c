@@ -15,7 +15,7 @@ static void	errcode_check_in_parsing(t_parsing *parsing)
 
 void	ft_parsing(t_data *data, t_parsing *parsing)
 {
-	parsing->errcode = prompt_check(parsing->prompt, parsing);
+	parsing->errcode = prompt_check(parsing->prompt, parsing, data);
 	if (parsing->errcode == ALL_OK)
 		parsing->prompt_tab = pipe_segmentation(parsing);
 	if (parsing->errcode == ALL_OK)

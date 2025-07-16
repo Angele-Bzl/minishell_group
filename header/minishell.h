@@ -78,10 +78,10 @@ typedef enum e_rafter
 typedef enum e_err_exec
 {
 	NO_ERROR,
-	ERROR_PROMPT,
-	ERROR_SYSTEM,
-	ERROR_PERMISSION = 126,
-	HEREDOC_INTERRUPTED = -2,
+	ERROR_PROMPT = -1,
+	ERROR_SYSTEM = -2,
+	ERROR_PERMISSION = -126,
+	HEREDOC_INTERRUPTED = -3,
 }	t_err_exec;
 
 /////////////////////////////////////// structures
@@ -219,11 +219,11 @@ void	ft_parsing(t_data *data, t_parsing *parsing);
 /*pip_segmentation.c*/
 char	**pipe_segmentation(t_parsing *parsing);
 /*prompt_check.c*/
-int		prompt_check(char *prompt, t_parsing *parsing);
+int		prompt_check(char *prompt, t_parsing *parsing, t_data *data);
 /*rafter_token_utils.c*/
 char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing);
 /*rafter_token.c*/
-int		manage_rafters(t_data *data, int *i, char *prompt, t_parsing *parsing);
+int		manage_rafter(t_data *data, int *i, char *prompt, t_parsing *parsing);
 /*skip_quote.c*/
 int		skip_quote(const char *str, int *i);
 /*split_whitespace_quote.c*/

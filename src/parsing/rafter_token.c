@@ -41,7 +41,7 @@ static int	check_rafter(t_data *data, char *file_name, char *prompt, int i)
 	return (0);
 }
 
-int	manage_rafters(t_data *data, int *i, char *prompt, t_parsing *parsing)
+int	manage_rafter(t_data *data, int *i, char *prompt, t_parsing *parsing)
 {
 	char	*file_name;
 
