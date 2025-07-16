@@ -22,7 +22,6 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 		data->exit_status = ERROR_PERMISSION;
 		return (perror_return(path_cmd, ERR));
 	}
-	printf("path_cmd : %s\n", path_cmd);
 	if (execve(path_cmd, current->cmd, env) == -1)
 		return (msg_return(ERR_EXECVE, NULL, ERR));
 	return (OK);
