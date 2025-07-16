@@ -16,7 +16,8 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 		return (msg_return(MALLOC, NULL, ERR));
 	path_cmd = find_cmd(env, current->cmd[0], &data->exit_status);
 	if (!path_cmd)
-		return (msg_return(NO_FILE, current->cmd[0], ERR));
+		// return (msg_return(NO_FILE, current->cmd[0], ERR));
+		return (ERR);
 	else if (access(path_cmd, X_OK) == -1)
 	{
 		data->exit_status = ERROR_PERMISSION;
