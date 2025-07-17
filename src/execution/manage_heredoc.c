@@ -3,7 +3,7 @@
 #include <fcntl.h>
 #include <signal.h>
 
-volatile sig_atomic_t	g_sigint = 0;
+volatile sig_atomic_t	g_sigint;
 
 void	heredoc_handler(int signal)
 {
@@ -76,34 +76,6 @@ static char	*generate_name_tmp()
 			return (tmp);
 	}
 }
-
-// int	here_doc(char *eof)
-// {
-// 	int	fd;
-// 	int	ret;
-// 	char	*tmp;
-
-// 	tmp = generate_name_tmp();
-// 	if (!tmp)
-// 		return (ERR);
-// 	set_signals_on(HEREDOC_MODE);
-// 	fd = open(tmp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-// 	if (fd == -1)
-// 		return (ERR);
-// 	ret = readline_heredoc(fd, eof);
-// 	close (fd);
-// 	if (ret == HEREDOC_INTERRUPTED)
-// 	{
-// 		unlink(tmp);
-// 		return (HEREDOC_INTERRUPTED);
-// 	}
-// 	// fd = open(tmp, O_RDONLY);
-// 	// if (fd == -1)
-// 	// 	return (ERR);
-// 	// unlink(tmp);
-// 	return (fd);
-// }
-
 
 char	*here_doc(char *eof)
 {

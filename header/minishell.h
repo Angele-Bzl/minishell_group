@@ -10,7 +10,6 @@
 // # include <dirent.h> //*dir
 
 // includes repartis dans les fichiers
-// # include <signal.h> //signals.c / utils_exec.c / children.c / manage_heredoc.c //signal, kill
 // # include <stdio.h> //printf, readline, perror
 // # include <readline/readline.h> //readline, rl_*
 // # include <readline/history.h> //readline, rl_*
@@ -48,6 +47,9 @@
 # define HEREDOC_NAME "Error: please free a file name between .AAAAAAAAAA.tpm and .ZZZZZZZZZZ.tmp to open an heredoc\n"
 
 # define IS_BUILTIN 42
+
+// # include <signal.h> //signals.c / utils_exec.c / children.c / manage_heredoc.c //signal, kill
+// extern volatile sig_atomic_t	g_sigint;
 
 /////////////////////////////////////////// enum
 
@@ -146,7 +148,7 @@ typedef struct s_parsing
 void	test_signal(void);
 /*EXEC*/
 /*execution.c*/
-void		execution(t_data *data);
+void	execution(t_data *data);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd, t_data *data);
 /*itils_cmd.c*/
