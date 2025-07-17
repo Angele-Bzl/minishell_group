@@ -89,12 +89,12 @@ void	exec_single_builtin(t_data *data)
 	io_fd[1] = get_output_single_cmd(data->ls_token->ls_outfile, save_std_io, &data->exit_status);
 	if (io_fd[1] == ERR)
 		return (end_single_cmd(data, io_fd, save_std_io, data->exit_status));
+	data->exit_status = EXIT_OK; //reset here ?
 	redirect_and_exec(data->ls_token, io_fd, data, save_std_io);
 	if (data->exit_status != EXIT_OK)
 		return (end_single_cmd(data, io_fd, save_std_io, data->exit_status));
 	if (reset_dup2(save_std_io) == ERR)
 		return (end_single_cmd(data, io_fd, save_std_io, ERROR_SYSTEM));
 	close_all(io_fd[0], io_fd[1]);
-	// return (OK);
 	return ;
 }
