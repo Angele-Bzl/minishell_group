@@ -80,4 +80,6 @@ void	expand_var(t_parsing *par)
 			par->pipe_seg++;
 		par->p_index = 0;
 	}
+	par->double_quote = false;
+	par->simple_quote = false;
 }
