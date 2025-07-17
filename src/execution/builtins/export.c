@@ -61,7 +61,7 @@ static int	var_update(t_env *current, char *cmd)
 	return (1);
 }
 
-int	exec_export(t_env *ls_env, char **cmds)
+int	exec_export(t_env *ls_env, char **cmds, t_data *data)
 {
 	int		i;
 	t_env	*current;
@@ -84,6 +84,8 @@ int	exec_export(t_env *ls_env, char **cmds)
 			else if (!var_new(ls_env, cmds[i]))
 				return (ERROR_SYSTEM);
 		}
+		else
+			data->exit_status = EXIT_PROMPT;
 		i++;
 	}
 	return (OK);

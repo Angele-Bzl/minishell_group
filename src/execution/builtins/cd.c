@@ -101,15 +101,19 @@ static int	update_oldpwd(t_env *ls_env)
 	return (1);
 }
 
-int	exec_cd(char **cmd, t_env *list_env)
+int	exec_cd(char **cmd, t_env *list_env, t_data *data)
 {
 	if (!cmd[1])
 		return (OK);
 	if (cmd[2])
-		return (msg_return("Error: too many arguments", NULL, ERROR_PROMPT));
+	{
+		data->exit_status = EXIT_PROMPT;
+		return (msg_return(TOO_MANY_ARG, NULL, ERROR_PROMPT));
+	}
 	if (chdir(cmd[1]) == -1)
 	{
-		perror("Error chdir");
+		data->exit_status = EXIT_PROMPT;
+		perror(cmd[1]);
 		return (ERROR_PROMPT);
 	}
 	if (!update_oldpwd(list_env))
