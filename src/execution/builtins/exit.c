@@ -68,6 +68,7 @@ int	exec_exit(t_data *data, t_token *cmds, int *save_std_io)
 
 	if (cmds->cmd[0] && cmds->cmd[1] && cmds->cmd[2])
 	{
+		data->exit_status = EXIT_PROMPT;
 		ft_putendl_fd("Error exit: too many arguments", STDERR_FILENO);
 		return (0);
 	}

@@ -112,7 +112,8 @@ int	exec_cd(char **cmd, t_env *list_env, t_data *data)
 	}
 	if (chdir(cmd[1]) == -1)
 	{
-		perror("Error chdir");
+		data->exit_status = EXIT_PROMPT;
+		perror(cmd[1]);
 		return (ERROR_PROMPT);
 	}
 	if (!update_oldpwd(list_env))
