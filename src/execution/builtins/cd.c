@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static t_env	*create_var_pwd(char *variable)
+static t_env	*create_var_pwd(char *variable, t_env *ls_env)
 {
 	char	*pwd;
 	t_env	*new_node;
@@ -12,6 +12,11 @@ static t_env	*create_var_pwd(char *variable)
 		return (NULL);
 	}
 	pwd = getcwd(NULL, 0);
+	if (!pwd)
+	{
+		msg_return(MALLOC, NULL, 0);
+		return (NULL);
+	}
 	new_node->line = ft_strjoin(variable, pwd);
 	free(pwd);
 	if (!new_node->line)
@@ -20,15 +25,17 @@ static t_env	*create_var_pwd(char *variable)
 		ft_putendl_fd("Error: update_pwd failed", STDERR_FILENO);
 		return (NULL);
 	}
+	new_node->next = NULL;
+	ft_lstadd_back((t_list **)&ls_env, (t_list *)new_node);
 	return (new_node);
 }
 
-static int	update_pwd(t_env *list_env, int var_length)
+static int	update_pwd(t_env *ls_env, int var_length)
 {
 	t_env	*current;
 	char	*pwd;
 
-	current = list_env;
+	current = ls_env;
 	while (current)
 	{
 		if (!ft_strncmp(current->line, "PWD=", var_length))
@@ -46,8 +53,6 @@ static int	update_pwd(t_env *list_env, int var_length)
 		current = current->next;
 	}
 	if (!current)
-		current = create_var_pwd("PWD=");
-	if (!current)
 		return (0);
 	return (1);
 }
@@ -63,7 +68,7 @@ static char	*get_var_pwd(t_env *current, t_env *ls_env)
 		{
 			pwd = ft_strdup(current->line + 4);
 			if (!pwd)
-				return (NULL);
+				return (msg_return_str(MALLOC, NULL, NULL));
 			break ;
 		}
 		current = current->next;
@@ -80,14 +85,15 @@ static int	update_oldpwd(t_env *ls_env)
 	current = ls_env;
 	pwd = get_var_pwd(current, ls_env);
 	if (!pwd)
-		return (msg_return(ERR_OLDPWD, NULL, 0));
+		create_var_pwd("PWD=", ls_env);
 	while (current)
 	{
 		if (!ft_strncmp(current->line, "OLDPWD=", 7))
 		{
 			free(current->line);
 			current->line = ft_strjoin("OLDPWD=", pwd);
-			free(pwd);
+			if (pwd)
+				free(pwd);
 			if (!current->line)
 				return (msg_return(ERR_OLDPWD, NULL, 0));
 			break ;
@@ -95,7 +101,7 @@ static int	update_oldpwd(t_env *ls_env)
 		current = current->next;
 	}
 	if (!current)
-		current = create_var_pwd("OLDPWD=");
+		current = create_var_pwd("OLDPWD=", ls_env);
 	if (!current)
 		return (0);
 	return (1);

@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <signal.h>
 
 int	cmd_is_builtin(char *path_cmd)
 {
@@ -23,6 +24,7 @@ int	cmd_is_builtin(char *path_cmd)
 
 int	exec_homemade_builtin(t_data *data, t_token *current, int *save_std_io)
 {
+	signal(SIGPIPE, SIG_IGN);
 	if (!ft_strncmp(current->cmd[0], "echo\0", 5))
 		exec_echo(current->cmd);
 	if (!ft_strncmp(current->cmd[0], "cd\0", 3))

@@ -113,7 +113,7 @@ char	*find_cmd(char **env, char *cmd, t_data *data)
 		return (path_cmd);
 	i = find_path_in_env(env);
 	if (i == ERR)
-		return (msg_return_str(NO_FILE, NULL, NULL));
+		return (msg_return_str(NO_FILE, cmd, NULL));
 	env_path = ft_split(env[i], ':');
 	if (!env_path)
 		return (msg_return_str(MALLOC, NULL, NULL));
