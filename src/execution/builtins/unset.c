@@ -3,6 +3,7 @@
 static void	update_ls_env_head(t_env **ls_env, t_env **current)
 {
 	*ls_env = (*current)->next;
+	free((*current)->line);
 	free(*current);
 	*current = *ls_env;
 }
@@ -14,6 +15,7 @@ static void	update_pointers(t_env *previous, t_env **ls_env, t_env *current)
 	else
 	{
 		previous->next = current->next;
+		free(current->line);
 		free(current);
 	}
 }

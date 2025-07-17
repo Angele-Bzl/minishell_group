@@ -21,7 +21,7 @@ static int	exit_no_arg(t_data *data)
 {
 	free_token(data->ls_token);
 	free_env(data->ls_env);
-	exit(OK);
+	exit(data->exit_status); //ca marche pas
 }
 
 static long long	check_valid_arg(char *arg)

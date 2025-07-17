@@ -12,6 +12,7 @@ int	handle_exit_status_var(t_parsing *par)
 		return (1);
 	}
 	par->prompt_tab[par->pipe_seg] = update_prompt(content, par->p_index, par);
+	free(content);
 	return (0);
 }
 

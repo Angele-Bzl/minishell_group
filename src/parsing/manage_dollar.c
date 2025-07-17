@@ -49,6 +49,7 @@ char	*update_prompt(char *content, int start, t_parsing *parsing)
 	while (parsing->old_prompt[i])
 		new_prompt[j++] = parsing->old_prompt[i++];
 	new_prompt[j] = '\0';
+	free(parsing->prompt_tab[parsing->pipe_seg]);
 	return (new_prompt);
 }
 
