@@ -19,7 +19,7 @@ int	main(int ac, char **av, char **env)
 		parsing.prompt = readline("minishell> ");
 		set_signals_on(EXEC_MODE);
 		if (!parsing.prompt)
-			process_empty_prompt(&parsing);
+			process_empty_prompt(&parsing, &data);
 		if (parsing.prompt && parsing.prompt[0])
 			parse_and_execute(&parsing, &data);
 		if (parsing.prompt)

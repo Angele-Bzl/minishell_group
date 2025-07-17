@@ -269,7 +269,7 @@ int		ft_isspace(char c);
 /*main_utils.c*/
 int		check_minishell_launch(int ac, char **av);
 void	parse_and_execute(t_parsing *parsing, t_data *data);
-void	process_empty_prompt(t_parsing *parsing);
+void	process_empty_prompt(t_parsing *parsing, t_data *data);
 int		takes_a_value(void);
 
 /*MAIN*/
