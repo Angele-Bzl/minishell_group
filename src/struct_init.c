@@ -1,13 +1,14 @@
 #include "minishell.h"
 
-static int	manage_no_env(t_env **current)
+static int	manage_no_env(t_env **current, t_data *data)
 {
 	t_env	*new_node;
 	char	*pwd;
+	char	**cmds;
 
 	new_node = malloc(sizeof (t_env));
 	if (!new_node)
-		return (0);
+	return (0);
 	pwd = ft_strdup("PWD=");
 	if (!pwd)
 	{
@@ -23,6 +24,11 @@ static int	manage_no_env(t_env **current)
 	}
 	new_node->next = NULL;
 	ft_lstadd_back((t_list **)current, (t_list *)new_node);
+	cmds = ft_split("export OLDPWD=(null)", ' ');
+	if (!cmds)
+		return (msg_return(MALLOC, NULL, ERR));
+	exec_export(*current, cmds, data);
+	free_array(cmds);
 	return (1);
 }
 
@@ -34,7 +40,7 @@ int	env_init(char **env, t_data *data)
 	data->ls_env = NULL;
 	i = 0;
 	if (!env || !env[0])
-		return (manage_no_env(&data->ls_env));
+		return (manage_no_env(&data->ls_env, data));
 	while (env[i])
 	{
 		new_node = malloc(sizeof(t_env));
