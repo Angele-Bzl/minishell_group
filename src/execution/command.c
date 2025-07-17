@@ -127,6 +127,8 @@ char	*find_cmd(char **env, char *cmd, t_data *data)
 	free_array(env_path);
 	if (!path_cmd || !cmd[0])
 	{
+		if (path_cmd)
+			free(path_cmd);
 		data->exit_status = EXIT_CMD_NOT_FOUND;
 		return (msg_return_str(NO_CMD, cmd, NULL));
 	}
