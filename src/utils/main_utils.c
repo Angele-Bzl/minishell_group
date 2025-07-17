@@ -28,6 +28,7 @@ void	parse_and_execute(t_parsing *parsing, t_data *data)
 {
 	add_history(parsing->prompt);
 	ft_parsing(data, parsing);
+	print_tokens(data);
 	if (parsing->errcode == OK)
 		execution(data);
 }
