@@ -13,14 +13,14 @@ static int	manage_no_env(t_env **current, t_data *data)
 	if (!pwd)
 	{
 		free(new_node);
-		return (0);
+		return (msg_return(MALLOC, NULL, 0));
 	}
 	new_node->line = ft_strjoin(pwd, getcwd(NULL, 0));
 	if (!new_node->line)
 	{
 		free(pwd);
 		free(new_node);
-		return (0);
+		return (msg_return(MALLOC, NULL, 0));
 	}
 	new_node->next = NULL;
 	ft_lstadd_back((t_list **)current, (t_list *)new_node);
