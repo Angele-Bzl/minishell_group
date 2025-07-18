@@ -30,7 +30,7 @@ static int	readline_heredoc(int fd, char *eof)
 			return (HEREDOC_INTERRUPTED);
 		}
 		if (!input)
-			return (msg_return(HDOC_EXPECT_EOF, eof, 0));
+			return (msg_return(HDOC_EXPECT_EOF, eof, OK));
 		if (!ft_strncmp(input, eof, ft_strlen(eof)))
 			break ;
 		ft_putendl_fd(input, fd);
@@ -39,7 +39,7 @@ static int	readline_heredoc(int fd, char *eof)
 	}
 	free(input);
 	input = NULL;
-	return (0);
+	return (OK);
 }
 
 static int	change_tmp_name(char *tmp, int i)
@@ -77,7 +77,7 @@ static char	*generate_name_tmp()
 	}
 }
 
-char	*here_doc(char *eof)
+char	*here_doc(char *eof, t_parsing *parsing)
 {
 	int	fd;
 	int	ret;
@@ -101,7 +101,9 @@ char	*here_doc(char *eof)
 	close (fd);
 	if (ret == HEREDOC_INTERRUPTED)
 	{
+		parsing->errcode = ERR_PROMPT;
 		unlink(tmp);
+		free(tmp);
 		return (NULL);
 	}
 	return (tmp);

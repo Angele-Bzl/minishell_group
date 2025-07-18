@@ -4,6 +4,7 @@ static void	errcode_check_parsing(t_parsing *parsing)
 {
 	if (parsing->errcode == ERR_MALLOC)
 	{
+		free_token_env(parsing->data);
 		free_parsing(parsing);
 		exit(EXIT_FAILURE);
 	}
