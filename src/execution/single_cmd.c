@@ -96,5 +96,6 @@ void	exec_single_builtin(t_data *data)
 	if (reset_dup2(save_std_io) == ERR)
 		return (end_single_cmd(data, io_fd, save_std_io, ERROR_SYSTEM));
 	close_all(io_fd[0], io_fd[1]);
+	// data->exit_status = EXIT_OK;
 	return ;
 }

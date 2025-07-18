@@ -21,7 +21,7 @@ static int	exit_no_arg(t_data *data)
 {
 	free_token(data->ls_token);
 	free_env(data->ls_env);
-	exit(data->exit_status); //ca marche pas
+	exit(data->exit_status);
 }
 
 static long long	check_valid_arg(char *arg)
@@ -70,7 +70,7 @@ int	exec_exit(t_data *data, t_token *cmds, int *save_std_io)
 	{
 		data->exit_status = EXIT_PROMPT;
 		ft_putendl_fd("Error exit: too many arguments", STDERR_FILENO);
-		return (0);
+		return (ERR);
 	}
 	printf("exit\n");
 	if (save_std_io)
@@ -79,9 +79,7 @@ int	exec_exit(t_data *data, t_token *cmds, int *save_std_io)
 		exit_no_arg(data);
 	exit_code = check_valid_arg(cmds->cmd[1]);
 	if (exit_code == -1)
-	{
-		return (0);
-	}
+		return (ERR);
 	exit_arg(data, exit_code);
-	return (1);
+	return (OK);
 }

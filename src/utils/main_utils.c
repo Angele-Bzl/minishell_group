@@ -55,6 +55,7 @@ void	parse_and_execute(t_parsing *parsing, t_data *data)
 	ft_parsing(data, parsing);
 	if (tester_is_mean(data))
 		return ;
+	// print_tokens(data);
 	if (parsing->errcode == OK)
 		execution(data);
 }

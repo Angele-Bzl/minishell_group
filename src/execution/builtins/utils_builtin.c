@@ -38,7 +38,8 @@ int	exec_homemade_builtin(t_data *data, t_token *current, int *save_std_io)
 	if (!ft_strncmp(current->cmd[0], "env\0", 4))
 		exec_env(data->ls_env);
 	if (!ft_strncmp(current->cmd[0], "exit\0", 5))
-		exec_exit(data, current, save_std_io);
+		return (exec_exit(data, current, save_std_io));
+	data->exit_status = EXIT_OK;
 	return (OK);
 }
 
