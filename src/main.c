@@ -2,6 +2,8 @@
 #include <readline/readline.h>
 #include <signal.h>
 
+sig_atomic_t	g_sigreceived;
+
 int	main(int ac, char **av, char **env)
 {
 	t_data		data;
@@ -11,6 +13,7 @@ int	main(int ac, char **av, char **env)
 		return (EXIT_FAILURE);
 	if (env_init(env, &data) == ERR)
 		msg_exit(MALLOC, NULL, EXIT_FAILURE);
+	g_sigreceived = 0;
 	data.exit_status = OK;
 	while (1)
 	{
@@ -18,6 +21,11 @@ int	main(int ac, char **av, char **env)
 			return (EXIT_FAILURE);
 		set_signals_on(PROMPT_MODE);
 		parsing.prompt = readline("minishell> ");
+		if (g_sigreceived == 1)
+		{
+			data.exit_status = 130;
+			g_sigreceived = 0;
+		}
 		set_signals_on(EXEC_MODE);
 		if (!parsing.prompt)
 			process_empty_prompt(&parsing, &data);

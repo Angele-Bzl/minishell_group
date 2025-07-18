@@ -3,13 +3,13 @@
 #include <fcntl.h>
 #include <signal.h>
 
-volatile sig_atomic_t	g_sigint;
+// volatile sig_atomic_t	g_sigint;
 
 void	heredoc_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		g_sigint = 1;
+		g_sigreceived = 1;
 		rl_done = 1;
 	}
 }
@@ -23,9 +23,9 @@ static int	readline_heredoc(int fd, char *eof)
 	{
 		rl_event_hook = takes_a_value;
 		input = readline("> ");
-		if (g_sigint)
+		if (g_sigreceived)
 		{
-			g_sigint = 0;
+			g_sigreceived = 0;
 			free(input);
 			return (HEREDOC_INTERRUPTED);
 		}

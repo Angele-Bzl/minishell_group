@@ -28,6 +28,7 @@ static void	prompt_handler(int signal)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	g_sigreceived = 1;
 }
 
 void	set_signals_on(t_mode mode)

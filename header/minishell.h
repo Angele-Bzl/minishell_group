@@ -48,8 +48,8 @@
 
 # define IS_BUILTIN 42
 
-// # include <signal.h> //signals.c / utils_exec.c / children.c / manage_heredoc.c //signal, kill
-// extern volatile sig_atomic_t	g_sigint;
+# include <signal.h> //signals.c / utils_exec.c / children.c / manage_heredoc.c //signal, kill
+extern sig_atomic_t	g_sigreceived;
 
 /////////////////////////////////////////// enum
 
