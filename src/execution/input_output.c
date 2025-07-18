@@ -11,7 +11,7 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 	close_all(io_fd[0], io_fd[1]);
 	if (cmd_is_builtin(current->cmd[0]))
 		return (exec_homemade_builtin(data, current, save_std));
-	data->exit_status = EXIT_OK; // ici ?
+	data->exit_status = EXIT_OK;
 	env = get_env_in_tab(data->ls_env);
 	if (!env)
 		return (msg_return(MALLOC, NULL, ERR));

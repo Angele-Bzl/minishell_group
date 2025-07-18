@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	exec_pwd(void)
+void	exec_pwd(void)
 {
 	char	*pwd;
 
@@ -8,9 +8,11 @@ int	exec_pwd(void)
 	if (!pwd)
 	{
 		ft_putendl_fd("Error: pwd", STDERR_FILENO);
-		return (0);
+		// return (ERROR_SYSTEM);
+		return ;
 	}
 	printf("%s\n", pwd);
 	free(pwd);
-	return (1);
+	// return (OK);
+	return ;
 }

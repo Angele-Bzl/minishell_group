@@ -178,7 +178,7 @@ char	*here_doc(char *eof, t_parsing *parsing);
 /*BUILTINS*/
 void	exec_echo(char **cmd);
 int		exec_export(t_env *ls_env, char **cmds, t_data *data);
-int		exec_pwd(void);
+void	exec_pwd(void);
 void	exec_env(t_env *ls_env);
 void	exec_env_export(t_env *ls_env);
 void	exec_unset(t_env **ls_env, char **cmds);
