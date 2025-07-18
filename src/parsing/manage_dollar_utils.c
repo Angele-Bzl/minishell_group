@@ -66,7 +66,7 @@ int	find_var_end(char *prompt, int p_index)
 		return (end);
 	}
 	if (prompt[end] == '?')
-		end++;
+		return (end);
 	while (in_var_name(NULL, prompt[end]))
 		end++;
 	return (end);
