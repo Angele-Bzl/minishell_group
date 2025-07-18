@@ -5,7 +5,11 @@ int	parsing_error_int(t_parsing *parsing, int errcode ,int	exit_status, int retu
 	if (exit_status)
 		parsing->data->exit_status = exit_status;
 	if (errcode)
+	{
+		if (errcode == ERR_MALLOC)
+			printf(MALLOC);
 		parsing->errcode = errcode;
+	}
 	return (return_value);
 }
 
@@ -14,7 +18,11 @@ char	*parsing_error_char(t_parsing *parsing, int errcode ,int	exit_status, char 
 	if (exit_status)
 		parsing->data->exit_status = exit_status;
 	if (errcode)
+	{
+		if (errcode == ERR_MALLOC)
+			printf(MALLOC);
 		parsing->errcode = errcode;
+	}
 	return (return_value);
 }
 
@@ -23,6 +31,10 @@ void	parsing_error_void(t_parsing *parsing, int errcode ,int	exit_status)
 	if (exit_status)
 		parsing->data->exit_status = exit_status;
 	if (errcode)
+	{
+		if (errcode == ERR_MALLOC)
+			printf(MALLOC);
 		parsing->errcode = errcode;
+	}
 	return ;
 }
