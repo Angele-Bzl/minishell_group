@@ -21,7 +21,6 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 		free_array(env);
 		return (ERR);
 	}
-
 	else if (access(path_cmd, X_OK) == -1)
 	{
 		free_array(env);
@@ -44,13 +43,7 @@ int	get_input(t_file *ls_infile, int previous_output)
 		current = ls_infile;
 		while (current)
 		{
-			// if (current->redirection == SIMPLE_LEFT)
 			input = open(current->value, O_RDONLY);
-			// {
-				// 	input = here_doc(current->value);
-				// 	if (input == HEREDOC_INTERRUPTED)
-				// 		return (HEREDOC_INTERRUPTED);
-				// }
 			if (input == -1)
 				return (perror_return(current->value, ERR));
 			if (current->redirection == DOUBLE_LEFT)

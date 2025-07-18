@@ -56,7 +56,7 @@ static int	change_tmp_name(char *tmp, int i)
 	return (OK);
 }
 
-static char	*generate_name_tmp()
+static char	*generate_name_tmp(void)
 {
 	char	*tmp;
 	int		i;
@@ -79,8 +79,8 @@ static char	*generate_name_tmp()
 
 char	*here_doc(char *eof, t_parsing *parsing)
 {
-	int	fd;
-	int	ret;
+	int		fd;
+	int		ret;
 	char	*tmp;
 
 	tmp = generate_name_tmp();
