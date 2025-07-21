@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include <fcntl.h>
 
-int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
+int	redir_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 {
 	char	**env;
 	char	*path_cmd;

@@ -1,31 +1,10 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-// includes pas utilisés
-// # include <term.h> //getent, tgetflag, tgetnum, tgetstr, tgoto, tputs
-// # include <termios.h> //tcsetattr, tcgetattr
-// # include <sys/ioctl.h> //ioctl
-// # include <string.h> //strerror
-// # include <sys/types.h> //open, wait*, kill, *stat, opendir, closedir
-// # include <dirent.h> //*dir
-
-// includes repartis dans les fichiers
-// # include <stdio.h> //printf, readline, perror
-// # include <readline/readline.h> //readline, rl_*
-// # include <readline/history.h> //readline, rl_*
-// # include <fcntl.h> //open //single_cmd.c / input_output.c / manage_heredoc.c
-// # include <sys/stat.h> //command.c //open, stat
-// # include <errno.h> utils_exec.c //perror
-
-// includes deja presents dans libft
-// # include <stdlib.h> //DEJA PRESENT DANS LIBFT //malloc, free, exit, ttyslot, getenv
-// # include <unistd.h> //DEJA PRESENT DANS LIBFT //write, access, read, close, fork, getcwd, chdir,
-//*stat, unlink, execve, dup*,
-//pipe, isatty, ttyname, ttyslot, tcsetattr, tcgetattr
-
 # include "../libft/libft.h"
-# include <sys/wait.h> //signals.c / utils_exec.c / children.c / manage_heredoc.c //wait*
-# include <curses.h> //tgetent, tgetflag, tgetnum,tgetstr, tgoto, tputs
+# include <sys/wait.h>
+# include <curses.h>
+# include <signal.h>
 
 /*messages with arguments*/
 # define NO_FILE " : no such file or directory\n"
@@ -37,17 +16,16 @@
 
 /*messages without arguments*/
 # define MALLOC "Error: malloc failed\n"
-# define ERR_SYNTAX_PIPE "syntax error: pipe '|' must be followed by a command\n"
-# define ERR_SYNTAX_QUOTE "syntax error : open quote\n"
+# define ERR_SYNTAX_PIPE "Syntax error: '|' must be followed by a command\n"
+# define ERR_SYNTAX_QUOTE "Syntax error : open quote\n"
 # define NO_PATH "Error: no path to the command\n"
 # define ERR_PWD "Error: update_pwd failed\n"
 # define ERR_OLDPWD "Error: update_oldpwd failed\n"
 # define ERR_EXECVE "Error: execve failed\n"
 # define TOO_MANY_ARG "Error: too many arguments\n"
-# define HEREDOC_NAME "Error: please free a file name between .AAAAAAAAAA.tpm and .ZZZZZZZZZZ.tmp to open an heredoc\n"
+# define HEREDOC_NAME "Heredoc: no file names available (.XXXXXXXXXX.tmp)\n"
 # define PLEASE_DONT "Please don't execute multiple minishell at once :(\n"
 
-# include <signal.h> //signals.c / utils_exec.c / children.c / manage_heredoc.c //signal, kill
 extern sig_atomic_t	g_sigreceived;
 
 /////////////////////////////////////////// enum
@@ -150,7 +128,7 @@ void	execution(t_data *data);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd, t_data *data);
 /*command_utils.c*/
-int	is_special_cmd(char *cmd, char **path_cmd, t_data *data);
+int		is_special_cmd(char *cmd, char **path_cmd, t_data *data);
 char	*check_if_cmd_exists(char **hypothetical_path_cmd, char **path);
 /*utils_cmd.c*/
 size_t	find_path_in_env(char **env);
@@ -175,7 +153,7 @@ void	close_free_array_str(int fd0, int fd1, char **env, char *path);
 /*children.c*/
 int		loop_children(t_data *data, pid_t *pids);
 /*input_output.c*/
-int		redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std_io);
+int		redir_exec(t_token *current, int *io_fd, t_data *data, int *save_std);
 int		get_input(t_file *ls_infile, int previous_pipe);
 int		get_output(t_file *ls_outfile, int pipe_output, int count_cmd);
 /*manage_heredoc.c*/
@@ -233,9 +211,9 @@ int		find_var_end(char *prompt, int p_index);
 char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
 int		handle_exit_status_var(t_parsing *parsing);
 /*parsing_error.c*/
-int		parsing_error_int(t_parsing *parsing, int errcode ,int	exit_status, int return_value);
-char	*parsing_error_char(t_parsing *parsing, int errcode ,int	exit_status, char *return_value);
-void	parsing_error_void(t_parsing *parsing, int errcode ,int	exit_status);
+int		parsing_error_int(t_parsing *parsing, int errcode, int exit_status, int return_value);
+char	*parsing_error_char(t_parsing *parsing, int errcode, int exit_status, char *return_value);
+void	parsing_error_void(t_parsing *parsing, int errcode, int exit_status);
 /*parsing.c*/
 void	ft_parsing(t_data *data, t_parsing *parsing);
 /*pip_segmentation.c*/
