@@ -11,7 +11,7 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 	close_all(io_fd[0], io_fd[1]);
 	if (cmd_is_builtin(current->cmd[0]))
 		return (exec_homemade_builtin(data, current, save_std));
-	data->exit_status = EXIT_OK; // ici ?
+	data->exit_status = EXIT_OK;
 	env = get_env_in_tab(data->ls_env);
 	if (!env)
 		return (msg_return(MALLOC, NULL, ERR));
@@ -21,7 +21,6 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 		free_array(env);
 		return (ERR);
 	}
-
 	else if (access(path_cmd, X_OK) == -1)
 	{
 		free_array(env);
@@ -44,13 +43,7 @@ int	get_input(t_file *ls_infile, int previous_output)
 		current = ls_infile;
 		while (current)
 		{
-			// if (current->redirection == SIMPLE_LEFT)
 			input = open(current->value, O_RDONLY);
-			// {
-				// 	input = here_doc(current->value);
-				// 	if (input == HEREDOC_INTERRUPTED)
-				// 		return (HEREDOC_INTERRUPTED);
-				// }
 			if (input == -1)
 				return (perror_return(current->value, ERR));
 			if (current->redirection == DOUBLE_LEFT)
