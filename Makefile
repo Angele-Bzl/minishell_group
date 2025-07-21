@@ -32,12 +32,14 @@ LFLAGS		=	-lncurses -lreadline
 FILES_EXEC  =   execution.c\
 				command.c\
 				command_utils.c\
+				wait_pid.c\
 				utils_cmd.c\
 				utils_exec.c\
 				single_cmd.c\
 				children.c\
 				input_output.c\
 				clean.c\
+				close.c\
 				manage_heredoc.c\
 				$(addprefix $(DIR_BUILTINS)/, $(FILES_BUILT))
 
