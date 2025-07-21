@@ -26,7 +26,7 @@ char	*fill_var_name(t_parsing *par, int start, int var_len)
 
 	var_name = malloc(sizeof(char) * (var_len + 1));
 	if (!var_name)
-		parsing_error_char(par, ERR_MALLOC, EXIT_SYSTEM, NULL);
+		parsg_err_str(par, ERR_MALLOC, EXIT_SYSTEM, NULL);
 	i = 0;
 	while (i < var_len)
 	{

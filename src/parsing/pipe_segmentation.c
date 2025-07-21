@@ -94,7 +94,7 @@ char	**pipe_segmentation(t_parsing *parsing)
 	array = malloc(sizeof(char *) * (pipe_count + 2));
 	if (!array)
 	{
-		parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL);
+		parsg_err_str(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL);
 		return (NULL);
 	}
 	if (fill_pipe_segments(array, parsing->prompt, parsing) == ERR)

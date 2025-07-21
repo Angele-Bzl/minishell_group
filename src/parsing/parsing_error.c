@@ -1,32 +1,32 @@
 #include "minishell.h"
 
-int	parsing_error_int(t_parsing *parsing, int errcode ,int	exit_status, int return_value)
+int	parsing_error_int(t_parsing *parsing, int errcode, int ex_stat, int ret_val)
 {
-	if (exit_status)
-		parsing->data->exit_status = exit_status;
+	if (ex_stat)
+		parsing->data->exit_status = ex_stat;
 	if (errcode)
 	{
 		if (errcode == ERR_MALLOC)
 			printf(MALLOC);
 		parsing->errcode = errcode;
 	}
-	return (return_value);
+	return (ret_val);
 }
 
-char	*parsing_error_char(t_parsing *parsing, int errcode ,int	exit_status, char *return_value)
+char	*parsg_err_str(t_parsing *pars, int errcode, int ex_stat, char *ret_val)
 {
-	if (exit_status)
-		parsing->data->exit_status = exit_status;
+	if (ex_stat)
+		pars->data->exit_status = ex_stat;
 	if (errcode)
 	{
 		if (errcode == ERR_MALLOC)
 			printf(MALLOC);
-		parsing->errcode = errcode;
+		pars->errcode = errcode;
 	}
-	return (return_value);
+	return (ret_val);
 }
 
-void	parsing_error_void(t_parsing *parsing, int errcode ,int	exit_status)
+void	parsing_error_void(t_parsing *parsing, int errcode, int exit_status)
 {
 	if (exit_status)
 		parsing->data->exit_status = exit_status;

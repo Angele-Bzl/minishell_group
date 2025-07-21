@@ -93,7 +93,7 @@ char	*extract_clean_cmd(t_parsing *parsing, char *prompt)
 
 	clean_cmd = malloc(sizeof(char) * (find_all_cmds_len(prompt) + 1));
 	if (!clean_cmd)
-		return (parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
+		return (parsg_err_str(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
 	find_all_cmds(clean_cmd, prompt);
 	return (clean_cmd);
 }

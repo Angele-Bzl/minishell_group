@@ -234,7 +234,7 @@ char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
 int		handle_exit_status_var(t_parsing *parsing);
 /*parsing_error.c*/
 int		parsing_error_int(t_parsing *parsing, int errcode ,int	exit_status, int return_value);
-char	*parsing_error_char(t_parsing *parsing, int errcode ,int	exit_status, char *return_value);
+char	*parsg_err_str(t_parsing *parsing, int errcode ,int	exit_status, char *return_value);
 void	parsing_error_void(t_parsing *parsing, int errcode ,int	exit_status);
 /*parsing.c*/
 void	ft_parsing(t_data *data, t_parsing *parsing);

@@ -95,7 +95,7 @@ char	**split_whitespace_quotes(char const *s, char c, t_parsing *parsing)
 	array = malloc(sizeof(char *) * (word + 1));
 	if (!array)
 	{
-		parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL);
+		parsg_err_str(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL);
 		return (NULL);
 	}
 	if (fill_split_array(array, s, c, parsing) == ERR)
