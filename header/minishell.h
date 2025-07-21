@@ -45,8 +45,7 @@
 # define ERR_EXECVE "Error: execve failed\n"
 # define TOO_MANY_ARG "Error: too many arguments\n"
 # define HEREDOC_NAME "Error: please free a file name between .AAAAAAAAAA.tpm and .ZZZZZZZZZZ.tmp to open an heredoc\n"
-
-# define IS_BUILTIN 42
+# define PLEASE_DONT "Please don't execute multiple minishell at once :(\n"
 
 # include <signal.h> //signals.c / utils_exec.c / children.c / manage_heredoc.c //signal, kill
 extern sig_atomic_t	g_sigreceived;
