@@ -2,45 +2,54 @@
 
 char	*extract_file_name(char *prompt, int i, t_parsing *parsing)
 {
-	int		start;
-	int		end;
-	int		len;
-	char	*file_name;
+	int	start;
+	int	count_quote;
+	int	len;
+	char *file_name;
+	int j;
 
+	count_quote = 0;
+	while (prompt[i] && ft_isspace(prompt[i]))
+		i++;
 	start = i;
-	while (prompt[i] != '\0' && (!ft_isspace(prompt[i]) && prompt[i] != '>'
-		&& prompt[i] != '<'))
+	while (prompt[i] && !ft_isspace(prompt[i]) && prompt[i] != '>' && prompt[i] != '<')
 	{
-		quote_check(prompt[i], parsing);
+		if (quote_check(prompt[i], parsing) == 1)
+			count_quote++;
 		while (parsing->double_quote == true || parsing->simple_quote == true)
 		{
 			i++;
-			quote_check(prompt[i], parsing);
+			if (quote_check(prompt[i], parsing) == 0)
+				count_quote++;
 		}
-		if (prompt[i])
-			i++;
+		i++;
 	}
-	end = i;
-	len = end - start;
+	len = i - start - count_quote;
 	file_name = malloc(sizeof(char) * (len + 1));
 	if (!file_name)
 		return (msg_return_str(MALLOC, NULL, NULL));
-	i = 0;
-	while (prompt[start + i] && i < len)
+	j = 0;
+	while (prompt[start] && j < len)
 	{
-		quote_check(prompt[start + i], parsing);
-		while ((prompt[start+i] == '\"' && parsing->simple_quote == false)
-			|| (prompt[start+i] == '\'' && parsing->double_quote == false))
-		{
+		while (quote_check(prompt[start], parsing) != -1)
 			start++;
-			quote_check(prompt[start + i], parsing);
+		while (parsing->double_quote == true || parsing->simple_quote == true)
+		{
+			if (quote_check(prompt[start], parsing) == 0)
+			{
+				start++;
+				break;
+			}
+			file_name[j] = prompt[start];
+			j++;
+			start++;
 		}
-		file_name[i] = prompt[start + i];
-		if (prompt[start + i])
-			i++;
-		// printf("prompt[i]: %c\n", prompt[start + i]);
+		if (prompt[start] && j < len)
+			file_name[j] = prompt[start];
+		j++;
+		start++;
 	}
-	file_name[i] = '\0';
+	file_name[j] = '\0';
 	return (file_name);
 }
 

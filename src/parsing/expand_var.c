@@ -17,24 +17,37 @@ static int	is_expandable(char current_i, char next_i, t_parsing *parsing)
 	return (1);
 }
 
-void	quote_check(char c, t_parsing *parsing)
+int	quote_check(char c, t_parsing *parsing)
 {
 	if (c == '\"'
 		&& parsing->double_quote == false
 		&& parsing->simple_quote == false)
-		parsing->double_quote = true;
+		{
+			parsing->double_quote = true;
+			return (1);
+		}
 	else if (c == '\"'
 		&& parsing->double_quote == true
 		&& parsing->simple_quote == false)
-		parsing->double_quote = false;
+		{
+			parsing->double_quote = false;
+			return (0);
+		}
 	else if (c == '\''
 		&& parsing->simple_quote == false
 		&& parsing->double_quote == false)
-		parsing->simple_quote = true;
+		{
+			parsing->simple_quote = true;
+			return (1);
+		}
 	else if (c == '\''
 		&& parsing->simple_quote == true
 		&& parsing->double_quote == false)
-		parsing->simple_quote = false;
+		{
+			parsing->simple_quote = false;
+			return (0);
+		}
+	return (-1);
 }
 
 static int	dollar_remaining(char *str, t_parsing *parsing)

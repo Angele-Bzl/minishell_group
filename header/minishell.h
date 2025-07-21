@@ -207,7 +207,7 @@ char	*extract_clean_cmd(t_parsing *parsing, char *prompt);
 int		skip_io(char *prompt, int i, t_parsing *parsing);
 char	*extract_current_cmd(char *prompt, int *i, int *j, char *clean_cmd);
 /*expand_var.c*/
-void	quote_check(char c, t_parsing *parsing);
+int	quote_check(char c, t_parsing *parsing);
 void	expand_var(t_parsing *parsing);
 /*extract_token_without_quotes.c*/
 char	*extract_token_without_quotes(char *str, t_parsing *parsing);
