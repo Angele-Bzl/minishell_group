@@ -2,6 +2,19 @@
 #include <errno.h>
 #include <signal.h>
 
+char	*free_return_str(char *to_free, char *return_value)
+{
+	if (to_free)
+		free(to_free);
+	return (return_value);
+}
+
+int	free_array_return(char **array, int return_value)
+{
+	free_array(array);
+	return (return_value);
+}
+
 char	*ft_strtrim_improved(char *s1, char const *set)
 {
 	int		start;

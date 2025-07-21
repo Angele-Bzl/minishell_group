@@ -161,6 +161,8 @@ int		wait_for_pid(t_token *token, pid_t *pid);
 char	**get_env_in_tab(t_env *node_env);
 void	exec_single_builtin(t_data *data);
 size_t	count_cmds(t_token *token);
+char	*free_return_str(char *to_free, char *return_value);
+int		free_array_return(char **array, int return_value);
 /*clean.c*/
 void	close_free_token_env_pids(t_data *data, int fd0, int fd1, pid_t *pids);
 void	free_token_env(t_data *data);

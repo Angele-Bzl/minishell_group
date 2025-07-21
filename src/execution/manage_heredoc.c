@@ -75,13 +75,6 @@ static char	*generate_name_tmp(void)
 	}
 }
 
-static char	*free_return_str(char *to_free, char *return_value)
-{
-	if (to_free)
-		free(to_free);
-	return (return_value);
-}
-
 char	*here_doc(char *eof, t_parsing *parsing)
 {
 	int		fd;

@@ -17,11 +17,8 @@ int	redirect_and_exec(t_token *current, int *io_fd, t_data *data, int *save_std)
 		return (msg_return(MALLOC, NULL, ERR));
 	path_cmd = find_cmd(env, current->cmd[0], data);
 	if (!path_cmd)
-	{
-		free_array(env);
-		return (ERR);
-	}
-	else if (access(path_cmd, X_OK) == -1)
+		return (free_array_return(env, ERR));
+	else if (access(path_cmd, X_OK) == ERR)
 	{
 		free_array(env);
 		data->exit_status = EXIT_CMD_NO_PERMISSION;
