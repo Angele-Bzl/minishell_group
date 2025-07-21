@@ -8,22 +8,29 @@ char	*extract_file_name(char *prompt, int i, t_parsing *parsing)
 	char	*file_name;
 
 	start = i;
-	while ( prompt[i] != '\0' && prompt[i] != '>'&& prompt[i] != '<')
+	while ((!ft_isspace(prompt[i]) && prompt[i] != '\0' && prompt[i] != '>'
+		&& prompt[i] != '<'))
 	{
-		if (!ft_isspace(prompt[i]) && parsing->double_quote == false
-		&& parsing->simple_quote == false)
-			break ;
 		quote_check(prompt[i], parsing);
+		while (parsing->double_quote == true || parsing->simple_quote == true)
+		{
+			i++;
+			quote_check(prompt[i], parsing);
+		}
 		i++;
 	}
 	end = i;
 	len = end - start;
 	file_name = malloc(sizeof(char) * (len + 1));
 	if (!file_name)
-		return (NULL);
+		return (msg_return_str(MALLOC, NULL, NULL));
 	i = 0;
 	while (i < len)
 	{
+		quote_check(prompt[start + i], parsing);
+		if ((prompt[start+i] == '\"' && parsing->simple_quote == false)
+			|| (prompt[start+i] == '\'' && parsing->double_quote == false))
+			start++;
 		file_name[i] = prompt[start + i];
 		i++;
 	}
