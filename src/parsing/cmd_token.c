@@ -11,7 +11,9 @@ int	skip_io(char *prompt, int i, t_parsing *parsing)
 	{
 		quote_check(prompt[i], parsing);
 		i++;
-		while (ft_isspace(prompt[i]) && (parsing->double_quote == true || parsing->simple_quote == true))
+		while (ft_isspace(prompt[i])
+			&& (parsing->double_quote == true
+				|| parsing->simple_quote == true))
 		{
 			quote_check(prompt[i], parsing);
 			i++;

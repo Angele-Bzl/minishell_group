@@ -35,7 +35,7 @@ char	*update_prompt(char *content, int start, t_parsing *parsing)
 	prt = ft_strlen(parsing->old_prompt) - (end - start) + (ft_strlen(content));
 	new_prompt = malloc(sizeof(char) * (prt + 1));
 	if (!new_prompt)
-		return (NULL);
+		return (parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
 	i = 0;
 	j = 0;
 	while (i < start)
@@ -46,8 +46,7 @@ char	*update_prompt(char *content, int start, t_parsing *parsing)
 		j++;
 	}
 	i = end;
-	while (parsing->old_prompt[i])
-		new_prompt[j++] = parsing->old_prompt[i++];
+	copy_till_the_end(new_prompt, parsing->old_prompt, &i, &j);
 	new_prompt[j] = '\0';
 	free(parsing->prompt_tab[parsing->pipe_seg]);
 	return (new_prompt);
@@ -71,7 +70,7 @@ static void	init_variable_and_content(t_parsing *parsing, char **content)
 		if (!*content)
 		{
 			parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL);
-			return;
+			return ;
 		}
 		*content[0] = '\0';
 	}

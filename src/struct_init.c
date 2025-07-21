@@ -8,7 +8,7 @@ static int	manage_no_env(t_env **current, t_data *data)
 
 	new_node = malloc(sizeof (t_env));
 	if (!new_node)
-	return (0);
+		return (0);
 	pwd = ft_strdup("PWD=");
 	if (!pwd)
 	{

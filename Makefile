@@ -60,6 +60,7 @@ FILES_PARS  =   cmd_token_utils.c\
 				countpipe_utils.c\
 				linked_list_file.c\
 				linked_list_token.c\
+				manage_dollar_utils_02.c\
 				manage_dollar_utils.c\
 				manage_dollar.c\
 				parsing_error.c\

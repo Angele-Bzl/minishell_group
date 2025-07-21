@@ -17,36 +17,39 @@ static int	is_expandable(char current_i, char next_i, t_parsing *parsing)
 	return (1);
 }
 
+static int	return_update_bool(bool *d_s_quote, int value, int return_value)
+{
+	if (value == 1)
+	{
+		*d_s_quote = true;
+		return (return_value);
+	}
+	else if (value == 0)
+	{
+		*d_s_quote = false;
+		return (return_value);
+	}
+	return (-1);
+}
+
 int	quote_check(char c, t_parsing *parsing)
 {
 	if (c == '\"'
 		&& parsing->double_quote == false
 		&& parsing->simple_quote == false)
-		{
-			parsing->double_quote = true;
-			return (1);
-		}
+		return (return_update_bool(&(parsing->double_quote), 1, 1));
 	else if (c == '\"'
 		&& parsing->double_quote == true
 		&& parsing->simple_quote == false)
-		{
-			parsing->double_quote = false;
-			return (0);
-		}
+		return (return_update_bool(&(parsing->double_quote), 0, 0));
 	else if (c == '\''
 		&& parsing->simple_quote == false
 		&& parsing->double_quote == false)
-		{
-			parsing->simple_quote = true;
-			return (1);
-		}
+		return (return_update_bool(&(parsing->simple_quote), 1, 1));
 	else if (c == '\''
 		&& parsing->simple_quote == true
 		&& parsing->double_quote == false)
-		{
-			parsing->simple_quote = false;
-			return (0);
-		}
+		return (return_update_bool(&(parsing->simple_quote), 0, 0));
 	return (-1);
 }
 

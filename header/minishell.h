@@ -151,7 +151,7 @@ void	execution(t_data *data);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd, t_data *data);
 /*command_utils.c*/
-int	is_special_cmd(char *cmd, char **path_cmd, t_data *data);
+int		is_special_cmd(char *cmd, char **path_cmd, t_data *data);
 char	*check_if_cmd_exists(char **hypothetical_path_cmd, char **path);
 /*utils_cmd.c*/
 size_t	find_path_in_env(char **env);
@@ -207,7 +207,7 @@ char	*extract_clean_cmd(t_parsing *parsing, char *prompt);
 int		skip_io(char *prompt, int i, t_parsing *parsing);
 char	*extract_current_cmd(char *prompt, int *i, int *j, char *clean_cmd);
 /*expand_var.c*/
-int	quote_check(char c, t_parsing *parsing);
+int		quote_check(char c, t_parsing *parsing);
 void	expand_var(t_parsing *parsing);
 /*extract_token_without_quotes.c*/
 char	*extract_token_without_quotes(char *str, t_parsing *parsing);
@@ -225,14 +225,16 @@ void	token_lstadd_back(t_token **lst, t_token *new);
 /*linked_list_file.c*/
 t_file	*file_lstnew(void);
 void	file_lstadd_back(t_file **lst, t_file *new);
-/*manage_dollar*/
+/*manage_dollar.c*/
 void	manage_dollar_sign(t_parsing *parsing);
 char	*update_prompt(char *content, int start, t_parsing *parsing);
-/*manage_dollar_utils*/
+/*manage_dollar_utils.c*/
 char	*find_var_name(t_parsing *parsing);
 int		find_var_end(char *prompt, int p_index);
 char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
 int		handle_exit_status_var(t_parsing *parsing);
+/*manage_dollar_utils_02.c*/
+void		copy_till_the_end(char *new_prompt, char *old_prompt, int *i, int *j);
 /*parsing_error.c*/
 int		parsing_error_int(t_parsing *parsing, int errcode ,int	exit_status, int return_value);
 char	*parsing_error_char(t_parsing *parsing, int errcode ,int	exit_status, char *return_value);
