@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	*extract_file_name(char *prompt, int i)
+char	*extract_file_name(char *prompt, int i, t_parsing *parsing)
 {
 	int		start;
 	int		end;
@@ -8,11 +8,14 @@ char	*extract_file_name(char *prompt, int i)
 	char	*file_name;
 
 	start = i;
-	while (!ft_isspace(prompt[i])
-		&& prompt[i] != '\0'
-		&& prompt[i] != '>'
-		&& prompt[i] != '<')
+	while ( prompt[i] != '\0' && prompt[i] != '>'&& prompt[i] != '<')
+	{
+		if (!ft_isspace(prompt[i]) && parsing->double_quote == false
+		&& parsing->simple_quote == false)
+			break ;
+		quote_check(prompt[i], parsing);
 		i++;
+	}
 	end = i;
 	len = end - start;
 	file_name = malloc(sizeof(char) * (len + 1));
@@ -42,7 +45,7 @@ char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing)
 		parsing_error_char(parsing, ERR_PROMPT, EXIT_SYSTEM, NULL);
 		return (msg_return_str(ERR_SYNTAX_NEAR, "'<' OR '>' OR '\\0'", NULL));
 	}
-	file_name = extract_file_name(prompt, i);
+	file_name = extract_file_name(prompt, i, parsing);
 	if (!file_name)
 		return (parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
 	return (file_name);
