@@ -3,8 +3,6 @@
 #include <fcntl.h>
 #include <signal.h>
 
-// volatile sig_atomic_t	g_sigint;
-
 void	heredoc_handler(int signal)
 {
 	if (signal == SIGINT)
@@ -85,17 +83,11 @@ char	*here_doc(char *eof, t_parsing *parsing)
 
 	tmp = generate_name_tmp();
 	if (!tmp)
-	{
-		free(eof);
-		return (NULL);
-	}
+		return (free_return_str(eof, NULL));
 	set_signals_on(HEREDOC_MODE);
 	fd = open(tmp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
-	{
-		free(eof);
-		return (NULL);
-	}
+		return (free_return_str(eof, NULL));
 	ret = readline_heredoc(fd, eof);
 	free(eof);
 	close (fd);
@@ -103,8 +95,7 @@ char	*here_doc(char *eof, t_parsing *parsing)
 	{
 		parsing->errcode = ERR_PROMPT;
 		unlink(tmp);
-		free(tmp);
-		return (NULL);
+		return (free_return_str(tmp, NULL));
 	}
 	return (tmp);
 }

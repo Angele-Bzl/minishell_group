@@ -28,30 +28,6 @@ static int	init_hyp_path(char **hyp_path, char *cmd, char **env_path)
 	return (OK);
 }
 
-static char	*check_if_cmd_exists(char **hypothetical_path_cmd, char **path)
-{
-	size_t	i;
-	char	*real_path;
-	bool	found;
-
-	i = 0;
-	found = false;
-	real_path = NULL;
-	while (path[i])
-	{
-		if (!access(hypothetical_path_cmd[i], X_OK) && !found)
-		{
-			real_path = ft_strdup(hypothetical_path_cmd[i]);
-			found = true;
-		}
-		free(hypothetical_path_cmd[i]);
-		i++;
-	}
-	free(hypothetical_path_cmd);
-	hypothetical_path_cmd = NULL;
-	return (real_path);
-}
-
 static char	*return_err_cmd_malloc(char **env_path)
 {
 	free_array(env_path);
@@ -71,34 +47,16 @@ static char	**hypothetical_path(char **env_path, char *cmd)
 	return (hypothetical_path_cmd);
 }
 
-static int	is_special_cmd(char *cmd, char **path_cmd, t_data *data)
+static char	*return_found_cmd(char *path_cmd, char *cmd, t_data *data)
 {
-	struct stat	buf;
-
-	if (!cmd || cmd_is_builtin(cmd))
+	if (!path_cmd || !cmd[0])
 	{
-		*path_cmd = cmd;
-		return (OK);
+		if (path_cmd)
+			free(path_cmd);
+		data->exit_status = EXIT_CMD_NOT_FOUND;
+		return (msg_return_str(NO_CMD, cmd, NULL));
 	}
-	if (ft_strchr(cmd, '/'))
-	{
-		if (stat(cmd, &buf) == -1)
-		{
-			data->exit_status = EXIT_CMD_NOT_FOUND;
-			return (perror_return(cmd, OK));
-		}
-		else
-		{
-			if (S_ISDIR(buf.st_mode))
-			{
-				data->exit_status = EXIT_CMD_NO_PERMISSION;
-				return (msg_return(IS_DIR, cmd, OK));
-			}
-			*path_cmd = cmd;
-			return (OK);
-		}
-	}
-	return (1);
+	return (path_cmd);
 }
 
 char	*find_cmd(char **env, char *cmd, t_data *data)
@@ -125,12 +83,5 @@ char	*find_cmd(char **env, char *cmd, t_data *data)
 		return_err_cmd_malloc(env_path);
 	path_cmd = check_if_cmd_exists(hypothetical_path_cmd, env_path);
 	free_array(env_path);
-	if (!path_cmd || !cmd[0])
-	{
-		if (path_cmd)
-			free(path_cmd);
-		data->exit_status = EXIT_CMD_NOT_FOUND;
-		return (msg_return_str(NO_CMD, cmd, NULL));
-	}
-	return (path_cmd);
+	return (return_found_cmd(path_cmd, cmd, data));
 }

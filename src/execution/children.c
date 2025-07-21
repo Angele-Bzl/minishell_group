@@ -43,11 +43,22 @@ static int	set_up_pipe(int *i, int *pipe_fd, t_token *token, t_token *current)
 	return (previous_output);
 }
 
+static int	exec_child(int *pipe_fd, t_data *data, int prev_outp, t_token *curr)
+{
+	int	return_value;
+
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	close(pipe_fd[0]);
+	return_value = manage_child(data, prev_outp, pipe_fd, curr);
+	return (return_value);
+}
+
 int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
 {
 	int			previous_output;
-	int			return_value;
 	static int	i = 0;
+	int			return_value;
 
 	previous_output = set_up_pipe(&i, pipe_fd, data->ls_token, current);
 	if (previous_output == ERR)
@@ -60,19 +71,15 @@ int	create_children(t_data *data, int *pipe_fd, pid_t *pids, t_token *current)
 		i++;
 		return (perror_return("Fork", ERR));
 	}
-	if (pids[i] == 0)
+	if (pids[i++] == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		close(pipe_fd[0]);
-		return_value = manage_child(data, previous_output, pipe_fd, current);
+		return_value = exec_child(pipe_fd, data, previous_output, current);
 		close_free_token_env_pids(data, previous_output, pipe_fd[1], pids);
 		exit(return_value);
 	}
 	if (previous_output != STDIN_FILENO)
 		close(previous_output);
 	close(pipe_fd[1]);
-	i++;
 	return (OK);
 }
 

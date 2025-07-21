@@ -1,34 +1,34 @@
 #include "minishell.h"
 #include <fcntl.h>
 
+static int	exstat_per_ret(int *exstat, int exstat_val, char *msg, int ret_val)
+{
+	*exstat = exstat_val;
+	return (perror_return(msg, ret_val));
+}
+
 static int	get_inpt_(t_file *ls_infile, int *save_std, int *ex_stat)
 {
 	int		input;
-	t_file	*current;
+	t_file	*curr;
 
 	save_std[0] = dup(STDIN_FILENO);
 	if (save_std[0] == ERR)
-	{
-		*ex_stat = EXIT_SYSTEM;
-		return (perror_return("dup2", ERR));
-	}
+		return (exstat_per_ret(ex_stat, EXIT_SYSTEM, "dup2", ERR));
 	input = STDIN_FILENO;
 	if (ls_infile->value)
 	{
-		current = ls_infile;
-		while (current)
+		curr = ls_infile;
+		while (curr)
 		{
-			input = open(current->value, O_RDONLY);
+			input = open(curr->value, O_RDONLY);
 			if (input == -1)
-			{
-				*ex_stat = EXIT_PROMPT;
-				return (perror_return(current->value, ERR));
-			}
-			if (current->redirection == DOUBLE_LEFT)
-				unlink(current->value);
-			if (current->next)
+				return (exstat_per_ret(ex_stat, EXIT_PROMPT, curr->value, ERR));
+			if (curr->redirection == DOUBLE_LEFT)
+				unlink(curr->value);
+			if (curr->next)
 				close(input);
-			current = current->next;
+			curr = curr->next;
 		}
 	}
 	return (input);
@@ -41,10 +41,7 @@ static int	get_outpt_(t_file *ls_outf, int *save_std, int *ex_stat)
 
 	save_std[1] = dup(STDOUT_FILENO);
 	if (save_std[1] == ERR)
-	{
-		*ex_stat = EXIT_SYSTEM;
-		return (perror_return("dup2", ERR));
-	}
+		return (exstat_per_ret(ex_stat, EXIT_SYSTEM, "dup2", ERR));
 	output = STDOUT_FILENO;
 	if (ls_outf->value)
 	{
@@ -56,10 +53,7 @@ static int	get_outpt_(t_file *ls_outf, int *save_std, int *ex_stat)
 			if (curr->redirection == DOUBLE_RIGHT)
 				output = open(curr->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (output == -1)
-			{
-				*ex_stat = EXIT_PROMPT;
-				return (perror_return(curr->value, ERR));
-			}
+				return (exstat_per_ret(ex_stat, EXIT_PROMPT, curr->value, ERR));
 			if (curr->next)
 				close(output);
 			curr = curr->next;
