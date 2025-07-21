@@ -8,7 +8,7 @@ char	*extract_file_name(char *prompt, int i, t_parsing *parsing)
 	char	*file_name;
 
 	start = i;
-	while ((!ft_isspace(prompt[i]) && prompt[i] != '\0' && prompt[i] != '>'
+	while (prompt[i] != '\0' && (!ft_isspace(prompt[i]) && prompt[i] != '>'
 		&& prompt[i] != '<'))
 	{
 		quote_check(prompt[i], parsing);
@@ -17,7 +17,8 @@ char	*extract_file_name(char *prompt, int i, t_parsing *parsing)
 			i++;
 			quote_check(prompt[i], parsing);
 		}
-		i++;
+		if (prompt[i])
+			i++;
 	}
 	end = i;
 	len = end - start;
@@ -25,14 +26,19 @@ char	*extract_file_name(char *prompt, int i, t_parsing *parsing)
 	if (!file_name)
 		return (msg_return_str(MALLOC, NULL, NULL));
 	i = 0;
-	while (i < len)
+	while (prompt[start + i] && i < len)
 	{
 		quote_check(prompt[start + i], parsing);
-		if ((prompt[start+i] == '\"' && parsing->simple_quote == false)
+		while ((prompt[start+i] == '\"' && parsing->simple_quote == false)
 			|| (prompt[start+i] == '\'' && parsing->double_quote == false))
+		{
 			start++;
+			quote_check(prompt[start + i], parsing);
+		}
 		file_name[i] = prompt[start + i];
-		i++;
+		if (prompt[start + i])
+			i++;
+		// printf("prompt[i]: %c\n", prompt[start + i]);
 	}
 	file_name[i] = '\0';
 	return (file_name);

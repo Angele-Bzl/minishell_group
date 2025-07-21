@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	skip_io(char *prompt, int i)
+int	skip_io(char *prompt, int i, t_parsing *parsing)
 {
 	i++;
 	if (prompt[i] == '<' || prompt[i] == '>')
@@ -8,7 +8,15 @@ int	skip_io(char *prompt, int i)
 	while (prompt[i] && ft_isspace(prompt[i]))
 		i++;
 	while (prompt[i] && !ft_isspace(prompt[i]))
+	{
+		quote_check(prompt[i], parsing);
 		i++;
+		while (ft_isspace(prompt[i]) && (parsing->double_quote == true || parsing->simple_quote == true))
+		{
+			quote_check(prompt[i], parsing);
+			i++;
+		}
+	}
 	while (prompt[i] && ft_isspace(prompt[i]))
 		i++;
 	return (i);
@@ -36,7 +44,7 @@ static int	skip_quote_cmd(char *prompt, int *i)
 	return (count);
 }
 
-static int	find_all_cmds_len(char *prompt)
+static int	find_all_cmds_len(char *prompt, t_parsing *parsing)
 {
 	int	i;
 	int	len;
@@ -48,7 +56,7 @@ static int	find_all_cmds_len(char *prompt)
 		while (ft_isspace(prompt[i]))
 			i++;
 		if (prompt[i] == '<' || prompt[i] == '>')
-			i = skip_io(prompt, i);
+			i = skip_io(prompt, i, parsing);
 		len++;
 		while (prompt[i] && !ft_isspace(prompt[i])
 			&& prompt[i] != '<' && prompt[i] != '>')
@@ -91,9 +99,9 @@ char	*extract_clean_cmd(t_parsing *parsing, char *prompt)
 {
 	char	*clean_cmd;
 
-	clean_cmd = malloc(sizeof(char) * (find_all_cmds_len(prompt) + 1));
+	clean_cmd = malloc(sizeof(char) * (find_all_cmds_len(prompt, parsing) + 1));
 	if (!clean_cmd)
 		return (parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
-	find_all_cmds(clean_cmd, prompt);
+	find_all_cmds(clean_cmd, prompt, parsing);
 	return (clean_cmd);
 }

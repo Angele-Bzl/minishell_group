@@ -201,10 +201,10 @@ int		var_cmp(char *s1, char *s2);
 
 /*PARSING*/
 /*cmd_token_utils.c*/
-void	find_all_cmds(char *clean_cmd, char *prompt);
+void	find_all_cmds(char *clean_cmd, char *prompt, t_parsing *parsing);
 /*cmd_token.c*/
 char	*extract_clean_cmd(t_parsing *parsing, char *prompt);
-int		skip_io(char *prompt, int i);
+int		skip_io(char *prompt, int i, t_parsing *parsing);
 char	*extract_current_cmd(char *prompt, int *i, int *j, char *clean_cmd);
 /*expand_var.c*/
 void	quote_check(char c, t_parsing *parsing);
