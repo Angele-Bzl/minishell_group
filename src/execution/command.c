@@ -71,7 +71,7 @@ static char	**hypothetical_path(char **env_path, char *cmd)
 	return (hypothetical_path_cmd);
 }
 
-static int	update_path_return(char *path_cmd, char *cmd, int return_value)
+static int	update_path_return(char **path_cmd, char *cmd, int return_value)
 {
 	*path_cmd = cmd;
 	return (return_value);
