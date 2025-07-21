@@ -71,18 +71,21 @@ static char	**hypothetical_path(char **env_path, char *cmd)
 	return (hypothetical_path_cmd);
 }
 
+static int	update_path_return(char *path_cmd, char *cmd, int return_value)
+{
+	*path_cmd = cmd;
+	return (return_value);
+}
+
 static int	is_special_cmd(char *cmd, char **path_cmd, t_data *data)
 {
 	struct stat	buf;
 
 	if (!cmd || cmd_is_builtin(cmd))
-	{
-		*path_cmd = cmd;
-		return (OK);
-	}
+		return (update_path_return(path_cmd, cmd, OK));
 	if (ft_strchr(cmd, '/'))
 	{
-		if (stat(cmd, &buf) == -1)
+		if (stat(cmd, &buf) == ERR)
 		{
 			data->exit_status = EXIT_CMD_NOT_FOUND;
 			return (perror_return(cmd, OK));
@@ -94,8 +97,7 @@ static int	is_special_cmd(char *cmd, char **path_cmd, t_data *data)
 				data->exit_status = EXIT_CMD_NO_PERMISSION;
 				return (msg_return(IS_DIR, cmd, OK));
 			}
-			*path_cmd = cmd;
-			return (OK);
+		return (update_path_return(path_cmd, cmd, OK));
 		}
 	}
 	return (1);
