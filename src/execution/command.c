@@ -101,6 +101,18 @@ static int	is_special_cmd(char *cmd, char **path_cmd, t_data *data)
 	return (1);
 }
 
+static char	*return_found_cmd(char *path_cmd, char *cmd, t_data *data)
+{
+	if (!path_cmd || !cmd[0])
+	{
+		if (path_cmd)
+			free(path_cmd);
+		data->exit_status = EXIT_CMD_NOT_FOUND;
+		return (msg_return_str(NO_CMD, cmd, NULL));
+	}
+	return (path_cmd);
+}
+
 char	*find_cmd(char **env, char *cmd, t_data *data)
 {
 	char	**env_path;
@@ -125,12 +137,5 @@ char	*find_cmd(char **env, char *cmd, t_data *data)
 		return_err_cmd_malloc(env_path);
 	path_cmd = check_if_cmd_exists(hypothetical_path_cmd, env_path);
 	free_array(env_path);
-	if (!path_cmd || !cmd[0])
-	{
-		if (path_cmd)
-			free(path_cmd);
-		data->exit_status = EXIT_CMD_NOT_FOUND;
-		return (msg_return_str(NO_CMD, cmd, NULL));
-	}
-	return (path_cmd);
+	return (return_found_cmd(path_cmd, cmd, data));
 }
