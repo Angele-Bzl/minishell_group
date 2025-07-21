@@ -6,7 +6,7 @@ void	exec_env_export(t_env *ls_env)
 
 	if (!ls_env)
 	{
-		printf("Error: Environment list is NULL\n");
+		ft_putstr_fd("Error: Environment list is NULL\n", STDERR_FILENO);
 		return ;
 	}
 	current = ls_env;
@@ -23,7 +23,7 @@ void	exec_env(t_env *ls_env)
 
 	if (!ls_env)
 	{
-		printf("Error: Environment list is NULL\n");
+		ft_putstr_fd("Error: Environment list is NULL\n", STDERR_FILENO);
 		return ;
 	}
 	current = ls_env;

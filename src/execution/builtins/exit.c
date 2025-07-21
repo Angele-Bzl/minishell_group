@@ -31,12 +31,12 @@ static long long	check_valid_arg(char *arg)
 
 	if (ft_strlen(arg) > 21)
 	{
-		ft_putendl_fd("Error: exit: numeric argument required", STDERR_FILENO);
+		ft_putstr_fd("Error: exit: numeric argument required\n", STDERR_FILENO);
 		return (2);
 	}
 	if (!str_is_digit(arg))
 	{
-		ft_putendl_fd("Error: exit: numeric argument required", STDERR_FILENO);
+		ft_putstr_fd("Error: exit: numeric argument required\n", STDERR_FILENO);
 		return (2);
 	}
 	minus = 1;
@@ -44,7 +44,7 @@ static long long	check_valid_arg(char *arg)
 	if ((arg_ull > LLONG_MAX && minus == 1)
 		|| (arg_ull > 9223372036854775808ULL && minus == -1))
 	{
-		ft_putendl_fd("Error: exit: numeric argument required", STDERR_FILENO);
+		ft_putstr_fd("Error: exit: numeric argument required\n", STDERR_FILENO);
 		return (2);
 	}
 	return (arg_ull * minus);
@@ -69,7 +69,7 @@ int	exec_exit(t_data *data, t_token *cmds, int *save_std_io)
 	if (cmds->cmd[0] && cmds->cmd[1] && cmds->cmd[2])
 	{
 		data->exit_status = EXIT_PROMPT;
-		ft_putendl_fd("Error exit: too many arguments", STDERR_FILENO);
+		ft_putstr_fd("Error exit: too many arguments\n", STDERR_FILENO);
 		return (ERR);
 	}
 	printf("exit\n");

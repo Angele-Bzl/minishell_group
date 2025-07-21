@@ -6,15 +6,15 @@ static int	var_is_valid(char *cmd)
 
 	i = 0;
 	if (!(ft_isalpha(cmd[i]) || cmd[i] == '_'))
-		return (msg_return(NOT_VALID_IDENTIFIER, cmd, 0));
+		return (msg_return(NOT_VALID_IDENTIFIER, cmd, false));
 	i++;
 	while (cmd[i] && cmd[i] != '=')
 	{
 		if (!ft_isalnum(cmd[i]) && cmd[i] != '_')
-			return (msg_return(NOT_VALID_IDENTIFIER, cmd, 0));
+			return (msg_return(NOT_VALID_IDENTIFIER, cmd, false));
 		i++;
 	}
-	return (1);
+	return (true);
 }
 
 static int	var_new(t_env *ls_env, char *cmd)
@@ -23,13 +23,13 @@ static int	var_new(t_env *ls_env, char *cmd)
 
 	new = malloc(sizeof(t_env));
 	if (!new)
-		return (msg_return(MALLOC, NULL, 0));
+		return (msg_return(MALLOC, NULL, ERR));
 	new->line = ft_strdup(cmd);
 	if (!new->line)
-		return (msg_return(MALLOC, NULL, 0));
+		return (msg_return(MALLOC, NULL, ERR));
 	new->next = NULL;
 	ft_lstadd_back((t_list **)&ls_env, (t_list *)new);
-	return (1);
+	return (OK);
 }
 
 static int	var_already_exists(t_env *current, char *cmd)
@@ -38,11 +38,11 @@ static int	var_already_exists(t_env *current, char *cmd)
 	{
 		if (var_cmp(current->line, cmd))
 		{
-			return (1);
+			return (true);
 		}
 		current = current->next;
 	}
-	return (0);
+	return (false);
 }
 
 static int	var_update(t_env *current, char *cmd)
@@ -54,11 +54,11 @@ static int	var_update(t_env *current, char *cmd)
 			free(current->line);
 			current->line = ft_strdup(cmd);
 			if (!current->line)
-				return (msg_return(MALLOC, NULL, 0));
+				return (msg_return(MALLOC, NULL, ERR));
 		}
 		current = current->next;
 	}
-	return (1);
+	return (OK);
 }
 
 int	exec_export(t_env *ls_env, char **cmds, t_data *data)
@@ -69,19 +69,17 @@ int	exec_export(t_env *ls_env, char **cmds, t_data *data)
 	current = ls_env;
 	i = 1;
 	if (!cmds[i])
-	{
 		exec_env_export(ls_env);
-	}
 	while (cmds[i])
 	{
 		if (var_is_valid(cmds[i]))
 		{
 			if (var_already_exists(current, cmds[i]))
 			{
-				if (!var_update(current, cmds[i]))
+				if (var_update(current, cmds[i]) == ERR)
 					return (ERROR_SYSTEM);
 			}
-			else if (!var_new(ls_env, cmds[i]))
+			else if (var_new(ls_env, cmds[i]) == ERR)
 				return (ERROR_SYSTEM);
 		}
 		else
