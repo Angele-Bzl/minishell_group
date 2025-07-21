@@ -44,10 +44,14 @@ char	*extract_file_name(char *prompt, int i, t_parsing *parsing)
 			j++;
 			start++;
 		}
+		while (quote_check(prompt[start], parsing) != -1)
+			start++;
 		if (prompt[start] && j < len)
+		{
 			file_name[j] = prompt[start];
-		j++;
-		start++;
+			j++;
+			start++;
+		}
 	}
 	file_name[j] = '\0';
 	return (file_name);
