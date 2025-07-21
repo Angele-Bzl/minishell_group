@@ -151,6 +151,9 @@ void	test_signal(void);
 void	execution(t_data *data);
 /*command.c*/
 char	*find_cmd(char **env, char *cmd, t_data *data);
+/*command_utils.c*/
+int	is_special_cmd(char *cmd, char **path_cmd, t_data *data);
+char	*check_if_cmd_exists(char **hypothetical_path_cmd, char **path);
 /*itils_cmd.c*/
 size_t	find_path_in_env(char **env);
 void	fill_tab_null(char **table, size_t len);
@@ -185,6 +188,8 @@ void	exec_env(t_env *ls_env);
 void	exec_env_export(t_env *ls_env);
 void	exec_unset(t_env **ls_env, char **cmds);
 int		exec_cd(char **cmd, t_env *list_env, t_data *data);
+t_env	*msg_return_t_env(char *msg, t_env *return_value);
+t_env	*create_var_pwd(char *variable, t_env *ls_env);
 int		exec_exit(t_data *data, t_token *cmds, int *save_std_io);
 /*utils_builtins.c*/
 int		str_is_digit(char *arg);

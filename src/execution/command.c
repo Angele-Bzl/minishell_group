@@ -28,30 +28,6 @@ static int	init_hyp_path(char **hyp_path, char *cmd, char **env_path)
 	return (OK);
 }
 
-static char	*check_if_cmd_exists(char **hypothetical_path_cmd, char **path)
-{
-	size_t	i;
-	char	*real_path;
-	bool	found;
-
-	i = 0;
-	found = false;
-	real_path = NULL;
-	while (path[i])
-	{
-		if (!access(hypothetical_path_cmd[i], X_OK) && !found)
-		{
-			real_path = ft_strdup(hypothetical_path_cmd[i]);
-			found = true;
-		}
-		free(hypothetical_path_cmd[i]);
-		i++;
-	}
-	free(hypothetical_path_cmd);
-	hypothetical_path_cmd = NULL;
-	return (real_path);
-}
-
 static char	*return_err_cmd_malloc(char **env_path)
 {
 	free_array(env_path);
@@ -69,38 +45,6 @@ static char	**hypothetical_path(char **env_path, char *cmd)
 	if (init_hyp_path(hypothetical_path_cmd, cmd, env_path) == ERR)
 		return (NULL);
 	return (hypothetical_path_cmd);
-}
-
-static int	update_path_return(char **path_cmd, char *cmd, int return_value)
-{
-	*path_cmd = cmd;
-	return (return_value);
-}
-
-static int	is_special_cmd(char *cmd, char **path_cmd, t_data *data)
-{
-	struct stat	buf;
-
-	if (!cmd || cmd_is_builtin(cmd))
-		return (update_path_return(path_cmd, cmd, OK));
-	if (ft_strchr(cmd, '/'))
-	{
-		if (stat(cmd, &buf) == ERR)
-		{
-			data->exit_status = EXIT_CMD_NOT_FOUND;
-			return (perror_return(cmd, OK));
-		}
-		else
-		{
-			if (S_ISDIR(buf.st_mode))
-			{
-				data->exit_status = EXIT_CMD_NO_PERMISSION;
-				return (msg_return(IS_DIR, cmd, OK));
-			}
-		return (update_path_return(path_cmd, cmd, OK));
-		}
-	}
-	return (1);
 }
 
 static char	*return_found_cmd(char *path_cmd, char *cmd, t_data *data)

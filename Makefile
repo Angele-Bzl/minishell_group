@@ -31,6 +31,7 @@ LFLAGS		=	-lncurses -lreadline
 #####################################################
 FILES_EXEC  =   execution.c\
 				command.c\
+				command_utils.c\
 				utils_cmd.c\
 				utils_exec.c\
 				single_cmd.c\
@@ -42,6 +43,7 @@ FILES_EXEC  =   execution.c\
 
 FILES_BUILT	=	utils_builtin.c\
 				cd.c\
+				cd_utils.c\
 				echo.c\
 				env.c\
 				export.c\

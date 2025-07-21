@@ -1,32 +1,58 @@
 #include "minishell.h"
 #include <sys/stat.h>
 
-// int	is_special_cmd(char *cmd, char **path_cmd)
-// {
-// 	struct stat	buf;
-
-// 	if (!cmd || cmd_is_builtin(cmd))
-// 	{
-// 		*path_cmd = cmd;
-// 		return (OK);
-// 	}
-// 	if (ft_strchr(cmd, '/'))
-// 	{
-// 		if (stat(cmd, &buf) == -1)
-// 			return (perror_return(cmd, OK));
-// 		else
-// 		{
-// 			if (S_ISDIR(buf.st_mode))
-// 				return (msg_return(IS_DIR, cmd, OK));
-// 			*path_cmd = cmd;
-// 			return (OK);
-// 		}
-// 	}
-// 	return (1);
-// }
-
-char	*return_err_cmd_malloc(char **env_path)
+static int	update_path_return(char **path_cmd, char *cmd, int return_value)
 {
-	free_array(env_path);
-	return (msg_return_str(MALLOC, NULL, NULL));
+	*path_cmd = cmd;
+	return (return_value);
+}
+
+int	is_special_cmd(char *cmd, char **path_cmd, t_data *data)
+{
+	struct stat	buf;
+
+	if (!cmd || cmd_is_builtin(cmd))
+		return (update_path_return(path_cmd, cmd, OK));
+	if (ft_strchr(cmd, '/'))
+	{
+		if (stat(cmd, &buf) == ERR)
+		{
+			data->exit_status = EXIT_CMD_NOT_FOUND;
+			return (perror_return(cmd, OK));
+		}
+		else
+		{
+			if (S_ISDIR(buf.st_mode))
+			{
+				data->exit_status = EXIT_CMD_NO_PERMISSION;
+				return (msg_return(IS_DIR, cmd, OK));
+			}
+			return (update_path_return(path_cmd, cmd, OK));
+		}
+	}
+	return (1);
+}
+
+char	*check_if_cmd_exists(char **hypothetical_path_cmd, char **path)
+{
+	size_t	i;
+	char	*real_path;
+	bool	found;
+
+	i = 0;
+	found = false;
+	real_path = NULL;
+	while (path[i])
+	{
+		if (!access(hypothetical_path_cmd[i], X_OK) && !found)
+		{
+			real_path = ft_strdup(hypothetical_path_cmd[i]);
+			found = true;
+		}
+		free(hypothetical_path_cmd[i]);
+		i++;
+	}
+	free(hypothetical_path_cmd);
+	hypothetical_path_cmd = NULL;
+	return (real_path);
 }
