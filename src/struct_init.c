@@ -3,33 +3,25 @@
 static int	manage_no_env(t_env **current, t_data *data)
 {
 	t_env	*new_node;
-	char	*pwd;
 	char	**cmds;
 
 	new_node = malloc(sizeof (t_env));
 	if (!new_node)
-	return (0);
-	pwd = ft_strdup("PWD=");
-	if (!pwd)
-	{
-		free(new_node);
-		return (msg_return(MALLOC, NULL, 0));
-	}
-	new_node->line = ft_strjoin(pwd, getcwd(NULL, 0));
+		return (msg_return(MALLOC, NULL, ERR));
+	new_node->line = ft_strjoin("PWD=", getcwd(NULL, 0));
 	if (!new_node->line)
 	{
-		free(pwd);
 		free(new_node);
-		return (msg_return(MALLOC, NULL, 0));
+		return (msg_return(MALLOC, NULL, ERR));
 	}
 	new_node->next = NULL;
 	ft_lstadd_back((t_list **)current, (t_list *)new_node);
-	cmds = ft_split("export OLDPWD=(null)", ' ');
+	cmds = ft_split("export OLDPWD=", ' ');
 	if (!cmds)
 		return (msg_return(MALLOC, NULL, ERR));
 	exec_export(*current, cmds, data);
 	free_array(cmds);
-	return (1);
+	return (OK);
 }
 
 int	env_init(char **env, t_data *data)

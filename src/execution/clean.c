@@ -19,6 +19,7 @@ char	*free_return_str(char *to_free, char *return_value)
 	return (return_value);
 }
 
+
 int	free_array_return(char **array, int return_value)
 {
 	if (array)
