@@ -1,21 +1,21 @@
 #include "minishell.h"
 
-static int	update_file(t_file *ls_file, char *file_name, t_rafter redirection)
+static int	update(t_parsing *par, t_file *ls_file, char *f_name, t_rafter redi)
 {
 	t_file	*new_in_node;
 
 	if (ls_file && ls_file->value == NULL)
 	{
-		ls_file->value = file_name;
-		ls_file->redirection = redirection;
+		ls_file->value = f_name;
+		ls_file->redirection = redi;
 	}
 	else
 	{
 		new_in_node = file_lstnew();
 		if (!new_in_node)
-			return (ERR);
-		new_in_node->value = file_name;
-		new_in_node->redirection = redirection;
+			return (parsing_error_int(par, ERR_MALLOC, EXIT_SYSTEM, ERR));
+		new_in_node->value = f_name;
+		new_in_node->redirection = redi;
 		file_lstadd_back(&ls_file, new_in_node);
 	}
 	return (0);
@@ -27,21 +27,21 @@ static int	check_rafter(t_parsing *par, char *file_name, char *prompt, int i)
 
 	current = token_lstlast(par->data->ls_token);
 	if (prompt[i] == '<' && prompt[i + 1] != '<')
-		if (update_file(current->ls_infile, file_name, SIMPLE_LEFT) == ERR)
+		if (update(par, current->ls_infile, file_name, SIMPLE_LEFT) == ERR)
 			return (ERR);
 	if (prompt[i] == '>' && prompt[i + 1] != '>')
-		if (update_file(current->ls_outfile, file_name, SIMPLE_RIGHT) == ERR)
+		if (update(par, current->ls_outfile, file_name, SIMPLE_RIGHT) == ERR)
 			return (ERR);
 	if (prompt[i + 1] == '<')
 	{
 		file_name = here_doc(file_name, par);
 		if (!file_name)
 			return (ERR);
-		if (update_file(current->ls_infile, file_name, DOUBLE_LEFT) == ERR)
+		if (update(par, current->ls_infile, file_name, DOUBLE_LEFT) == ERR)
 			return (ERR);
 	}
 	if (prompt[i + 1] == '>')
-		if (update_file(current->ls_outfile, file_name, DOUBLE_RIGHT) == ERR)
+		if (update(par, current->ls_outfile, file_name, DOUBLE_RIGHT) == ERR)
 			return (ERR);
 	return (OK);
 }

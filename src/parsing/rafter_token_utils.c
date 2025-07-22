@@ -1,59 +1,77 @@
 #include "minishell.h"
 
-char	*extract_file_name(char *prompt, int i, t_parsing *parsing)
+static int	find_name_len(t_parsing *par, char *prompt, int i)
 {
+	int	len;
 	int	start;
 	int	count_quote;
-	int	len;
-	char *file_name;
-	int j;
 
 	count_quote = 0;
 	while (prompt[i] && ft_isspace(prompt[i]))
 		i++;
 	start = i;
-	while (prompt[i] && !ft_isspace(prompt[i]) && prompt[i] != '>' && prompt[i] != '<')
+	while (prompt[i] && !ft_isspace(prompt[i])
+		&& prompt[i] != '>' && prompt[i] != '<')
 	{
-		if (quote_check(prompt[i], parsing) == 1)
+		if (quote_check(prompt[i], par) == 1)
 			count_quote++;
-		while (parsing->double_quote == true || parsing->simple_quote == true)
+		while (par->double_quote == true || par->simple_quote == true)
 		{
 			i++;
-			if (quote_check(prompt[i], parsing) == 0)
+			if (quote_check(prompt[i], par) == 0)
 				count_quote++;
 		}
 		i++;
 	}
 	len = i - start - count_quote;
+	return (len);
+}
+
+static int	skip_quotes(t_parsing *par, char *prompt, int j)
+{
+	while (prompt[j] && quote_check(prompt[j], par) != -1)
+		j++;
+	return (j);
+}
+
+static void	fill_file_name(t_parsing *par, char *prompt, int j, char *file_name)
+{
+	int	i;
+	int	len;
+
+	len = find_name_len(par, prompt, j);
+	while (prompt[j] && ft_isspace(prompt[j]))
+		j++;
+	i = 0;
+	while (prompt[j] && i < len)
+	{
+		j = skip_quotes(par, prompt, j);
+		while (par->double_quote == true || par->simple_quote == true)
+		{
+			if (quote_check(prompt[j], par) == 0)
+			{
+				j++;
+				break ;
+			}
+			file_name[i++] = prompt[j++];
+		}
+		j = skip_quotes(par, prompt, j);
+		if (prompt[j] && i < len)
+			file_name[i++] = prompt[j++];
+	}
+	file_name[i] = '\0';
+}
+
+char	*extract_file_name(char *prompt, int start, t_parsing *parsing)
+{
+	int		len;
+	char	*file_name;
+
+	len = find_name_len(parsing, prompt, start);
 	file_name = malloc(sizeof(char) * (len + 1));
 	if (!file_name)
 		return (msg_return_str(MALLOC, NULL, NULL));
-	j = 0;
-	while (prompt[start] && j < len)
-	{
-		while (quote_check(prompt[start], parsing) != -1)
-			start++;
-		while (parsing->double_quote == true || parsing->simple_quote == true)
-		{
-			if (quote_check(prompt[start], parsing) == 0)
-			{
-				start++;
-				break;
-			}
-			file_name[j] = prompt[start];
-			j++;
-			start++;
-		}
-		while (quote_check(prompt[start], parsing) != -1)
-			start++;
-		if (prompt[start] && j < len)
-		{
-			file_name[j] = prompt[start];
-			j++;
-			start++;
-		}
-	}
-	file_name[j] = '\0';
+	fill_file_name(parsing, prompt, start, file_name);
 	return (file_name);
 }
 
