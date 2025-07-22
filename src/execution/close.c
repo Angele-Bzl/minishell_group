@@ -23,3 +23,9 @@ void	close_free_array_str(int fd0, int fd1, char **env, char *path)
 	if (path)
 		free(path);
 }
+
+int	close_all_return(int fd0, int fd1, int return_value)
+{
+	close_all(fd0, fd1);
+	return (return_value);
+}

@@ -150,6 +150,7 @@ void	close_all(int fd0, int fd1);
 void	close_free_token_env_pids(t_data *data, int fd0, int fd1, pid_t *pids);
 void	close_free_token_env(t_data *data, int fd0, int fd1);
 void	close_free_array_str(int fd0, int fd1, char **env, char *path);
+int		close_all_return(int fd0, int fd1, int return_value);
 /*children.c*/
 int		loop_children(t_data *data, pid_t *pids);
 /*input_output.c*/
