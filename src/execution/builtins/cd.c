@@ -1,5 +1,11 @@
 #include "minishell.h"
 
+static char	*rewind_pwd(void)
+{
+	chdir("../");
+	return (getcwd(NULL, 0));
+}
+
 static int	update_pwd(t_env *ls_env, int var_length)
 {
 	t_env	*current;
@@ -14,10 +20,7 @@ static int	update_pwd(t_env *ls_env, int var_length)
 			current->line = NULL;
 			pwd = getcwd(NULL, 0);
 			while (!pwd)
-			{
-				chdir("../");
-				pwd = getcwd(NULL, 0);
-			}
+				pwd = rewind_pwd();
 			current->line = ft_strjoin("PWD=", pwd);
 			free(pwd);
 			if (!current->line)
