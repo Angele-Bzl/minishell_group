@@ -1,0 +1,11 @@
+minishell> cat << $USER
+> why
+> not
+> $USER
+> [K> [K> [K> 
+minishell> 
+minishell> 
+minishell> 
+minishell> 
+minishell> 
+minishell> 

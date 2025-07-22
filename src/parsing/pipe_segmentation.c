@@ -11,7 +11,7 @@ static int	next_pipe_segment(int *start, int *end, t_parsing *parsing)
 	{
 		if (parsing->prompt[*start] == '|' && ++pipe_count > 1)
 		{
-			parsing_error_int(parsing, ERR_PROMPT, EXIT_SYSTEM, 0);
+			pars_err_int(parsing, ERR_PROMPT, EXIT_SYSTEM, 0);
 			return (msg_return(ERR_SYNTAX_NEAR, "|", ERR));
 		}
 		(*start)++;
@@ -38,7 +38,7 @@ static int	free_split_on_failure(char **array, int i, t_parsing *parsing)
 			i--;
 		}
 		free(array);
-		return (parsing_error_int(parsing, ERR_MALLOC, EXIT_SYSTEM, ERR));
+		return (pars_err_int(parsing, ERR_MALLOC, EXIT_SYSTEM, ERR));
 	}
 	return (0);
 }
@@ -51,7 +51,7 @@ static int	ft_countpipe(char const *prompt, t_parsing *parsing)
 	i = 0;
 	count = 0;
 	if (prompt_begins_with_a_pipe(prompt, &i))
-		return (parsing_error_int(parsing, ERR_PROMPT, EXIT_SYSTEM, ERR));
+		return (pars_err_int(parsing, ERR_PROMPT, EXIT_SYSTEM, ERR));
 	count = parse_pipe_segments(prompt, i);
 	return (count);
 }
@@ -74,7 +74,7 @@ static int	fill_pipe_segments(char **array, char const *prompt, t_parsing *par)
 			return (ERR);
 		array[i] = ft_substr(prompt, start, end - start);
 		if (!array[i])
-			return (parsing_error_int(par, ERR_MALLOC, EXIT_SYSTEM, ERR));
+			return (pars_err_int(par, ERR_MALLOC, EXIT_SYSTEM, ERR));
 		if (free_split_on_failure(array, i, par) == ERR)
 			return (ERR);
 		i++;
@@ -94,7 +94,7 @@ char	**pipe_segmentation(t_parsing *parsing)
 	array = malloc(sizeof(char *) * (pipe_count + 2));
 	if (!array)
 	{
-		parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL);
+		pars_err_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL);
 		return (NULL);
 	}
 	if (fill_pipe_segments(array, parsing->prompt, parsing) == ERR)

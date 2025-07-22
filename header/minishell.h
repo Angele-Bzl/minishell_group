@@ -212,10 +212,10 @@ int		find_var_end(char *prompt, int p_index);
 char	*search_and_fill_content_with_env(t_env *tmp, char *var, int var_len);
 int		handle_exit_status_var(t_parsing *parsing);
 /*manage_dollar_utils_02.c*/
-void		copy_till_the_end(char *new_prompt, char *old_prompt, int *i, int *j);
+void	copy_till_the_end(char *new_prompt, char *old_prompt, int *i, int *j);
 /*parsing_error.c*/
-int		parsing_error_int(t_parsing *parsing, int errcode, int exit_status, int return_value);
-char	*parsing_error_char(t_parsing *parsing, int errcode, int exit_status, char *return_value);
+int		pars_err_int(t_parsing *par, int errcode, int ex_stat, int ret_val);
+char	*pars_err_char(t_parsing *par, int errcode, int ex_stat, char *ret_val);
 void	parsing_error_void(t_parsing *parsing, int errcode, int exit_status);
 /*parsing.c*/
 void	ft_parsing(t_data *data, t_parsing *parsing);
@@ -243,10 +243,6 @@ int		perror_return(char *message, int return_value);
 void	end_single_cmd(t_data *data, int *io_fd, int *save, int return_val);
 /*cutstr.c*/
 char	*ft_cutstr(char const *s, unsigned int start);
-/*debug_print.c*/
-void	print_env(t_env *env);
-void	print_prompt_tab(char **p_tab);
-void	print_tokens(t_data *data);
 /*free_minishell.c*/
 void	free_parsing(t_parsing *parsing);
 void	close_free_maybe_exit(t_parsing *parsing, int exitcode);

@@ -86,11 +86,11 @@ char	*find_redir_file_name(char *prompt, int i, t_parsing *parsing)
 		i++;
 	if (prompt[i] == '<' || prompt[i] == '>' || prompt[i] == '\0')
 	{
-		parsing_error_char(parsing, ERR_PROMPT, EXIT_SYSTEM, NULL);
+		pars_err_char(parsing, ERR_PROMPT, EXIT_SYSTEM, NULL);
 		return (msg_return_str(ERR_SYNTAX_NEAR, "'<' OR '>' OR '\\0'", NULL));
 	}
 	file_name = extract_file_name(prompt, i, parsing);
 	if (!file_name)
-		return (parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
+		return (pars_err_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
 	return (file_name);
 }

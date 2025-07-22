@@ -10,14 +10,14 @@ static char	*find_var_content(char *variable, t_data *data, t_parsing *parsing)
 	tmp = data->ls_env;
 	var = ft_strtrim(variable, "$");
 	if (!var)
-		return (parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
+		return (pars_err_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
 	result = NULL;
 	env_var = search_and_fill_content_with_env(tmp, var, ft_strlen(var));
 	if (env_var)
 	{
 		result = ft_cutstr(env_var, ft_strlen(var) + 1);
 		if (!result)
-			return (parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
+			return (pars_err_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
 	}
 	free(var);
 	return (result);
@@ -35,7 +35,7 @@ char	*update_prompt(char *content, int start, t_parsing *parsing)
 	prt = ft_strlen(parsing->old_prompt) - (end - start) + (ft_strlen(content));
 	new_prompt = malloc(sizeof(char) * (prt + 1));
 	if (!new_prompt)
-		return (parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
+		return (pars_err_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL));
 	i = 0;
 	j = 0;
 	while (i < start)
@@ -69,7 +69,7 @@ static void	init_variable_and_content(t_parsing *parsing, char **content)
 		*content = malloc(1);
 		if (!*content)
 		{
-			parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL);
+			pars_err_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL);
 			return ;
 		}
 		*content[0] = '\0';

@@ -22,7 +22,7 @@ static char	*first_char_not_valid(t_parsing *par, int start)
 
 	var_name = malloc(sizeof(char) * 2);
 	if (!var_name)
-		return (parsing_error_char(par, ERR_MALLOC, EXIT_SYSTEM, NULL));
+		return (pars_err_char(par, ERR_MALLOC, EXIT_SYSTEM, NULL));
 	var_name[0] = par->prompt_tab[par->pipe_seg][start];
 	var_name[1] = '\0';
 	return (var_name);

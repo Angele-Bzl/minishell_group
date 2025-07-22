@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	parsing_error_int(t_parsing *par, int errcode, int exit_status, int ret_val)
+int	pars_err_int(t_parsing *par, int errcode, int exit_status, int ret_val)
 {
 	if (exit_status)
 		par->data->exit_status = exit_status;
@@ -13,7 +13,7 @@ int	parsing_error_int(t_parsing *par, int errcode, int exit_status, int ret_val)
 	return (ret_val);
 }
 
-char	*parsing_error_char(t_parsing *par, int err, int ex_stat, char *ret_val)
+char	*pars_err_char(t_parsing *par, int err, int ex_stat, char *ret_val)
 {
 	if (ex_stat)
 		par->data->exit_status = ex_stat;

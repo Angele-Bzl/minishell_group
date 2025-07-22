@@ -73,7 +73,6 @@ FILES_PARS  =   cmd_token_utils.c\
 				split_whitespace_quote.c\
 				tokenisation.c
 FILES_UTILS =   cutstr.c\
-				debug_print.c\
 				free_minishell.c\
 				free_utils.c\
 				ft_isspace.c\

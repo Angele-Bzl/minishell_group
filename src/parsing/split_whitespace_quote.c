@@ -55,7 +55,7 @@ static int	free_split_on_failure(t_parsing *parsing, char **array, int limit)
 			limit--;
 		}
 		free(array);
-		return (parsing_error_int(parsing, ERR_MALLOC, EXIT_SYSTEM, ERR));
+		return (pars_err_int(parsing, ERR_MALLOC, EXIT_SYSTEM, ERR));
 	}
 	return (0);
 }
@@ -75,7 +75,7 @@ static int	fill_split_array(char **arr, char const *s, char c, t_parsing *par)
 			return (0);
 		tmp = ft_substr(s, start, (end - start));
 		if (!tmp)
-			return (parsing_error_int(par, ERR_MALLOC, EXIT_SYSTEM, ERR));
+			return (pars_err_int(par, ERR_MALLOC, EXIT_SYSTEM, ERR));
 		arr[i] = extract_token_without_quotes(tmp, par);
 		free(tmp);
 		if (arr[i] == NULL || free_split_on_failure(par, arr, i) == ERR)
@@ -95,7 +95,7 @@ char	**split_whitespace_quotes(char const *s, char c, t_parsing *parsing)
 	array = malloc(sizeof(char *) * (word + 1));
 	if (!array)
 	{
-		parsing_error_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL);
+		pars_err_char(parsing, ERR_MALLOC, EXIT_SYSTEM, NULL);
 		return (NULL);
 	}
 	if (fill_split_array(array, s, c, parsing) == ERR)

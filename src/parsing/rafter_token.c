@@ -13,7 +13,7 @@ static int	update(t_parsing *par, t_file *ls_file, char *f_name, t_rafter redi)
 	{
 		new_in_node = file_lstnew();
 		if (!new_in_node)
-			return (parsing_error_int(par, ERR_MALLOC, EXIT_SYSTEM, ERR));
+			return (pars_err_int(par, ERR_MALLOC, EXIT_SYSTEM, ERR));
 		new_in_node->value = f_name;
 		new_in_node->redirection = redi;
 		file_lstadd_back(&ls_file, new_in_node);
@@ -59,7 +59,7 @@ int	manage_rafter(t_data *data, int *i, char *prompt, t_parsing *parsing)
 		if (parsing->errcode == ERR_PROMPT)
 			return (ERR);
 		else
-			return (parsing_error_int(parsing, ERR_MALLOC, EXIT_SYSTEM, ERR));
+			return (pars_err_int(parsing, ERR_MALLOC, EXIT_SYSTEM, ERR));
 	}
 	if (prompt[*i + 1] == '<' || prompt[*i + 1] == '>')
 		*i = *i + 1;
