@@ -7,10 +7,13 @@ int	manage_child(t_data *data, int prev_out, int pipe_fd[2], t_token *current)
 
 	io_fd[0] = get_input(current->ls_infile, prev_out);
 	if (io_fd[0] == ERR)
-		return(close_all_return(io_fd[1], -1, EXIT_FAILURE));
+		return (EXIT_FAILURE);
 	io_fd[1] = get_output(current->ls_outfile, pipe_fd[1], count_cmds(current));
 	if (io_fd[1] == ERROR_PROMPT)
-		return (close_all_return(io_fd[0], -1, EXIT_FAILURE));
+	{
+		close(io_fd[0]);
+		return (EXIT_FAILURE);
+	}
 	if (io_fd[0] == HEREDOC_INTERRUPTED)
 		return (close_all_return(io_fd[0], io_fd[1], EXIT_FAILURE));
 	data->exit_status = EXIT_OK;

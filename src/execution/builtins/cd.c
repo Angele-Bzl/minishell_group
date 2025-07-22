@@ -11,9 +11,13 @@ static int	update_pwd(t_env *ls_env, int var_length)
 		if (!ft_strncmp(current->line, "PWD=", var_length))
 		{
 			free(current->line);
+			current->line = NULL;
 			pwd = getcwd(NULL, 0);
-			if (!pwd)
-				return (msg_return(ERR_PWD, NULL, 0));
+			while (!pwd)
+			{
+				chdir("../");
+				pwd = getcwd(NULL, 0);
+			}
 			current->line = ft_strjoin("PWD=", pwd);
 			free(pwd);
 			if (!current->line)
