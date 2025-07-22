@@ -43,7 +43,7 @@ int	tester_is_mean(t_data *data)
 			i++;
 		}
 		if (minishell >= 2)
-			return (msg_return("Please don't execute multiple minishell at once :(\n", NULL, 1));
+			return (msg_return(PLEASE_DONT, NULL, 1));
 		current = current->next;
 	}
 	return (0);
@@ -55,7 +55,6 @@ void	parse_and_execute(t_parsing *parsing, t_data *data)
 	ft_parsing(data, parsing);
 	if (tester_is_mean(data))
 		return ;
-	// print_tokens(data);
 	if (parsing->errcode == OK)
 		execution(data);
 }

@@ -83,7 +83,7 @@ void	exec_single_builtin(t_data *dt)
 	io_fd[1] = get_outpt_(dt->ls_token->ls_outfile, save_std, &dt->exit_status);
 	if (io_fd[1] == ERR)
 		return (end_single_cmd(dt, io_fd, save_std, dt->exit_status));
-	redirect_and_exec(dt->ls_token, io_fd, dt, save_std);
+	redir_exec(dt->ls_token, io_fd, dt, save_std);
 	if (dt->exit_status != EXIT_OK)
 		return (end_single_cmd(dt, io_fd, save_std, dt->exit_status));
 	if (reset_dup2(save_std) == ERR)

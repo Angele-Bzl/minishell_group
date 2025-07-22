@@ -68,11 +68,7 @@ void	end_single_cmd(t_data *data, int *io_fd, int *save, int return_val)
 	if (return_val == EXIT_SYSTEM)
 	{
 		free_token_env(data);
-		// free_env(data->ls_env);
 		exit(STDERR_FILENO);
 	}
-	// if (return_val == EXIT_PROMPT)
-	// 	return (EXIT_PROMPT);
-	// return (OK);
 	return ;
 }
