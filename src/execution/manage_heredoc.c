@@ -6,7 +6,7 @@
 /*   By: abarzila <abarzila@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 12:55:30 by abarzila          #+#    #+#             */
-/*   Updated: 2025/07/22 12:55:31 by abarzila         ###   ########.fr       */
+/*   Updated: 2025/07/22 16:37:53 by abarzila         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ char	*here_doc(char *eof, t_parsing *parsing)
 	if (ret == HEREDOC_INTERRUPTED)
 	{
 		parsing->errcode = ERR_PROMPT;
+		parsing->data->exit_status = 130;
 		unlink(tmp);
 		return (free_return_str(tmp, NULL));
 	}
